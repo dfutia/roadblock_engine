@@ -21,7 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Compile\glad.c" />
     <ClCompile Include="Compile\stb.cpp" />
-    <ClCompile Include="Source\editor.cpp" />
+    <ClCompile Include="Source\Editor\editor.cpp" />
     <ClCompile Include="Source\graphicscontext.cpp" />
     <ClCompile Include="Source\instance.cpp" />
     <ClCompile Include="Source\luaenvironment.cpp" />
@@ -35,8 +35,13 @@
     <ClCompile Include="ThirdParty\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\editor.h" />
-    <ClInclude Include="Source\editorpanel.h" />
+    <ClInclude Include="Source\Editor\editor.h" />
+    <ClInclude Include="Source\Editor\editorpanel.h" />
+    <ClInclude Include="Source\Editor\Panels\console.h" />
+    <ClInclude Include="Source\Editor\Panels\contentbrowser.h" />
+    <ClInclude Include="Source\Editor\Panels\explorer.h" />
+    <ClInclude Include="Source\Editor\Panels\properties.h" />
+    <ClInclude Include="Source\Editor\Panels\viewport.h" />
     <ClInclude Include="Source\event.h" />
     <ClInclude Include="Source\graphicscontext.h" />
     <ClInclude Include="Source\instance.h" />
@@ -108,12 +113,12 @@
   <PropertyGroup Label="UserMacros" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <OutDir>.\Bin</OutDir>
-    <IncludePath>D:\Main\Projects\Roblox\Roblox\ThirdParty\spdlog;D:\Main\Projects\Roblox\Roblox\ThirdParty\sol;D:\Main\Projects\Roblox\Roblox\ThirdParty\SDL2;D:\Main\Projects\Roblox\Roblox\ThirdParty\lua;D:\Main\Projects\Roblox\Roblox\ThirdParty\imguitextedit;D:\Main\Projects\Roblox\Roblox\ThirdParty\imgui;D:\Main\Projects\Roblox\Roblox\ThirdParty\glm;D:\Main\Projects\Roblox\Roblox\ThirdParty\glad;D:\Main\Projects\Roblox\Roblox\ThirdParty\freetype;D:\Main\Projects\Roblox\Roblox\ThirdParty\assimp;D:\Main\Projects\Roblox\Roblox\ThirdParty;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Main\Projects\Roblox\Roblox\Source;D:\Main\Projects\Roblox\Roblox\ThirdParty\spdlog;D:\Main\Projects\Roblox\Roblox\ThirdParty\sol;D:\Main\Projects\Roblox\Roblox\ThirdParty\SDL2;D:\Main\Projects\Roblox\Roblox\ThirdParty\lua;D:\Main\Projects\Roblox\Roblox\ThirdParty\imguitextedit;D:\Main\Projects\Roblox\Roblox\ThirdParty\imgui;D:\Main\Projects\Roblox\Roblox\ThirdParty\glm;D:\Main\Projects\Roblox\Roblox\ThirdParty\glad;D:\Main\Projects\Roblox\Roblox\ThirdParty\freetype;D:\Main\Projects\Roblox\Roblox\ThirdParty\assimp;D:\Main\Projects\Roblox\Roblox\ThirdParty;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Main\Projects\Roblox\Roblox\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <OutDir>.\Bin</OutDir>
-    <IncludePath>D:\Main\Projects\Roblox\Roblox\ThirdParty\spdlog;D:\Main\Projects\Roblox\Roblox\ThirdParty\sol;D:\Main\Projects\Roblox\Roblox\ThirdParty\SDL2;D:\Main\Projects\Roblox\Roblox\ThirdParty\lua;D:\Main\Projects\Roblox\Roblox\ThirdParty\imguitextedit;D:\Main\Projects\Roblox\Roblox\ThirdParty\imgui;D:\Main\Projects\Roblox\Roblox\ThirdParty\glm;D:\Main\Projects\Roblox\Roblox\ThirdParty\glad;D:\Main\Projects\Roblox\Roblox\ThirdParty\freetype;D:\Main\Projects\Roblox\Roblox\ThirdParty\assimp;D:\Main\Projects\Roblox\Roblox\ThirdParty;$(IncludePath)</IncludePath>
+    <IncludePath>D:\Main\Projects\Roblox\Roblox\Source;D:\Main\Projects\Roblox\Roblox\ThirdParty\spdlog;D:\Main\Projects\Roblox\Roblox\ThirdParty\sol;D:\Main\Projects\Roblox\Roblox\ThirdParty\SDL2;D:\Main\Projects\Roblox\Roblox\ThirdParty\lua;D:\Main\Projects\Roblox\Roblox\ThirdParty\imguitextedit;D:\Main\Projects\Roblox\Roblox\ThirdParty\imgui;D:\Main\Projects\Roblox\Roblox\ThirdParty\glm;D:\Main\Projects\Roblox\Roblox\ThirdParty\glad;D:\Main\Projects\Roblox\Roblox\ThirdParty\freetype;D:\Main\Projects\Roblox\Roblox\ThirdParty\assimp;D:\Main\Projects\Roblox\Roblox\ThirdParty;$(IncludePath)</IncludePath>
     <LibraryPath>D:\Main\Projects\Roblox\Roblox\Lib;$(LibraryPath)</LibraryPath>
   </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|Win32'">

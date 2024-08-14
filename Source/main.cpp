@@ -1,7 +1,7 @@
 #define _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
 
 #include "graphicscontext.h"
-#include "editor.h"
+#include "Editor/editor.h"
 #include "luaenvironment.h"
 
 #include <spdlog/spdlog.h>
@@ -11,7 +11,7 @@
 
 int main(int argc, char* argv[]) {
 	GraphicsContext graphics;
-	if (!graphics.initialize("Roblox Studio", 800, 600)) {
+	if (!graphics.initialize("Roblox Studio", 1280, 720)) {
 		std::cerr << "Failed to iniitalize graphics context" << std::endl;
 		return -1;
 	}

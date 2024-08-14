@@ -33,7 +33,7 @@
     <ClCompile Include="Source\graphicscontext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\editor.cpp">
+    <ClCompile Include="Source\Editor\editor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="ThirdParty\imgui\imgui.cpp">
@@ -71,10 +71,10 @@
     <ClInclude Include="Source\graphicscontext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\editorpanel.h">
+    <ClInclude Include="Source\Editor\editorpanel.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\editor.h">
+    <ClInclude Include="Source\Editor\editor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThirdParty\imgui\imconfig.h">
@@ -102,6 +102,21 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="ThirdParty\imgui\imstb_truetype.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Panels\console.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Panels\explorer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Panels\properties.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Panels\viewport.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Panels\contentbrowser.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
