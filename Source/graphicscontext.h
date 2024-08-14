@@ -16,8 +16,8 @@ public:
 	void cleanup();
 	void swapBuffers();
 
-	SDL_Window* GetWindow() const { return m_window; }
-	SDL_GLContext GetGLContext() const { return m_glContext; }
+	SDL_Window* getWindow() const { return m_window; }
+	SDL_GLContext getGLContext() const { return m_glContext; }
 private:
 	bool initializeSDL();
 	bool createWindow(const std::string& windowTitle, int width, int height);
