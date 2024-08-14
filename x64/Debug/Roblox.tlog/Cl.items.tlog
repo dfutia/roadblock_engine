@@ -1,6 +1,14 @@
 D:\Main\Projects\Roblox\Roblox\Compile\glad.c;D:\Main\Projects\Roblox\Roblox\x64\Debug\glad.obj
 D:\Main\Projects\Roblox\Roblox\Compile\stb.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\stb.obj
+D:\Main\Projects\Roblox\Roblox\Source\editor.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\editor.obj
 D:\Main\Projects\Roblox\Roblox\Source\graphicscontext.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\graphicscontext.obj
 D:\Main\Projects\Roblox\Roblox\Source\instance.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\instance.obj
 D:\Main\Projects\Roblox\Roblox\Source\luaenvironment.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\luaenvironment.obj
 D:\Main\Projects\Roblox\Roblox\Source\main.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\main.obj
+D:\Main\Projects\Roblox\Roblox\ThirdParty\imgui\imgui.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\imgui.obj
+D:\Main\Projects\Roblox\Roblox\ThirdParty\imgui\imgui_demo.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\imgui_demo.obj
+D:\Main\Projects\Roblox\Roblox\ThirdParty\imgui\imgui_draw.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\imgui_draw.obj
+D:\Main\Projects\Roblox\Roblox\ThirdParty\imgui\imgui_impl_opengl3.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\imgui_impl_opengl3.obj
+D:\Main\Projects\Roblox\Roblox\ThirdParty\imgui\imgui_impl_sdl2.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\imgui_impl_sdl2.obj
+D:\Main\Projects\Roblox\Roblox\ThirdParty\imgui\imgui_tables.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\imgui_tables.obj
+D:\Main\Projects\Roblox\Roblox\ThirdParty\imgui\imgui_widgets.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\imgui_widgets.obj

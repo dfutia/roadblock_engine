@@ -21,16 +21,35 @@
   <ItemGroup>
     <ClCompile Include="Compile\glad.c" />
     <ClCompile Include="Compile\stb.cpp" />
+    <ClCompile Include="Source\editor.cpp" />
     <ClCompile Include="Source\graphicscontext.cpp" />
     <ClCompile Include="Source\instance.cpp" />
     <ClCompile Include="Source\luaenvironment.cpp" />
     <ClCompile Include="Source\main.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui_demo.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui_draw.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui_impl_sdl2.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui_tables.cpp" />
+    <ClCompile Include="ThirdParty\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\editor.h" />
+    <ClInclude Include="Source\editorpanel.h" />
     <ClInclude Include="Source\event.h" />
     <ClInclude Include="Source\graphicscontext.h" />
     <ClInclude Include="Source\instance.h" />
     <ClInclude Include="Source\luaenvironment.h" />
+    <ClInclude Include="ThirdParty\imgui\imconfig.h" />
+    <ClInclude Include="ThirdParty\imgui\imgui.h" />
+    <ClInclude Include="ThirdParty\imgui\imgui_impl_opengl3.h" />
+    <ClInclude Include="ThirdParty\imgui\imgui_impl_opengl3_loader.h" />
+    <ClInclude Include="ThirdParty\imgui\imgui_impl_sdl2.h" />
+    <ClInclude Include="ThirdParty\imgui\imgui_internal.h" />
+    <ClInclude Include="ThirdParty\imgui\imstb_rectpack.h" />
+    <ClInclude Include="ThirdParty\imgui\imstb_textedit.h" />
+    <ClInclude Include="ThirdParty\imgui\imstb_truetype.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\main.lua" />
