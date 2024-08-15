@@ -1,4 +1,5 @@
 #define _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
+#define _CRT_SECURE_NO_WARNINGS
 
 #include "graphicscontext.h"
 #include "Editor/editor.h"
