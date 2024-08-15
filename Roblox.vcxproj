@@ -44,9 +44,7 @@
     <ClInclude Include="Source\Editor\Panels\explorer.h" />
     <ClInclude Include="Source\Editor\Panels\properties.h" />
     <ClInclude Include="Source\Editor\Panels\scripteditor.h" />
-    <ClInclude Include="Source\Editor\scripteditor.h" />
     <ClInclude Include="Source\Editor\Panels\viewport.h" />
-    <ClInclude Include="Source\Editor\scripteditorwindow.h" />
     <ClInclude Include="Source\Event\engineevents.h" />
     <ClInclude Include="Source\Event\event.h" />
     <ClInclude Include="Source\graphicscontext.h" />
