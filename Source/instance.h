@@ -32,6 +32,7 @@ public:
 class Script : public Instance {
 public:
 	Script() { name = "Script"; }
+	std::string content;
 };
 
 #endif 
