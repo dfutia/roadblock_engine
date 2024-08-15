@@ -17,6 +17,10 @@ public:
         root->name = "Scene";
         auto script = new Script();
         script->setParent(root.get());
+        auto script2 = new Script();
+        script2->setParent(root.get());
+        auto script3 = new Script();
+        script3->setParent(root.get());
     }
 
     void render() override {
@@ -24,13 +28,8 @@ public:
         renderTree(root.get());
         ImGui::End();
     }
-
-    void setScriptClickCallback(std::function<void(Instance*)> callback) {
-        scriptClickCallback = callback;
-    }
 private:
     std::unique_ptr<Instance> root;
-    std::function<void(Instance*)> scriptClickCallback;
 
     void renderTree(Instance* instance) {
         ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
@@ -41,8 +40,9 @@ private:
         bool opened = ImGui::TreeNodeEx(instance->name.c_str(), flags);
 
         if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
-            if (instance->name == "Script" && scriptClickCallback) {
-                scriptClickCallback(instance);
+            if (instance->name == "Script") {
+                Script* script = dynamic_cast<Script*>(instance);
+                EngineEvents::OpenScriptEvent.Fire(*script);
             }
         }
 

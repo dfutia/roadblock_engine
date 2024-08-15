@@ -8,68 +8,44 @@
 #include <imgui.h>
 #include <imguitextedit/TextEditor.h>
 
+#include <sstream>
 #include <string>
-#include <unordered_map>
 
 class ScriptEditor : public EditorPanel {
 public:
-    ScriptEditor() {
-        m_editor.SetLanguageDefinition(TextEditor::LanguageDefinition::Lua());
-        m_editor.SetPalette(TextEditor::GetDarkPalette());
+    ScriptEditor(Script& script) : m_script(script) {
+        m_editor.SetLanguageDefinition(::TextEditor::LanguageDefinition::Lua());
+        m_editor.SetText(m_script.content);
+
+        std::stringstream ss;
+        ss << "Script Editor - " << m_script.name << " ##" << reinterpret_cast<uintptr_t>(&m_script);
+        m_panelName = ss.str();
     }
 
     void render() override {
-        ImGui::Begin("Script Editor");
+        ImGui::Begin(m_panelName.c_str());
 
-        if (m_currentScript) {
-            if (ImGui::Button("Save")) {
-                saveScript();
-            }
-            ImGui::SameLine();
-            if (ImGui::Button("Close")) {
-                closeScript();
-            }
+        float oldScale = ImGui::GetFont()->Scale;
+        ImGui::GetFont()->Scale = 1.5f; 
+        ImGui::PushFont(ImGui::GetFont());
 
-            m_editor.Render("TextEditor");
+        m_editor.Render("TextEditor");
+
+        if (ImGui::Button("Save")) {
+            m_script.content = m_editor.GetText();
         }
-        else {
-            ImGui::Text("No script open");
-        }
+
+        ImGui::PopFont();
+        ImGui::GetFont()->Scale = oldScale;
 
         ImGui::End();
     }
 
-    void openScript(Instance* scriptInstance) {
-        if (scriptInstance && scriptInstance->name == "Script") {
-            m_currentScript = scriptInstance;
-
-            auto it = m_scriptContents.find(scriptInstance);
-            if (it != m_scriptContents.end()) {
-                m_editor.SetText(it->second);
-            }
-            else {
-                // If it's a new script, initialize with empty content
-                m_editor.SetText("");
-                m_scriptContents[scriptInstance] = "";
-            }
-        }
-    }
+    Script& getScript() { return m_script; }
 private:
+   std::string m_panelName;
+    Script& m_script;
     TextEditor m_editor;
-    Instance* m_currentScript = nullptr;
-    std::unordered_map<Instance*, std::string> m_scriptContents;
-
-    void saveScript() {
-        if (m_currentScript) {
-            m_scriptContents[m_currentScript] = m_editor.GetText();
-            // Here you would typically save the script to disk or update it in your game engine
-        }
-    }
-
-    void closeScript() {
-        m_currentScript = nullptr;
-        m_editor.SetText("");
-    }
 };
 
 #endif 
