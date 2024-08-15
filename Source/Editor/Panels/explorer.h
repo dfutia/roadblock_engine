@@ -15,11 +15,11 @@ class Explorer : public EditorPanel {
 public:
     Explorer() : root(std::make_unique<Instance>()) {
         root->name = "Scene";
-        auto script = new Script();
+        auto script = new Script("Script");
         script->setParent(root.get());
-        auto script2 = new Script();
+        auto script2 = new Script("Script");
         script2->setParent(root.get());
-        auto script3 = new Script();
+        auto script3 = new Script("Script");
         script3->setParent(root.get());
     }
 

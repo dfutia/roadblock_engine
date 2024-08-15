@@ -15,6 +15,7 @@ class ScriptEditor : public EditorPanel {
 public:
     ScriptEditor(Script& script) : m_script(script) {
         m_editor.SetLanguageDefinition(::TextEditor::LanguageDefinition::Lua());
+        m_script.loadContent();
         m_editor.SetText(m_script.content);
 
         std::stringstream ss;
@@ -33,6 +34,7 @@ public:
 
         if (ImGui::Button("Save")) {
             m_script.content = m_editor.GetText();
+            m_script.saveContent();
         }
 
         ImGui::PopFont();
