@@ -29,4 +29,9 @@ public:
 	Part() { name = "Part"; }
 };
 
+class Script : public Instance {
+public:
+	Script() { name = "Script"; }
+};
+
 #endif 

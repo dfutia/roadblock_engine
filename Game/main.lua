@@ -9,3 +9,7 @@ part3:SetParent(part2)
 
 print(#model:GetChildren())
 print(#model:GetDescendants())
+
+--print("This is a normal message")
+--warn("This is a warning message")
+--error("This is an error message")
