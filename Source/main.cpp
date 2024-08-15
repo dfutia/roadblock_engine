@@ -1,9 +1,9 @@
 #define _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
 #define _CRT_SECURE_NO_WARNINGS
 
-#include "graphicscontext.h"
+#include "Graphic/graphicscontext.h"
 #include "Editor/editor.h"
-#include "luaenvironment.h"
+#include "Script/luaenvironment.h"
 
 #include <spdlog/spdlog.h>
 #include <imgui_impl_sdl2.h>

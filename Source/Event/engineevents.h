@@ -3,7 +3,7 @@
 #define ENGINE_EVENTS_H
 
 #include "Event/event.h"
-#include "instance.h"
+#include "Common/script.h"
 
 #include <string>
 

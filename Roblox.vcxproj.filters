@@ -24,13 +24,13 @@
     <ClCompile Include="Compile\stb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\instance.cpp">
+    <ClCompile Include="Source\Common\instance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\luaenvironment.cpp">
+    <ClCompile Include="Source\Script\luaenvironment.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\graphicscontext.cpp">
+    <ClCompile Include="Source\Graphic\graphicscontext.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Editor\editor.cpp">
@@ -65,16 +65,16 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\instance.h">
+    <ClInclude Include="Source\Common\instance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\luaenvironment.h">
+    <ClInclude Include="Source\Script\luaenvironment.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Event\event.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\graphicscontext.h">
+    <ClInclude Include="Source\Graphic\graphicscontext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Editor\editorpanel.h">
@@ -132,6 +132,15 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Editor\Panels\scripteditor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\model.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\part.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Common\script.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,25 +7,6 @@
 #include <memory>
 #include <mutex>
 
-/*
-void onEvent(int number, std::string text) {
-	std::cout << "Listener 1: " << number << ", " << text << std::endl;
-}
-
-Event<int, std::string> myEvent;
-
-auto myListener = myEvent.Connect(onEvent);
-
-auto myOtherListener = myEvent.Connect([](int num, const std::string& str) {
-	std::cout << "Listener 2: " << num << ", " << str << std::endl;
-});
-
-myEvent.Fire(21, "Dominic");
-
-myListener.Disconnect();
-myOtherListener.Disconnect();
-*/
-
 template<typename... Args>
 class Event {
 private:
@@ -87,5 +68,24 @@ public:
 		}
 	}
 };
+
+/*
+void onEvent(int number, std::string text) {
+	std::cout << "Listener 1: " << number << ", " << text << std::endl;
+}
+
+Event<int, std::string> myEvent;
+
+auto myListener = myEvent.Connect(onEvent);
+
+auto myOtherListener = myEvent.Connect([](int num, const std::string& str) {
+	std::cout << "Listener 2: " << num << ", " << str << std::endl;
+});
+
+myEvent.Fire(21, "Dominic");
+
+myListener.Disconnect();
+myOtherListener.Disconnect();
+*/
 
 #endif 
