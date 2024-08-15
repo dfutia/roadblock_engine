@@ -3,7 +3,8 @@
 #define EXPLORER_H
 
 #include "Editor/editorpanel.h"
-#include "instance.h"
+#include "Common/instance.h"
+#include "Common/script.h"
 
 #include <imgui.h>
 

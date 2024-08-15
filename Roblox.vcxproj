@@ -23,9 +23,9 @@
     <ClCompile Include="Compile\stb.cpp" />
     <ClCompile Include="Source\Editor\editor.cpp" />
     <ClCompile Include="Source\Event\engineevents.cpp" />
-    <ClCompile Include="Source\graphicscontext.cpp" />
-    <ClCompile Include="Source\instance.cpp" />
-    <ClCompile Include="Source\luaenvironment.cpp" />
+    <ClCompile Include="Source\Graphic\graphicscontext.cpp" />
+    <ClCompile Include="Source\Common\instance.cpp" />
+    <ClCompile Include="Source\Script\luaenvironment.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="ThirdParty\imguitextedit\TextEditor.cpp" />
     <ClCompile Include="ThirdParty\imgui\imgui.cpp" />
@@ -37,6 +37,9 @@
     <ClCompile Include="ThirdParty\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Common\model.h" />
+    <ClInclude Include="Source\Common\part.h" />
+    <ClInclude Include="Source\Common\script.h" />
     <ClInclude Include="Source\Editor\editor.h" />
     <ClInclude Include="Source\Editor\editorpanel.h" />
     <ClInclude Include="Source\Editor\Panels\console.h" />
@@ -47,9 +50,9 @@
     <ClInclude Include="Source\Editor\Panels\viewport.h" />
     <ClInclude Include="Source\Event\engineevents.h" />
     <ClInclude Include="Source\Event\event.h" />
-    <ClInclude Include="Source\graphicscontext.h" />
-    <ClInclude Include="Source\instance.h" />
-    <ClInclude Include="Source\luaenvironment.h" />
+    <ClInclude Include="Source\Graphic\graphicscontext.h" />
+    <ClInclude Include="Source\Common\instance.h" />
+    <ClInclude Include="Source\Script\luaenvironment.h" />
     <ClInclude Include="ThirdParty\imguitextedit\TextEditor.h" />
     <ClInclude Include="ThirdParty\imgui\imconfig.h" />
     <ClInclude Include="ThirdParty\imgui\imgui.h" />

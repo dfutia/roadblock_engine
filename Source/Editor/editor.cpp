@@ -6,8 +6,8 @@
 #include "Editor/Panels/viewport.h"
 #include "Editor/Panels/contentbrowser.h"
 #include "Editor/Panels/scripteditor.h"
-#include "graphicscontext.h"
-#include "instance.h"
+#include "Graphic/graphicscontext.h"
+#include "Common/script.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_sdl2.h>
