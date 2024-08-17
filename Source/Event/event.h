@@ -19,6 +19,9 @@ private:
 	std::vector<std::unique_ptr<Connection>> m_connections;
 	mutable std::recursive_mutex mutex;
 public:
+	template<typename... Args>
+	using EventConnection = typename Event<Args...>::ConnectionHandle;
+
 	class ConnectionHandle {
 	private:
 		Event* m_event;
