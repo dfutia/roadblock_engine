@@ -2,6 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "Graphic/graphicscontext.h"
+#include "Graphic/renderer.h"
 #include "Editor/editor.h"
 #include "Script/luaenvironment.h"
 
@@ -17,6 +18,7 @@ int main(int argc, char* argv[]) {
 		return -1;
 	}
 
+	Renderer renderer(1280, 720, graphics);
 	Editor editor(graphics);
 	LuaEnvironment luaEnvironment;
 
@@ -38,12 +40,28 @@ int main(int argc, char* argv[]) {
 			}
 		}
 
-		glClear(GL_COLOR_BUFFER_BIT);
+		// render scene to a framebuffer
+		renderer.setFramebuffer(renderer.getDefaultFramebuffer());
+		renderer.beginFrame();
+		renderer.render();
+		renderer.endFrame();
 
-		editor.render();
+		renderer.renderToScreen();
+
+		//editor.render();
 
 		graphics.swapBuffers();
 	}
 
 	return 0;
 }
+
+// do post-processing
+//renderer.setFramebuffer(&postProcessFramebuffer);
+//renderer.beginFrame();
+// apply post-processing effects here
+//renderer.endFrame();
+
+// render the final result to the screen
+//renderer.setFramebuffer(nullptr);
+//renderer.renderToScreen();
