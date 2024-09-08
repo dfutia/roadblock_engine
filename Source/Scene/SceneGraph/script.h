@@ -2,7 +2,7 @@
 #ifndef SCRIPT_H
 #define SCRIPT_H
 
-#include "Common/instance.h"
+#include "Scene/SceneGraph/instance.h"
 
 #include <iostream>
 #include <string>
@@ -13,10 +13,12 @@ class Script : public Instance {
 public:
 	std::string content;
 	std::string filename;
+	bool enabled;
 
 	Script(const std::string& scriptName) : Instance() {
 		name = scriptName;
 		filename = "Game/" + scriptName + ".lua";
+		enabled = true;
 		createFile();
 	}
 

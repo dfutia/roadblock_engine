@@ -3,23 +3,31 @@
 #define EDITOR_H
 
 #include "Event/event.h"
+#include "Editor/editorcontext.h"
+
+#include <SDL2/SDL.h>
 
 #include <vector>
 #include <memory>
 
 class EditorPanel;
 class GraphicsContext;
+class Renderer;
 class ScriptEditor;
 class Script;
+class Scene;
 
 class Editor {
 public:
-	Editor(GraphicsContext& graphics);
+	Editor(GraphicsContext& graphics, Renderer& renderer);
 	~Editor();
 
+	void update(Scene& scene);
 	void render();
 	void openScriptEditor(Script& script);
+	void onFileDrop(SDL_Event& event);
 private:
+	EditorContext m_editorContext;
 	GraphicsContext& m_graphics;
 	Event<Script&>::ConnectionHandle scriptOpenConnection;
 

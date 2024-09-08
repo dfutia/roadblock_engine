@@ -7,13 +7,15 @@
 #include "Editor/Panels/contentbrowser.h"
 #include "Editor/Panels/scripteditor.h"
 #include "Graphic/graphicscontext.h"
-#include "Common/script.h"
+#include "Graphic/renderer.h"
+#include "Scene/scene.h"
+#include "Scene/SceneGraph/script.h"
 
 #include <imgui/imgui.h>
 #include <imgui/imgui_impl_sdl2.h>
 #include <imgui/imgui_impl_opengl3.h>
 
-Editor::Editor(GraphicsContext& graphics) : m_graphics(graphics){
+Editor::Editor(GraphicsContext& graphics, Renderer& renderer) : m_graphics(graphics){
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
@@ -31,9 +33,9 @@ Editor::Editor(GraphicsContext& graphics) : m_graphics(graphics){
 
 	m_panels.push_back(std::make_unique<Console>());
 	m_panels.push_back(std::make_unique<ContentBrowser>());
-	m_panels.push_back(std::make_unique<Viewport>());
-	m_panels.push_back(std::make_unique<Explorer>());
-	m_panels.push_back(std::make_unique<Properties>());
+	m_panels.push_back(std::make_unique<Viewport>(renderer));
+	m_panels.push_back(std::make_unique<Properties>(m_editorContext));
+	m_panels.push_back(std::make_unique<Explorer>(m_editorContext));
 
 	scriptOpenConnection = EngineEvents::OpenScriptEvent.Connect([this](Script& script) {
 		openScriptEditor(script);
@@ -46,6 +48,26 @@ Editor::~Editor() {
 	ImGui::DestroyContext();
 
 	scriptOpenConnection.Disconnect();
+}
+
+void Editor::update(Scene& scene) {
+	if (m_editorContext.action == EditorAction::ADD_SCRIPT) {
+		std::unique_ptr<Script> script = std::make_unique<Script>("NewScript");
+		script->setParent(m_editorContext.targetInstance);
+		scene.addInstance(std::move(script));
+	}
+	else if (m_editorContext.action == EditorAction::ADD_PART) {
+		std::unique_ptr<Part> part = std::make_unique<Part>();
+		part->setParent(m_editorContext.targetInstance);
+		scene.addInstance(std::move(part));
+	}
+	else if (m_editorContext.action == EditorAction::ADD_MODEL) {
+		std::unique_ptr<Model> model = std::make_unique<Model>();
+		model->setParent(m_editorContext.targetInstance);
+		scene.addInstance(std::move(model));
+	}
+	m_editorContext.action = EditorAction::NONE;
+	m_editorContext.targetInstance = nullptr;
 }
 
 void Editor::render() {
@@ -91,4 +113,24 @@ void Editor::openScriptEditor(Script& script) {
 		// If not open, create a new TextEditor
 		m_scriptEditors.push_back(std::make_unique<ScriptEditor>(script));
 	}
+}
+
+void Editor::onFileDrop(SDL_Event& event) {
+	char* filepath = event.drop.file;
+	std::cout << "file dropped: " << filepath << std::endl;
+
+	std::string filePath(filepath);
+	std::string extension = filePath.substr(filePath.find_last_of(".") + 1);
+
+	if (extension == "png" || extension == "jpg" || extension == "jpeg") {
+		std::cout << "Creating texture object..." << std::endl;
+	}
+	else if (extension == "obj") {
+		std::cout << "Creating mesh object..." << std::endl;
+	}
+	else {
+		std::cout << "Unsupported file type: " << extension << std::endl;
+	}
+
+	SDL_free(filepath);
 }

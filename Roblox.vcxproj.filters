@@ -24,7 +24,7 @@
     <ClCompile Include="Compile\stb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Common\instance.cpp">
+    <ClCompile Include="Source\Scene\SceneGraph\instance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Script\luaenvironment.cpp">
@@ -72,12 +72,15 @@
     <ClCompile Include="Source\Graphic\mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphic\shader.cpp">
+    <ClCompile Include="Source\Graphic\camera.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\Scene\scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Common\instance.h">
+    <ClInclude Include="Source\Scene\SceneGraph\instance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Script\luaenvironment.h">
@@ -146,16 +149,16 @@
     <ClInclude Include="Source\Editor\Panels\scripteditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\model.h">
+    <ClInclude Include="Source\Scene\SceneGraph\model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\part.h">
+    <ClInclude Include="Source\Scene\SceneGraph\part.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\script.h">
+    <ClInclude Include="Source\Scene\SceneGraph\script.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Common\serializable.h">
+    <ClInclude Include="Source\Scene\serializable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Graphic\renderer.h">
@@ -170,10 +173,34 @@
     <ClInclude Include="Source\Graphic\shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Graphic\camera.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\keyboard.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\mouse.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Input\inputobject.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\editorcontext.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Graphic\texture.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Scene\scene.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\main.lua" />
     <None Include="Asset\Shaders\basic.vert" />
     <None Include="Asset\Shaders\basic.frag" />
+    <None Include="Game\config.lua" />
+    <None Include="Asset\Shaders\texture.vert" />
+    <None Include="Asset\Shaders\texture.frag" />
   </ItemGroup>
 </Project>

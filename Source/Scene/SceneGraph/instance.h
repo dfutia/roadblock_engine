@@ -2,12 +2,14 @@
 #ifndef INSTANCE_H
 #define INSTANCE_H
 
-#include "Common/serializable.h"
+#include "Scene/serializable.h"
+
+#include <sol/sol.hpp>
 
 #include <string>
 #include <vector>
 
-class Instance : Serializable {
+class Instance {
 public:
 	std::string name;
 	Instance* parent;
@@ -17,8 +19,10 @@ public:
 
 	virtual void setParent(Instance* parent);
 
-	void serialize(std::ostream& out) const override {}
-	void deserialize(std::istream& in) override {}
+	//void serialize(std::ostream& out) const override {}
+	//void deserialize(std::istream& in) override {}
+
+	static void createBindings(sol::state& lua);
 
 	std::vector<Instance*> getChildren();
 	std::vector<Instance*> getDescendants();

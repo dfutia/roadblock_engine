@@ -1,4 +1,6 @@
-#include "Common/instance.h"
+#include "Scene/SceneGraph/instance.h"
+#include "Scene/SceneGraph/model.h"
+#include "Scene/SceneGraph/part.h"
 
 Instance::~Instance() {}
 
@@ -27,4 +29,13 @@ std::vector<Instance*> Instance::getDescendants() {
         descendants.insert(descendants.end(), childDescendants.begin(), childDescendants.end());
     }
     return descendants;
+}
+
+void Instance::createBindings(sol::state& lua) {
+    lua.new_usertype<Instance>("Instance",
+        "new", sol::no_constructor,
+        "SetParent", &Instance::setParent,
+        "GetChildren", &Instance::getChildren,
+        "GetDescendants", &Instance::getDescendants
+    );
 }

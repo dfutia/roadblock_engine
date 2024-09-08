@@ -3,7 +3,7 @@
 #define ENGINE_EVENTS_H
 
 #include "Event/event.h"
-#include "Common/script.h"
+#include "Scene/SceneGraph/script.h"
 
 #include <string>
 
@@ -14,7 +14,7 @@ enum class LuaMessageType {
 };
 
 namespace EngineEvents {
-    extern  Event<const std::string&, LuaMessageType> LuaMessageEvent;
+    extern Event<const std::string&, LuaMessageType> LuaMessageEvent;
     extern Event<Script&> OpenScriptEvent;
 }
 

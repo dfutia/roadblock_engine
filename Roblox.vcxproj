@@ -23,12 +23,13 @@
     <ClCompile Include="Compile\stb.cpp" />
     <ClCompile Include="Source\Editor\editor.cpp" />
     <ClCompile Include="Source\Event\engineevents.cpp" />
+    <ClCompile Include="Source\Graphic\camera.cpp" />
     <ClCompile Include="Source\Graphic\framebuffer.cpp" />
     <ClCompile Include="Source\Graphic\graphicscontext.cpp" />
-    <ClCompile Include="Source\Common\instance.cpp" />
+    <ClCompile Include="Source\Scene\SceneGraph\instance.cpp" />
     <ClCompile Include="Source\Graphic\mesh.cpp" />
     <ClCompile Include="Source\Graphic\renderer.cpp" />
-    <ClCompile Include="Source\Graphic\shader.cpp" />
+    <ClCompile Include="Source\Scene\scene.cpp" />
     <ClCompile Include="Source\Script\luaenvironment.cpp" />
     <ClCompile Include="Source\main.cpp" />
     <ClCompile Include="ThirdParty\imguitextedit\TextEditor.cpp" />
@@ -41,11 +42,12 @@
     <ClCompile Include="ThirdParty\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Common\model.h" />
-    <ClInclude Include="Source\Common\part.h" />
-    <ClInclude Include="Source\Common\script.h" />
-    <ClInclude Include="Source\Common\serializable.h" />
+    <ClInclude Include="Source\Scene\SceneGraph\model.h" />
+    <ClInclude Include="Source\Scene\SceneGraph\part.h" />
+    <ClInclude Include="Source\Scene\SceneGraph\script.h" />
+    <ClInclude Include="Source\Scene\serializable.h" />
     <ClInclude Include="Source\Editor\editor.h" />
+    <ClInclude Include="Source\Editor\editorcontext.h" />
     <ClInclude Include="Source\Editor\editorpanel.h" />
     <ClInclude Include="Source\Editor\Panels\console.h" />
     <ClInclude Include="Source\Editor\Panels\contentbrowser.h" />
@@ -55,12 +57,18 @@
     <ClInclude Include="Source\Editor\Panels\viewport.h" />
     <ClInclude Include="Source\Event\engineevents.h" />
     <ClInclude Include="Source\Event\event.h" />
+    <ClInclude Include="Source\Graphic\camera.h" />
     <ClInclude Include="Source\Graphic\framebuffer.h" />
     <ClInclude Include="Source\Graphic\graphicscontext.h" />
-    <ClInclude Include="Source\Common\instance.h" />
+    <ClInclude Include="Source\Scene\SceneGraph\instance.h" />
     <ClInclude Include="Source\Graphic\mesh.h" />
     <ClInclude Include="Source\Graphic\renderer.h" />
+    <ClInclude Include="Source\Scene\scene.h" />
     <ClInclude Include="Source\Graphic\shader.h" />
+    <ClInclude Include="Source\Graphic\texture.h" />
+    <ClInclude Include="Source\Input\inputobject.h" />
+    <ClInclude Include="Source\Input\keyboard.h" />
+    <ClInclude Include="Source\Input\mouse.h" />
     <ClInclude Include="Source\Script\luaenvironment.h" />
     <ClInclude Include="ThirdParty\imguitextedit\TextEditor.h" />
     <ClInclude Include="ThirdParty\imgui\imconfig.h" />
@@ -76,6 +84,9 @@
   <ItemGroup>
     <None Include="Asset\Shaders\basic.frag" />
     <None Include="Asset\Shaders\basic.vert" />
+    <None Include="Asset\Shaders\texture.frag" />
+    <None Include="Asset\Shaders\texture.vert" />
+    <None Include="Game\config.lua" />
     <None Include="Game\main.lua" />
   </ItemGroup>
   <PropertyGroup Label="Globals">

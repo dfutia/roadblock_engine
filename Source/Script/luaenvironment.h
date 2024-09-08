@@ -11,12 +11,23 @@ extern "C" {
 #include "lualib.h"
 }
 
+class Keyboard;
+class Mouse;
+
 class LuaEnvironment {
 public:
-	LuaEnvironment();
+	LuaEnvironment(Keyboard& kb, Mouse& mouse);
+	~LuaEnvironment();
+
+	sol::state& getState() { return lua; }
 private:
+	Keyboard& keyboard;
+	Mouse& mouse;
 	sol::state lua;
-	void doBindings();
+
+	void registerLua();
+	void registerInput();
 };
+
 
 #endif 

@@ -5,45 +5,50 @@
 #include <glad/glad.h>
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
+
 #include <string>
 #include <fstream>
 #include <sstream>
 #include <iostream>
-
-extern const char* vertexShaderSource;
-extern const char* fragmentShaderSource;
+#include <filesystem>
+#include <chrono>
 
 class Shader {
 public:
     unsigned int ID;
+    std::string vertexPath;
+    std::string fragmentPath;
+    std::filesystem::file_time_type lastVertexModTime;
+    std::filesystem::file_time_type lastFragmentModTime;
 
-    Shader(const char* vertexCode, const char* fragmentCode) {
-        unsigned int vertex, fragment;
+    Shader(const std::string& vertexPath, const std::string& fragmentPath) : vertexPath(vertexPath), fragmentPath(fragmentPath) {
+        std::cout << "loading shader from file" << std::endl;
+        std::string vertexCode = loadShader(vertexPath);
+        std::string fragmentCode = loadShader(fragmentPath);
+        createShaderProgram(vertexCode, fragmentCode);
+        lastVertexModTime = std::filesystem::last_write_time(vertexPath);
+        lastFragmentModTime = std::filesystem::last_write_time(fragmentPath);
+    }
 
-        // Vertex Shader
-        vertex = glCreateShader(GL_VERTEX_SHADER);
-        glShaderSource(vertex, 1, &vertexCode, NULL);
-        glCompileShader(vertex);
-        checkCompileErrors(vertex, "VERTEX");
-
-        // Fragment Shader
-        fragment = glCreateShader(GL_FRAGMENT_SHADER);
-        glShaderSource(fragment, 1, &fragmentCode, NULL);
-        glCompileShader(fragment);
-        checkCompileErrors(fragment, "FRAGMENT");
-
-        // Shader Program
-        ID = glCreateProgram();
-        glAttachShader(ID, vertex);
-        glAttachShader(ID, fragment);
-        glLinkProgram(ID);
-        checkCompileErrors(ID, "PROGRAM");
-
-        glDeleteShader(vertex);
-        glDeleteShader(fragment);
+    Shader(const char* vertexCode, const char* fragmentCode, bool isSource) {
+        std::cout << "loading shader from memory" << std::endl;
+        createShaderProgram(vertexCode, fragmentCode);
     }
 
     void use() {
+        auto currentVertexModTime = std::filesystem::last_write_time(vertexPath);
+        auto currentFragmentModTime = std::filesystem::last_write_time(fragmentPath);
+        bool changes = currentVertexModTime != lastVertexModTime || currentFragmentModTime != lastFragmentModTime;
+        if (changes) {
+            std::cout << "hot reloading shader" << std::endl;
+            glDeleteProgram(ID);
+            std::string vertexCode = loadShader(vertexPath);
+            std::string fragmentCode = loadShader(fragmentPath);
+            createShaderProgram(vertexCode, fragmentCode);
+            lastVertexModTime = std::filesystem::last_write_time(vertexPath);
+            lastFragmentModTime = std::filesystem::last_write_time(fragmentPath);
+        }
+
         glUseProgram(ID);
     }
 
@@ -64,6 +69,41 @@ public:
     }
 
 private:
+    void createShaderProgram(const std::string& vertexCode, const std::string& fragmentCode) {
+        // compile vertex shader
+        unsigned int vertex;
+        const char* vertexSource = vertexCode.c_str();
+        vertex = glCreateShader(GL_VERTEX_SHADER);
+        glShaderSource(vertex, 1, &vertexSource, NULL);
+        glCompileShader(vertex);
+        checkCompileErrors(vertex, "VERTEX");
+
+        // compile fragment shader
+        unsigned int fragment;
+        const char* fragmentSource = fragmentCode.c_str();
+        fragment = glCreateShader(GL_FRAGMENT_SHADER);
+        glShaderSource(fragment, 1, &fragmentSource, NULL);
+        glCompileShader(fragment);
+        checkCompileErrors(fragment, "FRAGMENT");
+
+        // create shader program
+        ID = glCreateProgram();
+        glAttachShader(ID, vertex);
+        glAttachShader(ID, fragment);
+        glLinkProgram(ID);
+        checkCompileErrors(ID, "PROGRAM");
+
+        glDeleteShader(vertex);
+        glDeleteShader(fragment);
+    }
+
+    std::string loadShader(const std::string& path) {
+        std::ifstream file(path);
+        std::stringstream buffer;
+        buffer << file.rdbuf();
+        return buffer.str();
+    }
+
     void checkCompileErrors(unsigned int shader, std::string type) {
         int success;
         char infoLog[1024];

@@ -5,81 +5,83 @@
 #include <functional>
 #include <vector>
 #include <memory>
-#include <mutex>
 
-template<typename... Args>
+template<typename... TArgs>
 class Event {
 private:
-	struct Connection {
-		std::function<void(Args...)> m_callback;
-		bool m_connected;
+    struct Connection {
+        std::function<void(TArgs...)> m_callback;
+        bool m_connected;
+        Connection(std::function<void(TArgs...)> callback) : m_callback(std::move(callback)), m_connected(true) {}
+    };
 
-		Connection(std::function<void(Args...)> callback) : m_callback(std::move(callback)), m_connected(true) {}
-	};
-	std::vector<std::unique_ptr<Connection>> m_connections;
-	mutable std::recursive_mutex mutex;
+    std::vector<std::weak_ptr<Connection>> m_connections;
 public:
-	template<typename... Args>
-	using EventConnection = typename Event<Args...>::ConnectionHandle;
+    class ConnectionHandle {
+    private:
+        std::shared_ptr<Connection> m_connection;
+    public:
+        ConnectionHandle() = default;
 
-	class ConnectionHandle {
-	private:
-		Event* m_event;
-		typename std::vector<std::unique_ptr<Connection>>::iterator it;
-	public:
-		ConnectionHandle() : m_event(nullptr) {}
+        explicit ConnectionHandle(std::shared_ptr<Connection> connection) : m_connection(std::move(connection)) {}
 
-		ConnectionHandle(Event* event, typename std::vector<std::unique_ptr<Connection>>::iterator it)
-			: m_event(event), it(it) {}
+        void Disconnect() {
+            if (m_connection) {
+                m_connection->m_connected = false;
+                m_connection.reset();
+            }
+        }
+    };
 
-		void Disconnect() {
-			if (m_event) {
-				std::lock_guard<std::recursive_mutex> lock(m_event->mutex);
-				(*it)->m_connected = false;
-				m_event = nullptr;
-			}
-		}
+    ConnectionHandle Connect(std::function<void(TArgs...)> callback) {
+        auto connection = std::make_shared<Connection>(std::move(callback));
+        m_connections.push_back(connection);
+        return ConnectionHandle(connection);
+    }
 
-		ConnectionHandle& operator=(const ConnectionHandle& other) {
-			m_event = other.m_event;
-			it = other.it;
-			return *this;
-		}
-	};
+    void Fire(TArgs... args) {
+        m_connections.erase(
+            std::remove_if(m_connections.begin(), m_connections.end(),
+                [&](const std::weak_ptr<Connection>& weak_conn) {
+                    if (auto conn = weak_conn.lock()) {
+                        if (conn->m_connected) {
+                            try {
+                                conn->m_callback(args...);
+                            }
+                            catch (...) {
+                                // Handle or rethrow exception
+                            }
+                            return false;
+                        }
+                    }
+                    return true;
+                }
+            ),
+            m_connections.end()
+        );
+    }
 
-	ConnectionHandle Connect(std::function<void(Args...)> callback) {
-		std::lock_guard<std::recursive_mutex> lock(mutex);
-		m_connections.push_back(std::make_unique<Connection>(std::move(callback)));
-		return ConnectionHandle(this, std::prev(m_connections.end()));
-	}
-
-	void Fire(Args... args) {
-		std::lock_guard<std::recursive_mutex> lock(mutex);
-		for (auto it = m_connections.begin(); it != m_connections.end();) {
-			if ((*it)->m_connected) {
-				try {
-					(*it)->m_callback(args...);
-				}
-				catch (...) {
-					// Handle or rethrow exception
-				}
-				++it;
-			}
-			else {
-				it = m_connections.erase(it);
-			}
-		}
-	}
+    ~Event() {
+        for (auto& weak_conn : m_connections) {
+            if (auto conn = weak_conn.lock()) {
+                conn->m_connected = false;
+            }
+        }
+        m_connections.clear();
+    }
 };
-
 /*
 void onEvent(int number, std::string text) {
 	std::cout << "Listener 1: " << number << ", " << text << std::endl;
 }
 
+// Creating event
 Event<int, std::string> myEvent;
 
+// Connecting to event
 auto myListener = myEvent.Connect(onEvent);
+
+Event<int, std::string>::ConnectionHandle myListener.Connect(onEvent);
 
 auto myOtherListener = myEvent.Connect([](int num, const std::string& str) {
 	std::cout << "Listener 2: " << num << ", " << str << std::endl;
