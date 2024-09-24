@@ -7,11 +7,16 @@
 
 Scene::Scene(Keyboard& keyboard, Mouse& mouse) : 
 	keyboard(keyboard), mouse(mouse),
-	shader(std::make_unique<Shader>("Asset/Shaders/basic.vert", "Asset/Shaders/basic.frag")),
+	sceneShader(std::make_unique<Shader>("Asset/Shaders/basic.vert", "Asset/Shaders/basic.frag")),
 	camera(std::make_unique<Camera>())
 {}
 
 void Scene::update(double deltaTime) {
+	glm::ivec2 delta = mouse.getDelta();
+	if (mouse.isButtonDown(SDL_BUTTON_RIGHT)) { 
+		camera->processMouseMovement(static_cast<float>(delta.x), static_cast<float>(delta.y));
+	}
+
 	if (keyboard.isKeyDown(SDLK_w)) {
 		camera->processKeyboard(FORWARD, deltaTime);
 	}

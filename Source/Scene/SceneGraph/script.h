@@ -15,7 +15,7 @@ public:
 	std::string filename;
 	bool enabled;
 
-	Script(const std::string& scriptName) : Instance() {
+	Script(const std::string& scriptName = "Script") : Instance() {
 		name = scriptName;
 		filename = "Game/" + scriptName + ".lua";
 		enabled = true;

@@ -4,33 +4,67 @@
 
 #include "Script/luaenvironment.h"
 
+#include <SDL2/sdl.h>
 #include <glm.hpp>
 
 #include <unordered_map>
 
 class Mouse {
 public:
-	static void registerLua(sol::state& lua) {
-		lua.new_usertype<Mouse>(
-			"Mouse",
-			"isButtonDown", &Mouse::isButtonDown,
-			"isButtonDown", &Mouse::isButtonPressed,
-			"isButtonDown", &Mouse::isButtonReleased,
-			"isButtonDown", &Mouse::getPosition,
-			"isButtonDown", &Mouse::getDelta
-		);
+	glm::ivec2 getPosition() const { return position; }
+	glm::ivec2 getDelta() const { return delta; }
+
+	bool isButtonDown(int button) const {
+		auto it = buttonsDown.find(button);
+		return it != buttonsDown.end() && it->second;
 	}
 
-	void update() {}
+	bool isButtonPressed(int button) const {
+		auto it = buttonsPressed.find(button);
+		return it != buttonsPressed.end() && it->second;
+	}
 
-	glm::ivec2 getPosition() { return { 0,0 }; }
-	glm::ivec2 getDelta() { return { 0,0 }; }
-	bool isButtonDown() { return false; }
-	bool isButtonPressed() { return false; }
-	bool isButtonReleased() { return false; }
+	bool isButtonReleased(int button) const {
+		auto it = buttonsReleased.find(button);
+		return it != buttonsReleased.end() && it->second;
+	}
+
+	void onMouseButtonDown(SDL_Event& event) {
+		buttonsDown[event.button.button] = true;
+		buttonsPressed[event.button.button] = true;
+	}
+
+	void onMouseButtonUp(SDL_Event& event) {
+		buttonsDown[event.button.button] = false;
+		buttonsReleased[event.button.button] = true;
+	}
+
+	void onMouseMotion(SDL_Event& event) {
+		delta.x = event.motion.xrel;
+		delta.y = event.motion.yrel;
+		position.x = event.motion.x;
+		position.y = event.motion.y;
+	}
+
+	void onMouseWheel(SDL_Event& event) {
+		wheelDelta.x = event.wheel.x;
+		wheelDelta.y = event.wheel.y;
+	}
+
+	void reset() {
+		buttonsPressed.clear();
+		buttonsReleased.clear();
+		delta = { 0, 0 };
+		wheelDelta = { 0, 0 };
+	}
 private:
-	std::unordered_map<int, bool> m_currentButtonStates;
-	std::unordered_map<int, bool> m_previousButtonStates;
+	glm::ivec2 position = { 0, 0 }; 
+	glm::ivec2 delta = { 0, 0 };  
+	glm::ivec2 wheelDelta = { 0, 0 };  
+
+	std::unordered_map<int, bool> buttonsDown;
+	std::unordered_map<int, bool> buttonsPressed;
+	std::unordered_map<int, bool> buttonsReleased;
 };
 
 

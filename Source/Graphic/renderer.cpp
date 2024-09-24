@@ -27,25 +27,67 @@ void Renderer::endFrame() {
 }
 
 void Renderer::render(Scene& scene) {
-	Shader* shader = scene.getShader();
+	Shader* shader = scene.getSceneShader();
 	Camera* camera = scene.getCamera();
+	glm::mat4 view = camera->getViewMatrix();
+	glm::mat4 projection = camera->getProjectionMatrix();
 
 	shader->use();
 
-	glm::mat4 model = glm::mat4(1.0f);
-	shader->setMat4("model", model);
-	shader->setMat4("view", camera->getViewMatrix());
-	shader->setMat4("projection", camera->getProjectionMatrix());
+	//glm::mat4 model = glm::mat4(1.0f);
+	//shader->setMat4("model", model);
+	shader->setMat4("view", view);
+	shader->setMat4("projection", projection);
 
 	for (auto& instance : scene.getInstances()) {
+		shader->setMat4("model", instance->transform);
+
 		Part* part = dynamic_cast<Part*>(instance.get());
 		if (part) {
+			shader->setVec4("color", part->getColor());
+
+			//glActiveTexture(GL_TEXTURE0); // activate the texture unit
+			//glBindTexture(GL_TEXTURE_2D, texture->id); // bind the texture to the active unit
+			//shader.setInt("texture1", 0); // tell shader which unit the texture is at
+
 			Mesh& mesh = part->getMesh();
 			glBindVertexArray(mesh.vao);
 			glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
 		}
 	}
+
+	static Shader skyboxShader("Asset/Shaders/skybox.vert", "Asset/Shaders/skybox.frag");
+	static std::array<std::string, 6> texturePaths = {
+		"Asset/Textures/skybox/right.jpg",
+		"Asset/Textures/skybox/left.jpg",
+		"Asset/Textures/skybox/top.jpg",
+		"Asset/Textures/skybox/bottom.jpg",
+		"Asset/Textures/skybox/front.jpg",
+		"Asset/Textures/skybox/back.jpg"
+	};
+	static auto texture = loadCubemap("skybox", texturePaths);
+	static auto cube = createCubeMesh(1.0f);
+
+	glDepthFunc(GL_LEQUAL);
+	skyboxShader.use();
+
+	glm::mat4 skyboxView = glm::mat4(glm::mat3(view));
+
+	skyboxShader.setMat4("view", skyboxView);
+	skyboxShader.setMat4("projection", projection);
+
+	// texture
+	glActiveTexture(GL_TEXTURE0);
+	glBindTexture(GL_TEXTURE_CUBE_MAP, gTextureStore.textures["skybox"]->id);
+	skyboxShader.setInt("skybox", 0);
+
+	// mesh
+	glBindVertexArray(cube.vao);
+	glDrawElements(GL_TRIANGLES, cube.indices.size(), GL_UNSIGNED_INT, 0);
+	glBindVertexArray(0);
+
+	glDepthFunc(GL_LESS);
 }
 
 GLuint Renderer::getRenderedTextureID() const {

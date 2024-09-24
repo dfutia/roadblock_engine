@@ -78,6 +78,12 @@
     <ClCompile Include="Source\Scene\scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Graphic\texture.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Source\filesystem.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Scene\SceneGraph\instance.h">
@@ -194,6 +200,15 @@
     <ClInclude Include="Source\Scene\scene.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Editor\Panels\camerasettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Editor\Panels\skyboxsettings.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\filesystem.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\main.lua" />
@@ -202,5 +217,10 @@
     <None Include="Game\config.lua" />
     <None Include="Asset\Shaders\texture.vert" />
     <None Include="Asset\Shaders\texture.frag" />
+    <None Include="Asset\Shaders\skybox.frag" />
+    <None Include="Asset\Shaders\skybox.vert" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Source\test.txt" />
   </ItemGroup>
 </Project>

@@ -21,6 +21,8 @@ else
 end
 ]]
 
+print("Hello World")
+
 local connection1 = Input.Keyboard.inputBegan:Connect(function(inputObject)
     print("input began")
 end)

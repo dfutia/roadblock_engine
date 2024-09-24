@@ -13,7 +13,10 @@
 
 class ScriptEditor : public EditorPanel {
 public:
-    ScriptEditor(Script& script) : m_script(script) {
+    ScriptEditor(Script& script) : 
+        EditorPanel(true, "Script Editor"),
+        m_script(script) 
+    {
         m_editor.SetLanguageDefinition(::TextEditor::LanguageDefinition::Lua());
         m_script.loadContent();
         m_editor.SetText(m_script.content);

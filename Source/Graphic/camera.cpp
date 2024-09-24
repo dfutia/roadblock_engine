@@ -20,10 +20,24 @@ void Camera::processKeyboard(CameraMovement direction, double deltaTime) {
         m_position += m_right * velocity;
 }
 
-//void Camera::processMouseMovement()
-//{
-//}
-//
+void Camera::processMouseMovement(float xOffset, float yOffset, bool constrainPitch) {
+    xOffset *= m_mouseSensitivity;
+    yOffset *= m_mouseSensitivity;
+
+    m_yaw += xOffset;
+    m_pitch -= yOffset;
+
+    if (constrainPitch)
+    {
+        if (m_pitch > 89.0f)
+            m_pitch = 89.0f;
+        if (m_pitch < -89.0f)
+            m_pitch = -89.0f;
+    }
+
+    updateCameraVectors();
+}
+
 //void Camera::processMouseScroll()
 //{
 //}

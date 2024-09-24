@@ -16,13 +16,16 @@ enum CameraMovement {
 
 class Camera {
 public:
+    float m_movementSpeed;
+    float m_mouseSensitivity;
+
     Camera(glm::vec3 position = glm::vec3(0.0f, 0.0f, 5.0f),
         glm::vec3 up = glm::vec3(0.0f, 1.0f, 0.0f),
         float yaw = -90.0f,
         float pitch = 0.0f);
 
 	void processKeyboard(CameraMovement direction, double deltaTime);
-	//void processMouseMovement();
+	void processMouseMovement(float xOffset, float yOffset, bool constrainPitch = true);
 	//void processMouseScroll();
 
 	glm::mat4 getViewMatrix();
@@ -37,8 +40,8 @@ private:
     float m_yaw;
     float m_pitch;
 
-    float m_movementSpeed;
-    float m_mouseSensitivity;
+    //float m_movementSpeed;
+    //float m_mouseSensitivity;
     float m_zoom;
 
     void updateCameraVectors();

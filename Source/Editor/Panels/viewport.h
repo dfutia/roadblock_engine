@@ -9,7 +9,9 @@
 
 class Viewport : public EditorPanel {
 public:
-    Viewport(Renderer& renderer) : m_renderer(renderer) {}
+    Viewport(Renderer& renderer) : 
+        EditorPanel(true, "Viewport"),
+        m_renderer(renderer) {}
 
     void render() override {
         ImGui::Begin("Viewport");

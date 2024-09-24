@@ -1,2 +1,0 @@
--- NewScript script
-

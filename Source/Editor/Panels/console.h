@@ -23,7 +23,7 @@ struct ConsoleMessage {
 
 class Console : public EditorPanel {
 public:
-    Console() {
+    Console() : EditorPanel(true, "Console") {
         luaMessageConnection = EngineEvents::LuaMessageEvent.Connect([this](const std::string& message, LuaMessageType type) {
             addMessage(message, type);
         });
@@ -34,7 +34,7 @@ public:
     }
 
     void render() override {
-        ImGui::Begin("Console");
+        ImGui::Begin("Console", &m_open);
 
         // Add a clear button
         if (ImGui::Button("Clear")) {

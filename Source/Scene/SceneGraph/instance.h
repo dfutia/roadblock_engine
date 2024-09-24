@@ -2,9 +2,8 @@
 #ifndef INSTANCE_H
 #define INSTANCE_H
 
-#include "Scene/serializable.h"
-
 #include <sol/sol.hpp>
+#include <glm/mat4x4.hpp>
 
 #include <string>
 #include <vector>
@@ -14,18 +13,16 @@ public:
 	std::string name;
 	Instance* parent;
 	std::vector<Instance*> children;
-
-	virtual ~Instance();
-
-	virtual void setParent(Instance* parent);
-
-	//void serialize(std::ostream& out) const override {}
-	//void deserialize(std::istream& in) override {}
+	glm::mat4 transform;
 
 	static void createBindings(sol::state& lua);
 
+	virtual ~Instance();
+
+	void setParent(Instance* parent);
 	std::vector<Instance*> getChildren();
 	std::vector<Instance*> getDescendants();
+	glm::mat4 getTransform() { return transform; }
 };
 
 #endif 

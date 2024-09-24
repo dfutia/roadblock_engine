@@ -23,9 +23,11 @@
     <ClCompile Include="Compile\stb.cpp" />
     <ClCompile Include="Source\Editor\editor.cpp" />
     <ClCompile Include="Source\Event\engineevents.cpp" />
+    <ClCompile Include="Source\filesystem.cpp" />
     <ClCompile Include="Source\Graphic\camera.cpp" />
     <ClCompile Include="Source\Graphic\framebuffer.cpp" />
     <ClCompile Include="Source\Graphic\graphicscontext.cpp" />
+    <ClCompile Include="Source\Graphic\texture.cpp" />
     <ClCompile Include="Source\Scene\SceneGraph\instance.cpp" />
     <ClCompile Include="Source\Graphic\mesh.cpp" />
     <ClCompile Include="Source\Graphic\renderer.cpp" />
@@ -42,6 +44,9 @@
     <ClCompile Include="ThirdParty\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Editor\Panels\camerasettings.h" />
+    <ClInclude Include="Source\Editor\Panels\skyboxsettings.h" />
+    <ClInclude Include="Source\filesystem.h" />
     <ClInclude Include="Source\Scene\SceneGraph\model.h" />
     <ClInclude Include="Source\Scene\SceneGraph\part.h" />
     <ClInclude Include="Source\Scene\SceneGraph\script.h" />
@@ -84,10 +89,15 @@
   <ItemGroup>
     <None Include="Asset\Shaders\basic.frag" />
     <None Include="Asset\Shaders\basic.vert" />
+    <None Include="Asset\Shaders\skybox.frag" />
+    <None Include="Asset\Shaders\skybox.vert" />
     <None Include="Asset\Shaders\texture.frag" />
     <None Include="Asset\Shaders\texture.vert" />
     <None Include="Game\config.lua" />
     <None Include="Game\main.lua" />
+  </ItemGroup>
+  <ItemGroup>
+    <Text Include="Source\test.txt" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

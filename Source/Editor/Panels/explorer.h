@@ -3,6 +3,7 @@
 #define EXPLORER_H
 
 #include "Editor/editorpanel.h"
+#include "Editor/editor.h"
 #include "Editor/editorcontext.h"
 #include "Scene/SceneGraph/instance.h"
 #include "Scene/SceneGraph/model.h"
@@ -17,28 +18,26 @@
 
 class Explorer : public EditorPanel {
 public:
-    Explorer(EditorContext& editorContext) : m_editorContext(editorContext), root(std::make_unique<Instance>()) {
+    Explorer(Editor& editor, EditorContext& editorContext) : 
+        EditorPanel(true, "Explorer"),
+        m_editor(editor), 
+        m_editorContext(editorContext), 
+        root(std::make_unique<Instance>()) 
+    {
         root->name = "Scene";
     }
 
     void render() override {
-        ImGui::Begin("Explorer");
+        ImGui::Begin("Explorer", &m_open);
 
         renderTree(root.get());
 
         ImGui::End();
     }
 private:
+    Editor& m_editor;
     EditorContext& m_editorContext;
     std::unique_ptr<Instance> root;
-
-    //if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
-    //    std::cout << "click" << std::endl;
-    //}
-
-    //if (ImGui::IsItemClicked() && ImGui::IsMouseDoubleClicked(0)) {
-    //    std::cout << "double click" << std::endl;
-    //}
 
     void renderTree(Instance* instance) {
         ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
@@ -78,17 +77,12 @@ private:
 
         std::string popupId = "ContextMenu_" + std::to_string(reinterpret_cast<intptr_t>(instance));
         if (ImGui::BeginPopupContextItem(popupId.c_str())) {
-            if (ImGui::MenuItem("Add Script")) {
-                m_editorContext.action = EditorAction::ADD_SCRIPT;
-                m_editorContext.targetInstance = instance;
-            }
-            if (ImGui::MenuItem("Add Part")) {
-                m_editorContext.action = EditorAction::ADD_PART;
-                m_editorContext.targetInstance = instance;
-            }
-            if (ImGui::MenuItem("Add Model")) {
-                m_editorContext.action = EditorAction::ADD_MODEL;
-                m_editorContext.targetInstance = instance;
+            for (const auto& [typeName, creator] : m_editor.getCreators()) {
+                if (ImGui::MenuItem((typeName).c_str())) {
+                    m_editorContext.action = EditorAction::ADD_INSTANCE;
+                    m_editorContext.targetInstance = instance;
+                    m_editorContext.instanceTypeToAdd = typeName;
+                }
             }
             ImGui::EndPopup();
         }
@@ -112,9 +106,5 @@ private:
         return false;
     }
 };
-
-
-
-
 
 #endif 

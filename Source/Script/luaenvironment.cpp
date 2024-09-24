@@ -17,12 +17,12 @@ LuaEnvironment::LuaEnvironment(Keyboard& kb, Mouse& m) :
 	std::string scriptPath = "./Game/?.lua";
 	lua["package"]["path"] = scriptPath;
 
-	try {
-		lua.script("require('main')");
-	}
-	catch (const sol::error& e) {
-		EngineEvents::LuaMessageEvent.Fire(e.what(), LuaMessageType::Info);
-	}
+	//try {
+	//	lua.script("require('main')");
+	//}
+	//catch (const sol::error& e) {
+	//	EngineEvents::LuaMessageEvent.Fire(e.what(), LuaMessageType::Info);
+	//}
 }
 
 LuaEnvironment::~LuaEnvironment() {

@@ -8,6 +8,7 @@
 #include "Script/luaenvironment.h"
 #include "Input/keyboard.h"
 #include "Input/mouse.h"
+#include "filesystem.h"
 
 #include <spdlog/spdlog.h>
 #include <imgui_impl_sdl2.h>
@@ -39,6 +40,16 @@
 //Configuration config(lua);
 
 int main(int argc, char* argv[]) {
+	//std::ifstream file("Source/test.txt");
+	//std::string line;
+
+	//if (file.is_open()) {
+	//	while (getline(file, line)) {
+	//		std::cout << line << std::endl;
+	//	}
+	//	file.close();
+	//}
+
 	GraphicsContext graphics;
 	if (!graphics.initialize("No Name Engine", 1280, 720)) {
 		std::cerr << "Failed to iniitalize graphics context" << std::endl;
@@ -49,7 +60,7 @@ int main(int argc, char* argv[]) {
 	Mouse mouse;
 	Scene scene(keyboard, mouse);
 	Renderer renderer(1280, 720, graphics);
-	Editor editor(graphics, renderer);
+	Editor editor(graphics, renderer, scene);
 	LuaEnvironment luaEnvironment(keyboard, mouse);
 
 	bool running = true;
@@ -87,6 +98,18 @@ int main(int argc, char* argv[]) {
 			case SDL_KEYUP:
 				keyboard.onKeyUp(event);
 				break;
+			case SDL_MOUSEMOTION:
+				mouse.onMouseMotion(event);
+				break;
+			case SDL_MOUSEBUTTONDOWN:
+				mouse.onMouseButtonDown(event);
+				break;
+			case SDL_MOUSEBUTTONUP:
+				mouse.onMouseButtonUp(event);
+				break;
+			case SDL_MOUSEWHEEL:
+				mouse.onMouseWheel(event);
+				break;
 			case SDL_DROPFILE:
 				editor.onFileDrop(event);
 				break;
@@ -116,6 +139,7 @@ int main(int argc, char* argv[]) {
 		editor.update(scene);
 		scene.update(deltaTime);
 		keyboard.update();
+		mouse.reset();
 #pragma endregion
 
 #pragma region Render
@@ -123,10 +147,11 @@ int main(int argc, char* argv[]) {
 		renderer.render(scene);
 		renderer.endFrame();
 
-		editor.render();
+		editor.render(scene);
 
 		graphics.swapBuffers();
 #pragma endregion
 	}
+
 	return 0;
 }

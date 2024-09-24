@@ -5,6 +5,7 @@
 #include "Scene/SceneGraph/instance.h"
 #include "Graphic/camera.h"
 #include "Graphic/shader.h"
+#include "Graphic/texture.h"
 
 #include <iostream>
 #include <vector>
@@ -24,15 +25,16 @@ public:
 
 	void addInstance(std::unique_ptr<Instance> instance);
 
-	Shader* getShader() { return shader.get(); }
+	Shader* getSceneShader() { return sceneShader.get(); }
 	Camera* getCamera() { return camera.get(); }
 	std::vector<std::unique_ptr<Instance>>& getInstances() { return instances; }
 private:
 	Keyboard& keyboard;
 	Mouse& mouse;
 
+	std::unique_ptr<Texture> skybox;
 	std::unique_ptr<Camera> camera;
-	std::unique_ptr<Shader> shader;
+	std::unique_ptr<Shader> sceneShader;
 	std::vector<std::unique_ptr<Instance>> instances;
 };
 

@@ -5,6 +5,7 @@
 #include "Event/event.h"
 #include "Input/inputobject.h"
 
+#include <SDL2/sdl.h>
 #include <sol/sol.hpp>
 
 #include <iostream>
