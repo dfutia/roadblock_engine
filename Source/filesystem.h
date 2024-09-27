@@ -6,7 +6,14 @@
 
 class Filesystem {
 public:
-    std::string openFileDialog();
+    void printCWD();
+
+    std::wstring openFolderDialog();
+
+    void openFileDialog();
+    void saveFileDialog();
+
+    void makeDirectory(const std::wstring& path, const std::wstring& dirName = L"Untitled");
 };
 
 extern Filesystem gFilesystem;

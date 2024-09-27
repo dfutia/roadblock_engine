@@ -40,16 +40,6 @@
 //Configuration config(lua);
 
 int main(int argc, char* argv[]) {
-	//std::ifstream file("Source/test.txt");
-	//std::string line;
-
-	//if (file.is_open()) {
-	//	while (getline(file, line)) {
-	//		std::cout << line << std::endl;
-	//	}
-	//	file.close();
-	//}
-
 	GraphicsContext graphics;
 	if (!graphics.initialize("No Name Engine", 1280, 720)) {
 		std::cerr << "Failed to iniitalize graphics context" << std::endl;

@@ -103,13 +103,16 @@ void Editor::displayMainMenu() {
 	if (ImGui::BeginMainMenuBar()) {
 		if (ImGui::BeginMenu("File")) {
 			if (ImGui::MenuItem("New")) {
-
+				std::wstring chosenPath = gFilesystem.openFolderDialog();
+				if (!chosenPath.empty()) {
+					gFilesystem.makeDirectory(chosenPath);
+				}
 			}
 			if (ImGui::MenuItem("Open")) {
-
+				gFilesystem.openFolderDialog();
 			}
 			if (ImGui::MenuItem("Save")) {
-
+				// save project
 			}
 			ImGui::EndMenu();
 		}
