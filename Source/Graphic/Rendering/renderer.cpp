@@ -1,11 +1,11 @@
-#include "Graphic/renderer.h"
+#include "Graphic/Rendering/renderer.h"
+#include "Graphic/Rendering/camera.h"
 #include "Graphic/graphicscontext.h"
-#include "Graphic/texture.h"
-#include "Graphic/shader.h"
-#include "Graphic/mesh.h"
-#include "Graphic/camera.h"
+#include "Graphic/Resources/texture.h"
+#include "Graphic/Resources/shader.h"
+#include "Graphic/Resources/mesh.h"
 #include "Scene/scene.h"
-#include "Scene/SceneGraph/part.h"
+#include "Scene/Nodes/part.h"
 
 Renderer::Renderer(int width, int height, GraphicsContext& graphics) : 
 	m_width(width), m_height(height),

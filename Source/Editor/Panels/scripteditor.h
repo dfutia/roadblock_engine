@@ -3,7 +3,7 @@
 #define SCRIPT_EDITOR_H
 
 #include "Editor/editorpanel.h"
-#include "Scene/SceneGraph/script.h"
+#include "Scene/Nodes/script.h"
 
 #include <imgui.h>
 #include <imguitextedit/TextEditor.h>

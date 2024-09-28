@@ -3,7 +3,7 @@
 #define CAMERA_SETTINGS_H
 
 #include "Editor/editorpanel.h"
-#include "Graphic/camera.h"
+#include "Graphic/Rendering/camera.h"
 
 #include <imgui.h>
 

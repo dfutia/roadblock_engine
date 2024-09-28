@@ -1,11 +1,11 @@
 #include "Script/luaenvironment.h"
 #include "Event/engineevents.h"
-#include "Scene/SceneGraph/instance.h"
-#include "Scene/SceneGraph/model.h"
-#include "Scene/SceneGraph/part.h"
-#include "Scene/SceneGraph/script.h"
-#include "Input/keyboard.h"
-#include "Input/mouse.h"
+#include "Scene/Nodes/instance.h"
+#include "Scene/Nodes/model.h"
+#include "Scene/Nodes/part.h"
+#include "Scene/Nodes/script.h"
+#include "Input/Devices/keyboard.h"
+#include "Input/Devices/mouse.h"
 
 LuaEnvironment::LuaEnvironment(Keyboard& kb, Mouse& m) :
 	keyboard(kb), mouse(m)

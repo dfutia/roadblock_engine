@@ -2,7 +2,7 @@
 #ifndef MODEL_H
 #define MODEL_H
 
-#include "Scene/SceneGraph/instance.h"
+#include "Scene/Nodes/instance.h"
 
 class Model : public Instance {
 public:

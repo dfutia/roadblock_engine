@@ -24,7 +24,7 @@
     <ClCompile Include="Compile\stb.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Scene\SceneGraph\instance.cpp">
+    <ClCompile Include="Source\Scene\Nodes\instance.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Script\luaenvironment.cpp">
@@ -63,22 +63,22 @@
     <ClCompile Include="ThirdParty\imguitextedit\TextEditor.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphic\renderer.cpp">
+    <ClCompile Include="Source\Graphic\Rendering\renderer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphic\framebuffer.cpp">
+    <ClCompile Include="Source\Graphic\Rendering\framebuffer.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphic\mesh.cpp">
+    <ClCompile Include="Source\Graphic\Resources\mesh.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphic\camera.cpp">
+    <ClCompile Include="Source\Graphic\Rendering\camera.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\Scene\scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphic\texture.cpp">
+    <ClCompile Include="Source\Graphic\Resources\texture.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="Source\filesystem.cpp">
@@ -86,7 +86,7 @@
     </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="Source\Scene\SceneGraph\instance.h">
+    <ClInclude Include="Source\Scene\Nodes\instance.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Script\luaenvironment.h">
@@ -155,37 +155,37 @@
     <ClInclude Include="Source\Editor\Panels\scripteditor.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene\SceneGraph\model.h">
+    <ClInclude Include="Source\Scene\Nodes\model.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene\SceneGraph\part.h">
+    <ClInclude Include="Source\Scene\Nodes\part.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Scene\SceneGraph\script.h">
+    <ClInclude Include="Source\Scene\Nodes\script.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\serializable.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphic\renderer.h">
+    <ClInclude Include="Source\Graphic\Rendering\renderer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphic\framebuffer.h">
+    <ClInclude Include="Source\Graphic\Rendering\framebuffer.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphic\mesh.h">
+    <ClInclude Include="Source\Graphic\Resources\mesh.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphic\shader.h">
+    <ClInclude Include="Source\Graphic\Resources\shader.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphic\camera.h">
+    <ClInclude Include="Source\Graphic\Rendering\camera.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\keyboard.h">
+    <ClInclude Include="Source\Input\Devices\keyboard.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Input\mouse.h">
+    <ClInclude Include="Source\Input\Devices\mouse.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Input\inputobject.h">
@@ -194,7 +194,7 @@
     <ClInclude Include="Source\Editor\editorcontext.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Source\Graphic\texture.h">
+    <ClInclude Include="Source\Graphic\Resources\texture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\scene.h">

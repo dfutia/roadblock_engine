@@ -4,7 +4,7 @@
 
 #include "Event/event.h"
 #include "Editor/editorcontext.h"
-#include "Scene/SceneGraph/instance.h"
+#include "Scene/Nodes/instance.h"
 
 #include <SDL2/SDL.h>
 

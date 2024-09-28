@@ -1,4 +1,4 @@
-#include "Graphic/framebuffer.h"
+#include "Graphic/Rendering/framebuffer.h"
 
 #include <iostream>
 

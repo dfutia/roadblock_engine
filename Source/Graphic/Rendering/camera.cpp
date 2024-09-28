@@ -1,4 +1,4 @@
-#include "Graphic/camera.h"
+#include "Graphic/Rendering/camera.h"
 
 Camera::Camera(glm::vec3 position, glm::vec3 up, float yaw, float pitch) :
     m_position(position), m_worldUp(up), m_yaw(yaw), m_pitch(pitch),

@@ -1,9 +1,9 @@
 #include "Scene/scene.h"
-#include "Scene/SceneGraph/instance.h"
-#include "Graphic/shader.h"
-#include "Graphic/camera.h"
-#include "Input/keyboard.h"
-#include "Input/mouse.h"
+#include "Scene/Nodes/instance.h"
+#include "Graphic/Resources/shader.h"
+#include "Graphic/Rendering/camera.h"
+#include "Input/Devices/keyboard.h"
+#include "Input/Devices/mouse.h"
 
 Scene::Scene(Keyboard& keyboard, Mouse& mouse) : 
 	keyboard(keyboard), mouse(mouse),

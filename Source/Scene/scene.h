@@ -2,10 +2,10 @@
 #ifndef SCENE_H
 #define SCENE_H
 
-#include "Scene/SceneGraph/instance.h"
-#include "Graphic/camera.h"
-#include "Graphic/shader.h"
-#include "Graphic/texture.h"
+#include "Scene/Nodes/instance.h"
+#include "Graphic/Rendering/camera.h"
+#include "Graphic/Resources/shader.h"
+#include "Graphic/Resources/texture.h"
 
 #include <iostream>
 #include <vector>

@@ -5,10 +5,10 @@
 #include "Editor/editorpanel.h"
 #include "Editor/editor.h"
 #include "Editor/editorcontext.h"
-#include "Scene/SceneGraph/instance.h"
-#include "Scene/SceneGraph/model.h"
-#include "Scene/SceneGraph/part.h"
-#include "Scene/SceneGraph/script.h"
+#include "Scene/Nodes/instance.h"
+#include "Scene/Nodes/model.h"
+#include "Scene/Nodes/part.h"
+#include "Scene/Nodes/script.h"
 
 #include <imgui.h>
 

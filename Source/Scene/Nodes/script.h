@@ -2,7 +2,7 @@
 #ifndef SCRIPT_H
 #define SCRIPT_H
 
-#include "Scene/SceneGraph/instance.h"
+#include "Scene/Nodes/instance.h"
 
 #include <iostream>
 #include <string>

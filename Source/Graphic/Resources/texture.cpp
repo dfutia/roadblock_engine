@@ -1,4 +1,4 @@
-#include "Graphic/texture.h"
+#include "Graphic/Resources/texture.h"
 
 TextureStore gTextureStore;
 

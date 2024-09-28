@@ -1,6 +1,6 @@
-#include "Scene/SceneGraph/instance.h"
-#include "Scene/SceneGraph/model.h"
-#include "Scene/SceneGraph/part.h"
+#include "Scene/Nodes/instance.h"
+#include "Scene/Nodes/model.h"
+#include "Scene/Nodes/part.h"
 
 Instance::~Instance() {}
 

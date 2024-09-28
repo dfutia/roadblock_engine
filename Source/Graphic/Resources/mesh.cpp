@@ -1,4 +1,4 @@
-#include "Graphic/mesh.h"
+#include "Graphic/Resources/mesh.h"
 
 #include <glad/glad.h>
 
@@ -106,3 +106,9 @@ Mesh createCubeMesh(float size) {
 
     return cubeMesh;
 }
+
+
+
+
+
+

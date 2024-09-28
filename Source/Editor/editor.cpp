@@ -8,9 +8,9 @@
 #include "Editor/Panels/scripteditor.h"
 #include "Editor/Panels/camerasettings.h"
 #include "Graphic/graphicscontext.h"
-#include "Graphic/renderer.h"
+#include "Graphic/Rendering/renderer.h"
 #include "Scene/scene.h"
-#include "Scene/SceneGraph/script.h"
+#include "Scene/Nodes/script.h"
 #include "filesystem.h"
 
 #include <imgui/imgui.h>

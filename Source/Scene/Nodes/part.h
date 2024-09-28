@@ -2,8 +2,8 @@
 #ifndef PART_H
 #define PART_H
 
-#include "Scene/SceneGraph/instance.h"
-#include "Graphic/mesh.h"
+#include "Scene/Nodes/instance.h"
+#include "Graphic/Resources/mesh.h"
 
 class Part : public Instance {
 public:

@@ -2,12 +2,12 @@
 #define _CRT_SECURE_NO_WARNINGS
 
 #include "Graphic/graphicscontext.h"
-#include "Graphic/renderer.h"
+#include "Graphic/Rendering/renderer.h"
 #include "Scene/scene.h"
 #include "Editor/editor.h"
 #include "Script/luaenvironment.h"
-#include "Input/keyboard.h"
-#include "Input/mouse.h"
+#include "Input/Devices/keyboard.h"
+#include "Input/Devices/mouse.h"
 #include "filesystem.h"
 
 #include <spdlog/spdlog.h>

@@ -3,7 +3,7 @@
 #define ENGINE_EVENTS_H
 
 #include "Event/event.h"
-#include "Scene/SceneGraph/script.h"
+#include "Scene/Nodes/script.h"
 
 #include <string>
 
