@@ -10,7 +10,7 @@ public:
 
     std::wstring openFolderDialog();
 
-    void openFileDialog();
+    std::wstring openFileDialog();
     void saveFileDialog();
 
     void makeDirectory(const std::wstring& path, const std::wstring& dirName = L"Untitled");

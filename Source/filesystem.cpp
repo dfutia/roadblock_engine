@@ -86,7 +86,7 @@ std::wstring Filesystem::openFolderDialog() {
     return folderPath;
 }
 
-void Filesystem::openFileDialog() {
+std::wstring Filesystem::openFileDialog() {
     try {
         wchar_t filename[MAX_PATH];
 
@@ -104,6 +104,7 @@ void Filesystem::openFileDialog() {
         if (GetOpenFileNameW(&ofn))
         {
             std::wcout << L"You chose the file \"" << filename << L"\"\n";
+            return std::wstring(filename);
         }
         else {
             switch (CommDlgExtendedError())
@@ -133,6 +134,7 @@ void Filesystem::openFileDialog() {
     catch (const std::exception& e) {
         std::cerr << "Error: " << e.what() << std::endl;
     }
+    return L"";
 }
 
 void Filesystem::saveFileDialog() {

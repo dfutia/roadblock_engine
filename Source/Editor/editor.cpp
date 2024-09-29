@@ -7,6 +7,7 @@
 #include "Editor/Panels/contentbrowser.h"
 #include "Editor/Panels/scripteditor.h"
 #include "Editor/Panels/camerasettings.h"
+#include "Editor/Panels/audioimporter.h"
 #include "Graphic/graphicscontext.h"
 #include "Graphic/Rendering/renderer.h"
 #include "Scene/scene.h"
@@ -43,6 +44,7 @@ Editor::Editor(GraphicsContext& graphics, Renderer& renderer, Scene& scene) : m_
 	m_panels.push_back(std::make_unique<Properties>(m_editorContext));
 	m_panels.push_back(std::make_unique<Explorer>(*this, m_editorContext));
 	m_panels.push_back(std::make_unique<CameraSettings>(m_scene.getCamera()));
+	m_panels.push_back(std::make_unique<AudioImporter>());
 
 	scriptOpenConnection = EngineEvents::OpenScriptEvent.Connect([this](Script& script) {
 		openScriptEditor(script);
