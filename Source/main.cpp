@@ -4,6 +4,7 @@
 #include "Graphic/graphicscontext.h"
 #include "Graphic/Rendering/renderer.h"
 #include "Scene/scene.h"
+#include "Audio/audio.h"
 #include "Editor/editor.h"
 #include "Script/luaenvironment.h"
 #include "Input/Devices/keyboard.h"
@@ -12,7 +13,6 @@
 
 #include <spdlog/spdlog.h>
 #include <imgui_impl_sdl2.h>
-#include <SDL_mixer.h>
 
 #include <iostream>
 
@@ -51,7 +51,8 @@ int main(int argc, char* argv[]) {
 	Mouse mouse;
 	Scene scene(keyboard, mouse);
 	Renderer renderer(1280, 720, graphics);
-	Editor editor(graphics, renderer, scene);
+	Audio audio;
+	Editor editor(graphics, renderer, scene, audio);
 	LuaEnvironment luaEnvironment(keyboard, mouse);
 
 	bool running = true;
@@ -62,10 +63,6 @@ int main(int argc, char* argv[]) {
 
 	double accumulatedTime = 0.0;
 	int msPreviousFrame = 0;
-
-	Mix_OpenAudio(44100, MIX_DEFAULT_FORMAT, 2, 2048);
-	//Mix_Music* music = Mix_LoadMUS("Asset/Music/town talk.mp3");
-	//Mix_PlayMusic(music, -1);
 
 	while (running) {
 #pragma region Process Input
@@ -147,9 +144,6 @@ int main(int argc, char* argv[]) {
 		graphics.swapBuffers();
 #pragma endregion
 	}
-
-	//Mix_FreeMusic(music);
-	//Mix_CloseAudio();
 
 	return 0;
 }

@@ -20,12 +20,13 @@ class Renderer;
 class ScriptEditor;
 class Script;
 class Scene;
+class Audio;
 
 class Editor {
 public:
 	using CreatorFunction = std::function<std::unique_ptr<Instance>()>;
 
-	Editor(GraphicsContext& graphics, Renderer& renderer, Scene& scene);
+	Editor(GraphicsContext& graphics, Renderer& renderer, Scene& scene, Audio& audio);
 	~Editor();
 
 	void update(Scene& scene);

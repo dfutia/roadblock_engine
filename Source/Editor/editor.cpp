@@ -8,6 +8,7 @@
 #include "Editor/Panels/scripteditor.h"
 #include "Editor/Panels/camerasettings.h"
 #include "Editor/Panels/audioimporter.h"
+#include "Editor/Panels/meshimporter.h"
 #include "Graphic/graphicscontext.h"
 #include "Graphic/Rendering/renderer.h"
 #include "Scene/scene.h"
@@ -18,7 +19,7 @@
 #include <imgui/imgui_impl_sdl2.h>
 #include <imgui/imgui_impl_opengl3.h>
 
-Editor::Editor(GraphicsContext& graphics, Renderer& renderer, Scene& scene) : m_graphics(graphics), m_scene(scene) {
+Editor::Editor(GraphicsContext& graphics, Renderer& renderer, Scene& scene, Audio& audio) : m_graphics(graphics), m_scene(scene) {
 	IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO();
@@ -44,7 +45,8 @@ Editor::Editor(GraphicsContext& graphics, Renderer& renderer, Scene& scene) : m_
 	m_panels.push_back(std::make_unique<Properties>(m_editorContext));
 	m_panels.push_back(std::make_unique<Explorer>(*this, m_editorContext));
 	m_panels.push_back(std::make_unique<CameraSettings>(m_scene.getCamera()));
-	m_panels.push_back(std::make_unique<AudioImporter>());
+	m_panels.push_back(std::make_unique<AudioImporter>(audio));
+	m_panels.push_back(std::make_unique<MeshImporter>());
 
 	scriptOpenConnection = EngineEvents::OpenScriptEvent.Connect([this](Script& script) {
 		openScriptEditor(script);

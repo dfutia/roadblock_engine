@@ -44,8 +44,10 @@
     <ClCompile Include="ThirdParty\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Audio\audio.h" />
     <ClInclude Include="Source\Editor\Panels\audioimporter.h" />
     <ClInclude Include="Source\Editor\Panels\camerasettings.h" />
+    <ClInclude Include="Source\Editor\Panels\meshimporter.h" />
     <ClInclude Include="Source\Editor\Panels\skyboxsettings.h" />
     <ClInclude Include="Source\filesystem.h" />
     <ClInclude Include="Source\Scene\Nodes\model.h" />
