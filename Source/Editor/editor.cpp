@@ -46,7 +46,7 @@ Editor::Editor(GraphicsContext& graphics, Renderer& renderer, Scene& scene, Audi
 	m_panels.push_back(std::make_unique<Explorer>(*this, m_editorContext));
 	m_panels.push_back(std::make_unique<CameraSettings>(m_scene.getCamera()));
 	m_panels.push_back(std::make_unique<AudioImporter>(audio));
-	m_panels.push_back(std::make_unique<MeshImporter>());
+	m_panels.push_back(std::make_unique<MeshImporter>(m_scene, m_editorContext));
 
 	scriptOpenConnection = EngineEvents::OpenScriptEvent.Connect([this](Script& script) {
 		openScriptEditor(script);

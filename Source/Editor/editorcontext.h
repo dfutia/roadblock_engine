@@ -11,6 +11,7 @@ enum class EditorAction {
 };
 
 struct EditorContext {
+	Instance* test = nullptr;
 	Instance* selected = nullptr;
 	Instance* targetInstance = nullptr;
 	EditorAction action = EditorAction::NONE;

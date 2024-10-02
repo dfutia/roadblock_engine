@@ -1,5 +1,6 @@
 #define _SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING
 #define _CRT_SECURE_NO_WARNINGS
+#define _SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS
 
 #include "Graphic/graphicscontext.h"
 #include "Graphic/Rendering/renderer.h"

@@ -25,6 +25,7 @@ public:
         root(std::make_unique<Instance>()) 
     {
         root->name = "Scene";
+        m_editorContext.test = root.get();
     }
 
     void render() override {

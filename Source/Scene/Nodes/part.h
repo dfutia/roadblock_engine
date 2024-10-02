@@ -13,6 +13,13 @@ public:
 		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
 	}
 
+	Part(Mesh* mesh) {
+		name = "Part";
+		transform = glm::mat4(1.0f);
+		color = glm::vec4(1.0f, 1.0f, 1.0f, 1.0f);
+		this->mesh = mesh;
+	}
+
 	static void createBindings(sol::state& lua) {
 		lua.new_usertype<Part>("Part",
 			"new", sol::factories([]() { return new Part(); }),
@@ -20,11 +27,13 @@ public:
 		);
 	}
 
-	Mesh& getMesh() { return mesh; }
+	Mesh& getMesh() { return *mesh; }
+	//void setMesh(Mesh& newMesh) { mesh = newMesh; }
 	glm::vec4& getColor() { return color; }
 	void setColor(const glm::vec4& newColor) { color = newColor; }
 private:
-	Mesh mesh = createCubeMesh(1.0f);
+	//Mesh mesh = createCubeMesh(1.0f);
+	Mesh* mesh;
 	glm::vec4 color;
 };
 
