@@ -188,6 +188,8 @@ private:
         glBindVertexArray(0);
     }
 
+    void loadMaterialTextures() {}
+
     void addMeshToScene(Mesh* mesh, const std::string& filepath) {
         std::string filename = filepath.substr(filepath.find_last_of("/\\") + 1);
         filename = filename.substr(0, filename.find_last_of('.'));

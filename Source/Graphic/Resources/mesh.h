@@ -8,6 +8,8 @@
 
 #include <vector>
 
+struct Material;
+
 struct Vertex {
 	glm::vec3 position;
 	glm::vec3 normal;
@@ -19,6 +21,7 @@ struct Mesh {
 	unsigned int vao, vbo, ebo;
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
+	Material material;
 };
 
 Mesh createCubeMesh(float size = 1.0f);
