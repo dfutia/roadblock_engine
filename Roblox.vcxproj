@@ -55,6 +55,7 @@
     <ClInclude Include="Source\filesystem.h" />
     <ClInclude Include="Source\Graphic\Resources\material.h" />
     <ClInclude Include="Source\meshimporter.h" />
+    <ClInclude Include="Source\Scene\Nodes\meshpart.h" />
     <ClInclude Include="Source\Scene\Nodes\model.h" />
     <ClInclude Include="Source\Scene\Nodes\part.h" />
     <ClInclude Include="Source\Scene\Nodes\script.h" />

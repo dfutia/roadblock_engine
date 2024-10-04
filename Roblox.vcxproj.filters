@@ -233,6 +233,9 @@
     <ClInclude Include="Source\Asset\assetmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Scene\Nodes\meshpart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\main.lua" />
