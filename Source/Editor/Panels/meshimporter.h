@@ -5,6 +5,8 @@
 #include "Editor/editorpanel.h"
 #include "Editor/editorcontext.h"
 #include "Scene/scene.h"
+#include "Asset/assetmanager.h"
+#include "Asset/textureloader.h"
 
 #include <spdlog/spdlog.h>
 #include <assimp/Importer.hpp>
@@ -24,6 +26,7 @@ public:
             std::wstring filepath = gFilesystem.openFileDialog();
             if (!filepath.empty()) {
                 std::string path(filepath.begin(), filepath.end());
+                m_dir = gFilesystem.getParentDirectory(path);
                 importMesh(path);
             }
         }
@@ -33,6 +36,8 @@ public:
 private:
     EditorContext& m_editorContext;
     Scene& m_scene;
+
+    std::string m_dir;
 
     void importMesh(const std::string& filepath) {
         Assimp::Importer importer;
@@ -49,6 +54,7 @@ private:
 
         Mesh* mesh = processNode(scene->mRootNode, scene);
         if (mesh) {
+            std::cout << "Before adding to scene, mesh has " << mesh->material->textures.size() << " textures" << std::endl;
             addMeshToScene(mesh, filepath);
         }
 
@@ -78,6 +84,7 @@ private:
         for (unsigned int i = 0; i < node->mNumMeshes; i++) {
             aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
             processMesh(mesh, scene, combinedMesh);
+            std::cout << "After processing mesh " << i << ", combined mesh has " << combinedMesh->material->textures.size() << " textures" << std::endl;
         }
 
         for (unsigned int i = 0; i < node->mNumChildren; i++) {
@@ -88,6 +95,16 @@ private:
                     childMesh->vertices.begin(), childMesh->vertices.end());
                 combinedMesh->indices.insert(combinedMesh->indices.end(),
                     childMesh->indices.begin(), childMesh->indices.end());
+
+                // Merge materials
+                if (!childMesh->material->textures.empty()) {
+                    combinedMesh->material->textures.insert(
+                        combinedMesh->material->textures.end(),
+                        childMesh->material->textures.begin(),
+                        childMesh->material->textures.end()
+                    );
+                }
+
                 delete childMesh;
             }
         }
@@ -122,6 +139,8 @@ private:
 
         glBindVertexArray(0);
 
+
+        std::cout << "processNode: Before returning, combinedMesh has " << combinedMesh->material->textures.size() << " textures" << std::endl;
         return combinedMesh;
     }
 
@@ -157,6 +176,33 @@ private:
             }
         }
 
+        if (assimpMesh->mMaterialIndex >= 0) {
+            std::cout << "loading materials" << std::endl;
+            aiMaterial* material = scene->mMaterials[assimpMesh->mMaterialIndex];
+
+            aiColor3D color(0.0f, 0.0f, 0.0f);
+            float shininess;
+
+            material->Get(AI_MATKEY_COLOR_AMBIENT, color);
+            mesh->material->ambient = glm::vec3(color.r, color.g, color.b);
+
+            material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+            mesh->material->diffuse = glm::vec3(color.r, color.g, color.b);
+
+            material->Get(AI_MATKEY_COLOR_SPECULAR, color);
+            mesh->material->specular = glm::vec3(color.r, color.g, color.b);
+
+            material->Get(AI_MATKEY_SHININESS, shininess);
+            mesh->material->shininess = shininess;
+
+            loadMaterialTextures(mesh, material, aiTextureType_DIFFUSE, "texture_diffuse", scene);
+            loadMaterialTextures(mesh, material, aiTextureType_SPECULAR, "texture_specular", scene);
+            loadMaterialTextures(mesh, material, aiTextureType_HEIGHT, "texture_normal", scene);
+
+
+            std::cout << "After loading textures, mesh has " << mesh->material->textures.size() << " textures" << std::endl;
+        }
+
         glGenVertexArrays(1, &mesh->vao);
         glGenBuffers(1, &mesh->vbo);
         glGenBuffers(1, &mesh->ebo);
@@ -188,11 +234,76 @@ private:
         glBindVertexArray(0);
     }
 
-    void loadMaterialTextures() {}
+    void loadMaterialTextures(Mesh* mesh, aiMaterial* mat, aiTextureType type, std::string typeName, const aiScene* scene) {
+        for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
+            aiString str;
+            mat->GetTexture(type, i, &str);
+
+            std::string textureKey = std::string(str.C_Str());
+            //std::cout << "texture key: " << textureKey << std::endl;
+            std::shared_ptr<Texture> texture = gAssetManager.getTexture(textureKey);
+
+            if (!texture) {
+                const aiTexture* embeddedTexture = scene->GetEmbeddedTexture(str.C_Str());
+                if (embeddedTexture) {
+                    //texture = TextureLoader::loadFromMemory(embeddedTexture);
+                    std::cout << "Loaded texture from memory" << std::endl;
+                }
+                else {
+                    std::string fullPath = m_dir + '/' + textureKey;
+                    texture = TextureLoader::loadFromFile(fullPath);
+                    std::cout << "Loaded texture from file: " << fullPath << std::endl;
+                }
+
+                if (texture) {
+                    gAssetManager.addTexture(textureKey, texture);
+                }
+            }
+
+            if (texture) {
+                std::cout << "adding texture to material" << std::endl;
+                mesh->material->textures.push_back(texture);
+                std::cout << "texutres in material: " << std::to_string(mesh->material->textures.size()) << std::endl;
+            }
+
+            //// Check if texture was loaded before
+            //bool skip = false;
+            ////for (unsigned int j = 0; j < mesh->material.textures.size(); j++) {
+            ////    if (std::strcmp(mesh->material.textures[j]->path.data(), str.C_Str()) == 0) {
+            ////        mesh->material.textures.push_back(mesh->material.textures[j]);
+            ////        skip = true;
+            ////        break;
+            ////    }
+            ////}
+            //if (!skip) {
+            //    std::shared_ptr<Texture> texture;
+
+            //    // Check if it's an embedded texture
+            //    const aiTexture* embeddedTexture = scene->GetEmbeddedTexture(str.C_Str());
+            //    if (embeddedTexture) {
+            //        //texture = loadEmbeddedTexture(embeddedTexture, typeName);
+            //        std::cout << "load texture from memory" << std::endl;
+            //    }
+            //    else {
+            //        // It's an external texture
+            //        //std::string filename = std::string(str.C_Str());
+            //        //std::string fullPath = directory + '/' + filename;
+            //        //texture = loadTextureFromFile(fullPath, typeName);
+            //        std::cout << "load texture from file" << std::endl;
+            //    }
+
+            //    if (texture) {
+            //        mesh->material.textures.push_back(texture);
+            //    }
+            //}
+        }
+    }
 
     void addMeshToScene(Mesh* mesh, const std::string& filepath) {
         std::string filename = filepath.substr(filepath.find_last_of("/\\") + 1);
         filename = filename.substr(0, filename.find_last_of('.'));
+
+        std::cout << "Textures in mesh before adding to scene: " << mesh->material->textures.size() << std::endl;
 
         auto part = std::make_unique<Part>(mesh);
         part->name = filename;
@@ -200,8 +311,6 @@ private:
 
         // Add the part to the scene
         m_scene.addInstance(std::move(part));
-
-        spdlog::info("Added mesh to the scene from file: {}", filepath);
 
         // Clean up the mesh (assuming the Part makes a copy)
         //delete mesh;

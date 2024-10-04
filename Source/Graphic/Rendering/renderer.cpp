@@ -6,6 +6,8 @@
 #include "Graphic/Resources/mesh.h"
 #include "Scene/scene.h"
 #include "Scene/Nodes/part.h"
+#include "Asset/assetmanager.h"
+#include "Asset/textureloader.h"
 
 Renderer::Renderer(int width, int height, GraphicsContext& graphics) : 
 	m_width(width), m_height(height),
@@ -38,56 +40,69 @@ void Renderer::render(Scene& scene) {
 	//shader->setMat4("model", model);
 	shader->setMat4("view", view);
 	shader->setMat4("projection", projection);
+	shader->setVec3("lightPos", glm::vec3(5.0f, 5.0f, 5.0f));
+	shader->setVec3("viewPos", camera->getPosition());
 
 	for (auto& instance : scene.getInstances()) {
 		shader->setMat4("model", instance->transform);
 
 		Part* part = dynamic_cast<Part*>(instance.get());
 		if (part) {
-			shader->setVec4("color", part->getColor());
-
-			//glActiveTexture(GL_TEXTURE0); // activate the texture unit
-			//glBindTexture(GL_TEXTURE_2D, texture->id); // bind the texture to the active unit
-			//shader.setInt("texture1", 0); // tell shader which unit the texture is at
-
 			Mesh& mesh = part->getMesh();
+			Material* material = mesh.material;
+
+			shader->setVec3("material.ambient", material->ambient);
+			shader->setVec3("material.diffuse", material->diffuse);
+			shader->setVec3("material.specular", material->specular);
+			shader->setFloat("material.shininess", material->shininess);
+
+			//shader->setVec4("color", part->getColor());
+
+			for (unsigned int i = 0; i < material->textures.size(); i++) {
+				glActiveTexture(GL_TEXTURE0 + i); // activate the texture unit
+				glBindTexture(GL_TEXTURE_2D, material->textures[i]->id); // bind the texture to the active unit
+				std::string uniformName = "textures[" + std::to_string(i) + "]";
+				shader->setInt(uniformName, i); // tell shader which unit the texture is at
+			}
+			shader->setInt("numTextures", material->textures.size());
+
 			glBindVertexArray(mesh.vao);
 			glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
 		}
 	}
 
-	static Shader skyboxShader("Asset/Shaders/skybox.vert", "Asset/Shaders/skybox.frag");
-	static std::array<std::string, 6> texturePaths = {
-		"Asset/Textures/skybox/right.jpg",
-		"Asset/Textures/skybox/left.jpg",
-		"Asset/Textures/skybox/top.jpg",
-		"Asset/Textures/skybox/bottom.jpg",
-		"Asset/Textures/skybox/front.jpg",
-		"Asset/Textures/skybox/back.jpg"
-	};
-	static auto texture = loadCubemap("skybox", texturePaths);
-	static auto cube = createCubeMesh(1.0f);
+	//static Shader skyboxShader("Asset/Shaders/skybox.vert", "Asset/Shaders/skybox.frag");
+	//static std::array<std::string, 6> texturePaths = {
+	//	"Asset/Textures/skybox/right.jpg",
+	//	"Asset/Textures/skybox/left.jpg",
+	//	"Asset/Textures/skybox/top.jpg",
+	//	"Asset/Textures/skybox/bottom.jpg",
+	//	"Asset/Textures/skybox/front.jpg",
+	//	"Asset/Textures/skybox/back.jpg"
+	//};
+	//static auto texture = loadCubemap("skybox", texturePaths);
+	//static auto cube = createCubeMesh(1.0f);
 
-	glDepthFunc(GL_LEQUAL);
-	skyboxShader.use();
+	//glDepthFunc(GL_LEQUAL);
+	//skyboxShader.use();
 
-	glm::mat4 skyboxView = glm::mat4(glm::mat3(view));
+	//glm::mat4 skyboxView = glm::mat4(glm::mat3(view));
 
-	skyboxShader.setMat4("view", skyboxView);
-	skyboxShader.setMat4("projection", projection);
+	//skyboxShader.setMat4("view", skyboxView);
+	//skyboxShader.setMat4("projection", projection);
 
-	// texture
-	glActiveTexture(GL_TEXTURE0);
-	glBindTexture(GL_TEXTURE_CUBE_MAP, gTextureStore.textures["skybox"]->id);
-	skyboxShader.setInt("skybox", 0);
+	//// texture
+	//glActiveTexture(GL_TEXTURE0);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, gTextureStore.textures["skybox"]->id);
+	//skyboxShader.setInt("skybox", 0);
 
-	// mesh
-	glBindVertexArray(cube.vao);
-	glDrawElements(GL_TRIANGLES, cube.indices.size(), GL_UNSIGNED_INT, 0);
-	glBindVertexArray(0);
+	//// mesh
+	//glBindVertexArray(cube.vao);
+	//glDrawElements(GL_TRIANGLES, cube.indices.size(), GL_UNSIGNED_INT, 0);
+	//glBindVertexArray(0);
 
-	glDepthFunc(GL_LESS);
+	//glDepthFunc(GL_LESS);
 }
 
 GLuint Renderer::getRenderedTextureID() const {

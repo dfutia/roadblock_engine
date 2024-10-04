@@ -4,6 +4,7 @@
 
 #include <glm/vec3.hpp>
 
+#include <iostream>
 #include <string>
 #include <vector>
 #include <memory>

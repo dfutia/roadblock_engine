@@ -21,6 +21,7 @@
   <ItemGroup>
     <ClCompile Include="Compile\glad.c" />
     <ClCompile Include="Compile\stb.cpp" />
+    <ClCompile Include="Source\Asset\assetmanager.cpp" />
     <ClCompile Include="Source\Editor\editor.cpp" />
     <ClCompile Include="Source\Event\engineevents.cpp" />
     <ClCompile Include="Source\filesystem.cpp" />
@@ -44,12 +45,15 @@
     <ClCompile Include="ThirdParty\imgui\imgui_widgets.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="Source\Asset\assetmanager.h" />
+    <ClInclude Include="Source\Asset\textureloader.h" />
     <ClInclude Include="Source\Audio\audio.h" />
     <ClInclude Include="Source\Editor\Panels\audioimporter.h" />
     <ClInclude Include="Source\Editor\Panels\camerasettings.h" />
     <ClInclude Include="Source\Editor\Panels\meshimporter.h" />
     <ClInclude Include="Source\Editor\Panels\skyboxsettings.h" />
     <ClInclude Include="Source\filesystem.h" />
+    <ClInclude Include="Source\Graphic\Resources\material.h" />
     <ClInclude Include="Source\meshimporter.h" />
     <ClInclude Include="Source\Scene\Nodes\model.h" />
     <ClInclude Include="Source\Scene\Nodes\part.h" />

@@ -26,14 +26,4 @@ public:
     void bind(unsigned int unit = 0);
 };
 
-struct TextureStore {
-    std::unordered_map<std::string, std::shared_ptr<Texture>> textures;
-};
-
-std::shared_ptr<Texture> loadTextureFromFile(const std::string& name, const std::string& path);
-std::shared_ptr<Texture> loadTextureFromMemory(const std::string& name, const unsigned char* buffer, int size);
-std::shared_ptr<Texture> loadCubemap(const std::string& name, const std::array<std::string, 6>& faces);
-
-extern TextureStore gTextureStore;
-
 #endif 

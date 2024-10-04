@@ -185,3 +185,8 @@ void Filesystem::saveFileDialog() {
         std::cerr << "Error: " << e.what() << std::endl;
     }
 }
+
+std::string Filesystem::getParentDirectory(const std::string& filepath) {
+    std::filesystem::path path(filepath);
+    return path.parent_path().string();
+}

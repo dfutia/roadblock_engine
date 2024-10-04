@@ -2,13 +2,13 @@
 #ifndef MESH_H
 #define MESH_H
 
+#include "Graphic/Resources/material.h"
+
 #include <glm/vec2.hpp>
 #include <glm/vec3.hpp>
 #include <glm/vec4.hpp>
 
 #include <vector>
-
-struct Material;
 
 struct Vertex {
 	glm::vec3 position;
@@ -21,7 +21,7 @@ struct Mesh {
 	unsigned int vao, vbo, ebo;
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
-	Material material;
+	Material* material = new Material;
 };
 
 Mesh createCubeMesh(float size = 1.0f);

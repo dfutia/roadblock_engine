@@ -1,11 +1,9 @@
 #include "Graphic/Resources/texture.h"
 
-TextureStore gTextureStore;
-
 Texture::Texture(const std::string& path) : isCubemap(false) {
     std::cout << "loading texture from file" << std::endl;
 
-    //stbi_set_flip_vertically_on_load(true);
+    stbi_set_flip_vertically_on_load(true);
     unsigned char* data = stbi_load(path.c_str(), &width, &height, &channels, 0);
 
     if (data) {
@@ -68,22 +66,4 @@ Texture::Texture(const std::array<std::string, 6>& faces) : isCubemap(true) {
 void Texture::bind(unsigned int unit) {
     glActiveTexture(GL_TEXTURE0 + unit);
     glBindTexture(GL_TEXTURE_2D, id);
-}
-
-std::shared_ptr<Texture> loadTextureFromFile(const std::string& name, const std::string& path) {
-    auto texture = std::make_shared<Texture>(path);
-    gTextureStore.textures[name] = texture;
-    return texture;
-}
-
-std::shared_ptr<Texture> loadTextureFromMemory(const std::string& name, const unsigned char* buffer, int size) {
-    auto texture = std::make_shared<Texture>(buffer, size);
-    gTextureStore.textures[name] = texture;
-    return texture;
-}
-
-std::shared_ptr<Texture> loadCubemap(const std::string& name, const std::array<std::string, 6>& faces) {
-    auto texture = std::make_shared<Texture>(faces);
-    gTextureStore.textures[name] = texture;
-    return texture;
 }

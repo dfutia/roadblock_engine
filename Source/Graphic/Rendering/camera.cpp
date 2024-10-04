@@ -51,6 +51,10 @@ glm::mat4 Camera::getProjectionMatrix() {
     return glm::perspective(glm::radians(m_zoom), aspectRatio, 0.1f, 1000.0f);
 }
 
+glm::vec3 Camera::getPosition() {
+    return m_position;
+}
+
 void Camera::updateCameraVectors() {
     glm::vec3 newFront;
     newFront.x = cos(glm::radians(m_yaw)) * cos(glm::radians(m_pitch));
