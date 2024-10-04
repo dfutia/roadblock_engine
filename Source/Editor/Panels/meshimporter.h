@@ -237,18 +237,18 @@ private:
     }
 
     void addMeshToScene(Mesh* mesh, const std::string& filepath) {
-        std::string filename = filepath.substr(filepath.find_last_of("/\\") + 1);
-        filename = filename.substr(0, filename.find_last_of('.'));
+        //std::string filename = filepath.substr(filepath.find_last_of("/\\") + 1);
+        //filename = filename.substr(0, filename.find_last_of('.'));
 
-        auto part = std::make_unique<Part>(mesh);
-        part->name = filename;
-        part->setParent(m_editorContext.test);
+        //auto part = std::make_unique<Part>(mesh);
+        //part->name = filename;
+        //part->setParent(m_editorContext.test);
 
-        // Add the part to the scene
-        m_scene.addInstance(std::move(part));
+        //// Add the part to the scene
+        //m_scene.addInstance(std::move(part));
 
-        // Clean up the mesh (assuming the Part makes a copy)
-        //delete mesh;
+        //// Clean up the mesh (assuming the Part makes a copy)
+        ////delete mesh;
     }
 };
 

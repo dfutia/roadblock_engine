@@ -38,14 +38,4 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.3412
               _SizeTy=unsigned __int64
           ]
   
-  renderer.cpp
-D:\Main\Projects\Roblox\Roblox\Source\Graphic\Rendering\renderer.cpp(51,23): error C2039: 'getMesh': is not a member of 'Part'
-      D:\Main\Projects\Roblox\Roblox\Source\Scene\Nodes\part.h(8,7):
-      see declaration of 'Part'
-  
-D:\Main\Projects\Roblox\Roblox\Source\Graphic\Rendering\renderer.cpp(51,15): error C2530: 'mesh': references must be initialized
-D:\Main\Projects\Roblox\Roblox\Source\Graphic\Rendering\renderer.cpp(67,57): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
-D:\Main\Projects\Roblox\Roblox\Source\Graphic\Rendering\renderer.cpp(70,50): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
-  instance.cpp
-  luaenvironment.cpp
-  Generating Code...
+  Roblox.vcxproj -> D:\Main\Projects\Roblox\Roblox\Bin\Roblox.exe

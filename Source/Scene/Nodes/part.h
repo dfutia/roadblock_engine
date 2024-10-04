@@ -20,6 +20,7 @@ public:
 		);
 	}
 
+	Mesh& getMesh() { return mesh; }
 	glm::vec4& getColor() { return color; }
 	void setColor(const glm::vec4& newColor) { color = newColor; }
 private:
