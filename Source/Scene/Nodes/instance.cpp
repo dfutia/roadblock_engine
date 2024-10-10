@@ -2,7 +2,12 @@
 #include "Scene/Nodes/model.h"
 #include "Scene/Nodes/part.h"
 
+Instance::Instance() {}
 Instance::~Instance() {}
+
+std::string Instance::getTypeName() const {
+    return "Instance";
+}
 
 void Instance::setParent(Instance* parent) {
     if (this->parent) {
@@ -39,3 +44,5 @@ void Instance::createBindings(sol::state& lua) {
         "GetDescendants", &Instance::getDescendants
     );
 }
+
+glm::mat4 Instance::getTransform() { return transform; }

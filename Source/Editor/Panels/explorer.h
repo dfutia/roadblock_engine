@@ -9,6 +9,7 @@
 #include "Scene/Nodes/model.h"
 #include "Scene/Nodes/part.h"
 #include "Scene/Nodes/script.h"
+#include "Reflection/typeregistry.h"
 
 #include <imgui.h>
 
@@ -18,6 +19,8 @@
 
 class Explorer : public EditorPanel {
 public:
+    Event<Script&> openScriptEvent;
+
     Explorer(Editor& editor, EditorContext& editorContext) : 
         EditorPanel(true, "Explorer"),
         m_editor(editor), 
@@ -53,7 +56,7 @@ private:
 
         if (ImGui::IsItemClicked() && ImGui::IsMouseDoubleClicked(0)) {
             if (auto* script = dynamic_cast<Script*>(instance)) {
-                EngineEvents::OpenScriptEvent.Fire(*script);
+                openScriptEvent.Fire(*script);
             }
         }
 
@@ -78,7 +81,7 @@ private:
 
         std::string popupId = "ContextMenu_" + std::to_string(reinterpret_cast<intptr_t>(instance));
         if (ImGui::BeginPopupContextItem(popupId.c_str())) {
-            for (const auto& [typeName, creator] : m_editor.getCreators()) {
+            for (const std::string& typeName : gTypeRegistry.getRegisteredTypes()) {
                 if (ImGui::MenuItem((typeName).c_str())) {
                     m_editorContext.action = EditorAction::ADD_INSTANCE;
                     m_editorContext.targetInstance = instance;

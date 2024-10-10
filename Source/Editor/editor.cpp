@@ -35,12 +35,8 @@ Editor::Editor(GraphicsContext& graphics, Renderer& renderer, Scene& scene, Audi
 	//io.Fonts->AddFontDefault(new ImFontConfig())->Scale = 1.5f;
 	//ImGui_ImplOpenGL3_CreateFontsTexture();
 
-	registerType("Script", []() { return std::make_unique<Script>(); });
-	registerType("Part", []() { return std::make_unique<Part>(); });
-	registerType("Model", []() { return std::make_unique<Model>(); });
-
 	m_panels.push_back(std::make_unique<Console>());
-	//m_panels.push_back(std::make_unique<ContentBrowser>());
+	m_panels.push_back(std::make_unique<ContentBrowser>());
 	m_panels.push_back(std::make_unique<Viewport>(renderer));
 	m_panels.push_back(std::make_unique<Properties>(m_editorContext));
 	m_panels.push_back(std::make_unique<Explorer>(*this, m_editorContext));
@@ -48,9 +44,11 @@ Editor::Editor(GraphicsContext& graphics, Renderer& renderer, Scene& scene, Audi
 	m_panels.push_back(std::make_unique<AudioImporter>(audio));
 	m_panels.push_back(std::make_unique<MeshImporter>(m_scene, m_editorContext));
 
-	scriptOpenConnection = EngineEvents::OpenScriptEvent.Connect([this](Script& script) {
-		openScriptEditor(script);
-	});
+	if (auto explorer = dynamic_cast<Explorer*>(m_panels[4].get())) {
+		scriptOpenConnection = explorer->openScriptEvent.Connect([this](Script& script) {
+			openScriptEditor(script);
+		});
+	}
 }
 
 Editor::~Editor() {
@@ -63,12 +61,14 @@ Editor::~Editor() {
 
 void Editor::update(Scene& scene) {
 	if (m_editorContext.action == EditorAction::ADD_INSTANCE) {
-		auto newInstance = create(m_editorContext.instanceTypeToAdd);
+		auto newInstance = gTypeRegistry.createInstance(m_editorContext.instanceTypeToAdd);
 		if (newInstance) {
 			newInstance->setParent(m_editorContext.targetInstance);
 			scene.addInstance(std::move(newInstance));
 		}
 	}
+
+	// Reset editor context
 	m_editorContext.action = EditorAction::NONE;
 	m_editorContext.targetInstance = nullptr;
 	m_editorContext.instanceTypeToAdd.clear();

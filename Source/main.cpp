@@ -2,6 +2,7 @@
 #define _CRT_SECURE_NO_WARNINGS
 #define _SILENCE_ALL_MS_EXT_DEPRECATION_WARNINGS
 
+#include "Reflection/typeregistry.h"
 #include "Graphic/graphicscontext.h"
 #include "Graphic/Rendering/renderer.h"
 #include "Scene/scene.h"
@@ -42,6 +43,12 @@
 //Configuration config(lua);
 
 int main(int argc, char* argv[]) {
+	//REGISTER_TYPE(Instance);
+	REGISTER_TYPE(Part);
+	REGISTER_TYPE(Model);
+	REGISTER_TYPE(Script);
+	//REGISTER_TYPE(MeshPart);
+
 	GraphicsContext graphics;
 	if (!graphics.initialize("No Name Engine", 1280, 720)) {
 		std::cerr << "Failed to iniitalize graphics context" << std::endl;

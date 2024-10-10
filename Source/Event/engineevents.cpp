@@ -2,5 +2,4 @@
 
 namespace EngineEvents {
     Event<const std::string&, LuaMessageType> LuaMessageEvent;
-    Event<Script&> OpenScriptEvent;
 }

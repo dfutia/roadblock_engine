@@ -87,6 +87,9 @@
     <ClCompile Include="Source\Asset\assetmanager.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Reflection\typeregistry.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Scene\Nodes\instance.h">
@@ -234,6 +237,12 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Source\Scene\Nodes\meshpart.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Reflection\reflectable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Reflection\typeregistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

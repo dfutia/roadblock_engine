@@ -11,15 +11,15 @@
 
 class Script : public Instance {
 public:
-	std::string content;
-	std::string filename;
-	bool enabled;
-
 	Script(const std::string& scriptName = "Script") : Instance() {
 		name = scriptName;
 		filename = "Game/" + scriptName + ".lua";
 		enabled = true;
 		createFile();
+	}
+
+	std::string getTypeName() const override {
+		return "Script";
 	}
 
 	void createFile() {
@@ -59,6 +59,10 @@ public:
 			std::cerr << "Failed to save script file: " << filename << std::endl;
 		}
 	}
+
+	std::string content;
+	std::string filename;
+	bool enabled;
 };
 
 #endif 

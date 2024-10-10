@@ -6,13 +6,17 @@
 
 class Model : public Instance {
 public:
-	Model() { name = "Model"; }
-
 	static void createBindings(sol::state& lua) {
 		lua.new_usertype<Model>("Model",
 			"new", sol::factories([]() { return new Model(); }),
 			sol::base_classes, sol::bases<Instance>()
 		);
+	}
+
+	Model() { name = "Model"; }
+
+	std::string getTypeName() const override {
+		return "Model";
 	}
 };
 

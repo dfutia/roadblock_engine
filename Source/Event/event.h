@@ -2,10 +2,12 @@
 #ifndef EVENT_H
 #define EVENT_H
 
+#include <algorithm> 
 #include <functional>
 #include <vector>
 #include <memory>
 
+// Connecting to an event returns a ConnectionHandle which is needed to disconnect the event
 template<typename... TArgs>
 class Event {
 private:
@@ -59,6 +61,14 @@ public:
             ),
             m_connections.end()
         );
+    }
+
+    size_t ConnectionCount() const {
+        return std::count_if(m_connections.begin(), m_connections.end(),
+            [](const std::weak_ptr<Connection>& weak_conn) {
+                auto conn = weak_conn.lock();
+                return conn && conn->m_connected;
+            });
     }
 
     ~Event() {

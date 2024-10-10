@@ -5,6 +5,11 @@
 #include "Event/event.h"
 #include "Editor/editorcontext.h"
 #include "Scene/Nodes/instance.h"
+#include "Scene/Nodes/script.h"
+#include "Scene/Nodes/model.h"
+#include "Scene/Nodes/part.h"
+#include "Scene/Nodes/meshpart.h"
+
 
 #include <SDL2/SDL.h>
 
@@ -19,6 +24,8 @@ class GraphicsContext;
 class Renderer;
 class ScriptEditor;
 class Script;
+class Model;
+class Part;
 class Scene;
 class Audio;
 
@@ -33,10 +40,6 @@ public:
 	void render(Scene& scene);
 	void openScriptEditor(Script& script);
 	void onFileDrop(SDL_Event& event);
-
-	const std::unordered_map<std::string, CreatorFunction>& getCreators() {
-		return creators;
-	}
 private:
 	EditorContext m_editorContext;
 	GraphicsContext& m_graphics;
@@ -44,7 +47,6 @@ private:
 	Event<Script&>::ConnectionHandle scriptOpenConnection;
 
 	std::vector<std::unique_ptr<EditorPanel>> m_panels;
-	std::unordered_map<std::string, CreatorFunction> creators;
 
 	void imguiBegin();
 	void imguiEnd();
@@ -52,15 +54,10 @@ private:
 	void displayPanels();
 
 	std::unique_ptr<Instance> create(const std::string& typeName) {
-		auto it = creators.find(typeName);
-		if (it != creators.end()) {
-			return it->second();
-		}
+		if (typeName == "Script") return std::make_unique<Script>();
+		if (typeName == "Part") return std::make_unique<Part>();
+		if (typeName == "Model") return std::make_unique<Model>();
 		return nullptr;
-	}
-
-	void registerType(const std::string& typeName, CreatorFunction creator) {
-		creators[typeName] = creator;
 	}
 };
 

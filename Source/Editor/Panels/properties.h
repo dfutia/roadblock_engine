@@ -8,6 +8,7 @@
 #include "Scene/Nodes/script.h"
 #include "Scene/Nodes/model.h"
 #include "Scene/Nodes/part.h"
+#include "Scene/Nodes/meshpart.h"
 
 #include <imgui.h>
 #include <glm/gtx/matrix_decompose.hpp>
@@ -28,6 +29,7 @@ public:
         Script* script = dynamic_cast<Script*>(selected);
         Model* model = dynamic_cast<Model*>(selected);
         Part* part = dynamic_cast<Part*>(selected);
+        MeshPart* meshPart = dynamic_cast<MeshPart*>(selected);
 
         if (script) {
             displayScript(script);
@@ -39,6 +41,10 @@ public:
 
         if (part) {
             displayPart(part);
+        }
+
+        if (meshPart) {
+            displayMeshPart(meshPart);
         }
         ImGui::End();
     }
@@ -62,6 +68,47 @@ private:
     }
 
     void displayPart(Part* part) {
+        static std::string nameBuffer = part->name;
+        if (ImGui::InputText("Name", &nameBuffer[0], nameBuffer.capacity())) {
+            part->name = nameBuffer;
+        }
+
+        glm::vec4 color = part->getColor();
+        if (ImGui::ColorEdit4("Color", glm::value_ptr(color))) {
+            part->setColor(color);
+        }
+
+        glm::mat4& transform = part->transform;
+
+        glm::vec3 position, scale, skew;
+        glm::quat rotation;
+        glm::vec4 perspective;
+        glm::decompose(transform, scale, rotation, position, skew, perspective);
+
+        glm::vec3 rotationEuler = glm::degrees(glm::eulerAngles(rotation));
+
+        // Display and edit position
+        if (ImGui::DragFloat3("Position", glm::value_ptr(position), 0.1f)) {
+            // Update transform
+            transform = glm::translate(glm::mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(glm::mat4(1.0f), scale);
+        }
+
+        // Display and edit rotation
+        if (ImGui::DragFloat3("Rotation", glm::value_ptr(rotationEuler), 0.1f)) {
+            // Convert Euler angles back to quaternion
+            rotation = glm::quat(glm::radians(rotationEuler));
+            // Update transform
+            transform = glm::translate(glm::mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(glm::mat4(1.0f), scale);
+        }
+
+        // Display and edit scale
+        if (ImGui::DragFloat3("Scale", glm::value_ptr(scale), 0.1f, 0.01f, 100.0f)) {
+            // Update transform
+            transform = glm::translate(glm::mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(glm::mat4(1.0f), scale);
+        }
+    }
+
+    void displayMeshPart(MeshPart* part) {
         static std::string nameBuffer = part->name;
         if (ImGui::InputText("Name", &nameBuffer[0], nameBuffer.capacity())) {
             part->name = nameBuffer;
