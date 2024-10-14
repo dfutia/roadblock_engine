@@ -18,13 +18,6 @@ public:
         registeredTypeNames.push_back(name);
 	}
 
-    //std::unique_ptr<Reflectable> createInstance(const std::string& name) {
-    //    auto it = creators.find(name);
-    //    if (it != creators.end()) {
-    //        return it->second();
-    //    }
-    //    return nullptr;
-    //}
     std::unique_ptr<Instance> createInstance(const std::string& name) {
         auto it = creators.find(name);
         if (it != creators.end()) {

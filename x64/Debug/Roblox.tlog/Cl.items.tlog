@@ -1,6 +1,7 @@
 D:\Main\Projects\Roblox\Roblox\Compile\glad.c;D:\Main\Projects\Roblox\Roblox\x64\Debug\glad.obj
 D:\Main\Projects\Roblox\Roblox\Compile\stb.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\stb.obj
 D:\Main\Projects\Roblox\Roblox\Source\Asset\assetmanager.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\assetmanager.obj
+D:\Main\Projects\Roblox\Roblox\Source\Asset\materialmanager.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\materialmanager.obj
 D:\Main\Projects\Roblox\Roblox\Source\Editor\editor.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\editor.obj
 D:\Main\Projects\Roblox\Roblox\Source\Event\engineevents.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\engineevents.obj
 D:\Main\Projects\Roblox\Roblox\Source\filesystem.cpp;D:\Main\Projects\Roblox\Roblox\x64\Debug\filesystem.obj

@@ -7,8 +7,7 @@
 
 Scene::Scene(Keyboard& keyboard, Mouse& mouse) : 
 	keyboard(keyboard), mouse(mouse),
-	//sceneShader(std::make_unique<Shader>("Asset/Shaders/basic.vert", "Asset/Shaders/basic.frag")),
-	sceneShader(std::make_unique<Shader>("Asset/Shaders/texture.vert", "Asset/Shaders/texture.frag")),
+	sceneShader(std::make_unique<Shader>("Asset/Shaders/Basic/basic.vert", "Asset/Shaders/Basic/basic.frag")),
 	camera(std::make_unique<Camera>())
 {}
 

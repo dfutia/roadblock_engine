@@ -9,6 +9,7 @@
 #include "Editor/Panels/camerasettings.h"
 #include "Editor/Panels/audioimporter.h"
 #include "Editor/Panels/meshimporter.h"
+#include "Editor/Panels/material.h"
 #include "Graphic/graphicscontext.h"
 #include "Graphic/Rendering/renderer.h"
 #include "Scene/scene.h"
@@ -37,26 +38,27 @@ Editor::Editor(GraphicsContext& graphics, Renderer& renderer, Scene& scene, Audi
 
 	m_panels.push_back(std::make_unique<Console>());
 	m_panels.push_back(std::make_unique<ContentBrowser>());
-	m_panels.push_back(std::make_unique<Viewport>(renderer));
+	m_panels.push_back(std::make_unique<Viewport>(renderer, scene));
 	m_panels.push_back(std::make_unique<Properties>(m_editorContext));
 	m_panels.push_back(std::make_unique<Explorer>(*this, m_editorContext));
 	m_panels.push_back(std::make_unique<CameraSettings>(m_scene.getCamera()));
 	m_panels.push_back(std::make_unique<AudioImporter>(audio));
 	m_panels.push_back(std::make_unique<MeshImporter>(m_scene, m_editorContext));
+	m_panels.push_back(std::make_unique<MaterialPanel>());
 
 	if (auto explorer = dynamic_cast<Explorer*>(m_panels[4].get())) {
-		scriptOpenConnection = explorer->openScriptEvent.Connect([this](Script& script) {
-			openScriptEditor(script);
+		openScriptConnection = explorer->openScriptEvent.Connect([this](Script& script) {
+			onOpenScriptEditor(script);
 		});
 	}
 }
 
 Editor::~Editor() {
+	openScriptConnection.Disconnect();
+
 	ImGui_ImplOpenGL3_Shutdown();
 	ImGui_ImplSDL2_Shutdown();
 	ImGui::DestroyContext();
-
-	scriptOpenConnection.Disconnect();
 }
 
 void Editor::update(Scene& scene) {
@@ -156,20 +158,6 @@ void Editor::displayPanels() {
 	}
 }
 
-void Editor::openScriptEditor(Script& script) {
-	// Check if the script is already open
-	auto it = std::find_if(m_panels.begin(), m_panels.end(),
-		[&script](const std::unique_ptr<EditorPanel>& panel) {
-			auto* editor = dynamic_cast<ScriptEditor*>(panel.get());
-			return editor && &editor->getScript() == &script;
-		});
-
-	if (it == m_panels.end()) {
-		// If not open, create a new ScriptEditor
-		m_panels.push_back(std::make_unique<ScriptEditor>(script));
-	}
-}
-
 void Editor::onFileDrop(SDL_Event& event) {
 	char* filepath = event.drop.file;
 	std::cout << "file dropped: " << filepath << std::endl;
@@ -188,4 +176,28 @@ void Editor::onFileDrop(SDL_Event& event) {
 	}
 
 	SDL_free(filepath);
+}
+
+std::unique_ptr<Instance> Editor::create(const std::string& typeName) {
+	if (typeName == "Script") return std::make_unique<Script>();
+	if (typeName == "Part") return std::make_unique<Part>();
+	if (typeName == "Model") return std::make_unique<Model>();
+	return nullptr;
+}
+
+void Editor::onOpenScriptEditor(Script& script) {
+	ScriptEditor* editorExisits = findScriptEditor(script);
+	if (!editorExisits) {
+		m_panels.push_back(std::make_unique<ScriptEditor>(script));
+	}
+}
+
+ScriptEditor* Editor::findScriptEditor(const Script& script) {
+	auto it = std::find_if(m_panels.begin(), m_panels.end(),
+		[&script](const std::unique_ptr<EditorPanel>& panel) {
+			auto* editor = dynamic_cast<ScriptEditor*>(panel.get());
+			return editor && &editor->getScript() == &script;
+		});
+
+	return it != m_panels.end() ? dynamic_cast<ScriptEditor*>(it->get()) : nullptr;
 }

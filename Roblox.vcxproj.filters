@@ -90,6 +90,9 @@
     <ClCompile Include="Source\Reflection\typeregistry.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Source\Asset\materialmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Source\Scene\Nodes\instance.h">
@@ -245,16 +248,26 @@
     <ClInclude Include="Source\Reflection\typeregistry.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Editor\Panels\material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Asset\materialmanager.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\main.lua" />
-    <None Include="Asset\Shaders\basic.vert" />
-    <None Include="Asset\Shaders\basic.frag" />
+    <None Include="Asset\Shaders\Old\basic.vert" />
+    <None Include="Asset\Shaders\Old\basic.frag" />
     <None Include="Game\config.lua" />
-    <None Include="Asset\Shaders\texture.vert" />
-    <None Include="Asset\Shaders\texture.frag" />
-    <None Include="Asset\Shaders\skybox.frag" />
-    <None Include="Asset\Shaders\skybox.vert" />
+    <None Include="Asset\Shaders\Old\texture.vert" />
+    <None Include="Asset\Shaders\Old\texture.frag" />
+    <None Include="Asset\Shaders\Old\skybox.frag" />
+    <None Include="Asset\Shaders\Old\skybox.vert" />
+    <None Include="Asset\Shaders\Phong\phong.vert" />
+    <None Include="Asset\Shaders\Phong\phong.frag" />
+    <None Include="Asset\Shaders\Basic\basic.vert" />
+    <None Include="Asset\Shaders\Basic\basic.frag" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Source\test.txt" />

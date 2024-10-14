@@ -38,27 +38,26 @@ public:
 
 	void update(Scene& scene);
 	void render(Scene& scene);
-	void openScriptEditor(Script& script);
 	void onFileDrop(SDL_Event& event);
 private:
-	EditorContext m_editorContext;
-	GraphicsContext& m_graphics;
-	Scene& m_scene;
-	Event<Script&>::ConnectionHandle scriptOpenConnection;
-
-	std::vector<std::unique_ptr<EditorPanel>> m_panels;
-
 	void imguiBegin();
 	void imguiEnd();
 	void displayMainMenu();
 	void displayPanels();
+	std::unique_ptr<Instance> create(const std::string& typeName);
 
-	std::unique_ptr<Instance> create(const std::string& typeName) {
-		if (typeName == "Script") return std::make_unique<Script>();
-		if (typeName == "Part") return std::make_unique<Part>();
-		if (typeName == "Model") return std::make_unique<Model>();
-		return nullptr;
-	}
+	void onOpenScriptEditor(Script& script);
+
+	ScriptEditor* findScriptEditor(const Script& script);
+
+	EditorContext m_editorContext;
+	GraphicsContext& m_graphics;
+	Scene& m_scene;
+
+	Event<Script&>::ConnectionHandle openScriptConnection;
+	Event<int, int>::ConnectionHandle viewportResizeConnection;
+
+	std::vector<std::unique_ptr<EditorPanel>> m_panels;
 };
 
 #endif 

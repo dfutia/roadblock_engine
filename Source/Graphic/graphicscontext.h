@@ -18,6 +18,8 @@ public:
 
 	SDL_Window* getWindow() const { return m_window; }
 	SDL_GLContext getGLContext() const { return m_glContext; }
+	int getWindowWidth() const { return m_windowWidth; }
+	int getWindowHeight() const { return m_windowHeight; }
 private:
 	bool initializeSDL();
 	bool createWindow(const std::string& windowTitle, int width, int height);
@@ -26,6 +28,8 @@ private:
 
 	SDL_Window* m_window;
 	SDL_GLContext m_glContext;
+	int m_windowWidth;
+	int m_windowHeight;
 };
 
 #endif 

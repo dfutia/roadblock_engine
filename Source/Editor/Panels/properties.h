@@ -78,34 +78,8 @@ private:
             part->setColor(color);
         }
 
-        glm::mat4& transform = part->transform;
-
-        glm::vec3 position, scale, skew;
-        glm::quat rotation;
-        glm::vec4 perspective;
-        glm::decompose(transform, scale, rotation, position, skew, perspective);
-
-        glm::vec3 rotationEuler = glm::degrees(glm::eulerAngles(rotation));
-
-        // Display and edit position
-        if (ImGui::DragFloat3("Position", glm::value_ptr(position), 0.1f)) {
-            // Update transform
-            transform = glm::translate(glm::mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(glm::mat4(1.0f), scale);
-        }
-
-        // Display and edit rotation
-        if (ImGui::DragFloat3("Rotation", glm::value_ptr(rotationEuler), 0.1f)) {
-            // Convert Euler angles back to quaternion
-            rotation = glm::quat(glm::radians(rotationEuler));
-            // Update transform
-            transform = glm::translate(glm::mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(glm::mat4(1.0f), scale);
-        }
-
-        // Display and edit scale
-        if (ImGui::DragFloat3("Scale", glm::value_ptr(scale), 0.1f, 0.01f, 100.0f)) {
-            // Update transform
-            transform = glm::translate(glm::mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(glm::mat4(1.0f), scale);
-        }
+        displayTransform(part->transform);
+        displayMaterial(part);
     }
 
     void displayMeshPart(MeshPart* part) {
@@ -119,8 +93,11 @@ private:
             part->setColor(color);
         }
 
-        glm::mat4& transform = part->transform;
+        displayTransform(part->transform);
+        displayMaterial(part);
+    }
 
+    void displayTransform(glm::mat4& transform) {
         glm::vec3 position, scale, skew;
         glm::quat rotation;
         glm::vec4 perspective;
@@ -128,24 +105,45 @@ private:
 
         glm::vec3 rotationEuler = glm::degrees(glm::eulerAngles(rotation));
 
-        // Display and edit position
         if (ImGui::DragFloat3("Position", glm::value_ptr(position), 0.1f)) {
-            // Update transform
             transform = glm::translate(glm::mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(glm::mat4(1.0f), scale);
         }
 
-        // Display and edit rotation
         if (ImGui::DragFloat3("Rotation", glm::value_ptr(rotationEuler), 0.1f)) {
-            // Convert Euler angles back to quaternion
             rotation = glm::quat(glm::radians(rotationEuler));
-            // Update transform
             transform = glm::translate(glm::mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(glm::mat4(1.0f), scale);
         }
 
-        // Display and edit scale
         if (ImGui::DragFloat3("Scale", glm::value_ptr(scale), 0.1f, 0.01f, 100.0f)) {
-            // Update transform
             transform = glm::translate(glm::mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(glm::mat4(1.0f), scale);
+        }
+    }
+
+    void displayMaterial(Part* part) {
+        displayMaterialCommon(part->getMaterialName(), [part](const std::string& materialName) {
+            part->setMaterial(materialName);
+            });
+    }
+
+    void displayMaterial(MeshPart* meshPart) {
+        displayMaterialCommon(meshPart->getMaterialName(), [meshPart](const std::string& materialName) {
+            meshPart->setMaterial(materialName);
+            });
+    }
+
+    void displayMaterialCommon(const std::string& currentMaterialName, std::function<void(const std::string&)> setMaterialFunc) {
+        if (ImGui::BeginCombo("Material", currentMaterialName.c_str())) {
+            const auto& materials = MaterialManager::getInstance().getAllMaterials();
+            for (const auto& [name, material] : materials) {
+                bool isSelected = (currentMaterialName == name);
+                if (ImGui::Selectable(name.c_str(), isSelected)) {
+                    setMaterialFunc(name);
+                }
+                if (isSelected) {
+                    ImGui::SetItemDefaultFocus();
+                }
+            }
+            ImGui::EndCombo();
         }
     }
 };

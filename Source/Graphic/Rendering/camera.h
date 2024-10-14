@@ -31,6 +31,10 @@ public:
 	glm::mat4 getViewMatrix();
 	glm::mat4 getProjectionMatrix();
     glm::vec3 getPosition();
+
+    void setAspectRatio(float aspectRatio) {
+        m_aspectRatio = aspectRatio;
+    }
 private:
     glm::vec3 m_position;
     glm::vec3 m_front;
@@ -44,6 +48,8 @@ private:
     //float m_movementSpeed;
     //float m_mouseSensitivity;
     float m_zoom;
+
+    float m_aspectRatio;
 
     void updateCameraVectors();
 };

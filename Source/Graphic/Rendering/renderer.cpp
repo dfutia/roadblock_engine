@@ -11,16 +11,16 @@
 #include "Asset/textureloader.h"
 
 Renderer::Renderer(int width, int height, GraphicsContext& graphics) : 
-	m_width(width), m_height(height),
+	m_renderWidth(width), m_renderHeight(height),
 	m_graphics(graphics) 
 {
 	glEnable(GL_DEPTH_TEST);
-	m_currentFramebuffer = std::make_unique<Framebuffer>(m_width, m_height);
+	m_currentFramebuffer = std::make_unique<Framebuffer>(m_renderWidth, m_renderHeight);
 }
 
 void Renderer::beginFrame() {
 	m_currentFramebuffer->bind();
-	glViewport(0, 0, m_width, m_height);
+	glViewport(0, 0, m_renderWidth, m_renderHeight);
 	glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
 	glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 }
@@ -41,8 +41,8 @@ void Renderer::render(Scene& scene) {
 	//shader->setMat4("model", model);
 	shader->setMat4("view", view);
 	shader->setMat4("projection", projection);
-	shader->setVec3("lightPos", glm::vec3(5.0f, 5.0f, 5.0f));
-	shader->setVec3("viewPos", camera->getPosition());
+	//shader->setVec3("lightPos", glm::vec3(5.0f, 5.0f, 5.0f));
+	//shader->setVec3("viewPos", camera->getPosition());
 
 	for (auto& instance : scene.getInstances()) {
 		shader->setMat4("model", instance->transform);
@@ -52,31 +52,47 @@ void Renderer::render(Scene& scene) {
 
 		if (part) {
 			Mesh& mesh = part->getMesh();
-			//Material* material = mesh.material;
+			Material* material = mesh.material;
 
-			//shader->setVec3("material.ambient", material->ambient);
-			//shader->setVec3("material.diffuse", material->diffuse);
-			//shader->setVec3("material.specular", material->specular);
-			//shader->setFloat("material.shininess", material->shininess);
+			if (!material->textures.empty()) {
+				shader->setBool("useTexture", true);
+			}
 
-			//shader->setVec4("color", part->getColor());
+			shader->setVec3("objectColor", part->getColor());
 
-			//for (unsigned int i = 0; i < material->textures.size(); i++) {
-			//	glActiveTexture(GL_TEXTURE0 + i); // activate the texture unit
-			//	glBindTexture(GL_TEXTURE_2D, material->textures[i]->id); // bind the texture to the active unit
-			//	std::string uniformName = "textures[" + std::to_string(i) + "]";
-			//	shader->setInt(uniformName, i); // tell shader which unit the texture is at
-			//}
-			//shader->setInt("numTextures", material->textures.size());
+			shader->setVec3("material.ambient", material->ambient);
+			shader->setVec3("material.diffuse", material->diffuse);
+			shader->setVec3("material.specular", material->specular);
+			shader->setFloat("material.shininess", material->shininess);
+
+			for (unsigned int i = 0; i < material->textures.size(); i++) {
+				glActiveTexture(GL_TEXTURE0 + i); 
+				glBindTexture(GL_TEXTURE_2D, material->textures[i]->id);
+				std::string uniformName = "textures[" + std::to_string(i) + "]";
+				shader->setInt(uniformName, i); 
+			}
+			shader->setInt("numTextures", material->textures.size());
 
 			glBindVertexArray(mesh.vao);
 			glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
+
+			for (unsigned int i = 0; i < material->textures.size(); i++) {
+				glActiveTexture(GL_TEXTURE0 + i);
+				glBindTexture(GL_TEXTURE_2D, 0);
+			}
+			shader->setInt("numTextures", 0);
 		}
 
 		if (meshPart) {
 			Mesh& mesh = meshPart->getMesh();
 			Material* material = mesh.material;
+
+			if (!material->textures.empty()) {
+				shader->setBool("useTexture", true);
+			}
+
+			shader->setVec3("objectColor", meshPart->getColor());
 
 			shader->setVec3("material.ambient", material->ambient);
 			shader->setVec3("material.diffuse", material->diffuse);
@@ -94,10 +110,22 @@ void Renderer::render(Scene& scene) {
 			glBindVertexArray(mesh.vao);
 			glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
+
+			for (unsigned int i = 0; i < material->textures.size(); i++) {
+				glActiveTexture(GL_TEXTURE0 + i);
+				glBindTexture(GL_TEXTURE_2D, 0);
+			}
+			shader->setInt("numTextures", 0);
 		}
 	}
+}
 
-	//static Shader skyboxShader("Asset/Shaders/skybox.vert", "Asset/Shaders/skybox.frag");
+GLuint Renderer::getRenderedTextureID() const {
+	return m_currentFramebuffer->getTextureID();
+}
+
+// SKYBOX CODE START
+// 	//static Shader skyboxShader("Asset/Shaders/skybox.vert", "Asset/Shaders/skybox.frag");
 	//static std::array<std::string, 6> texturePaths = {
 	//	"Asset/Textures/skybox/right.jpg",
 	//	"Asset/Textures/skybox/left.jpg",
@@ -128,11 +156,7 @@ void Renderer::render(Scene& scene) {
 	//glBindVertexArray(0);
 
 	//glDepthFunc(GL_LESS);
-}
-
-GLuint Renderer::getRenderedTextureID() const {
-	return m_currentFramebuffer->getTextureID();
-}
+// SKYBOX CODE END
 
 //static auto texture = loadTextureFromFile("brickwall", "Asset/Textures/brickwall.jpg");
 //static Mesh cube = createCubeMesh(1.0f);

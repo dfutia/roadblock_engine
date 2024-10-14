@@ -85,6 +85,7 @@ int main(int argc, char* argv[]) {
 			case SDL_WINDOWEVENT:
 				if (event.window.event == SDL_WINDOWEVENT_CLOSE) {
 					running = false;
+				} else if (event.window.event == SDL_WINDOWEVENT_SIZE_CHANGED) {
 				}
 				break;
 			case SDL_KEYDOWN:

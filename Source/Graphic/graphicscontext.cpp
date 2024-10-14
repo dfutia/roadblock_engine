@@ -14,6 +14,9 @@ bool GraphicsContext::initialize(const std::string& windowTitle, int width, int 
     if (!createGLContext()) return false;
     if (!initializeGLAD()) return false;
 
+    m_windowWidth = width;
+    m_windowHeight = height;
+
     return true;
 }
 
@@ -42,8 +45,7 @@ bool GraphicsContext::initializeSDL() {
 }
 
 bool GraphicsContext::createWindow(const std::string& windowTitle, int width, int height) {
-    m_window = SDL_CreateWindow(windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED,
-        width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN);
+    m_window = SDL_CreateWindow(windowTitle.c_str(), SDL_WINDOWPOS_CENTERED, SDL_WINDOWPOS_CENTERED, width, height, SDL_WINDOW_OPENGL | SDL_WINDOW_SHOWN | SDL_WINDOW_RESIZABLE);
     if (!m_window) {
         std::cerr << "Window creation failed: " << SDL_GetError() << std::endl;
         return false;

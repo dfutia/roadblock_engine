@@ -47,8 +47,7 @@ glm::mat4 Camera::getViewMatrix() {
 }
 
 glm::mat4 Camera::getProjectionMatrix() {
-    float aspectRatio = 1280 / 720;
-    return glm::perspective(glm::radians(m_zoom), aspectRatio, 0.1f, 1000.0f);
+    return glm::perspective(glm::radians(m_zoom), m_aspectRatio, 0.1f, 1000.0f);
 }
 
 glm::vec3 Camera::getPosition() {

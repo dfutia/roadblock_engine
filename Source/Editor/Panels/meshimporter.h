@@ -8,6 +8,7 @@
 #include "Scene/Nodes/meshpart.h"
 #include "Asset/assetmanager.h"
 #include "Asset/textureloader.h"
+#include "Asset/materialmanager.h"
 
 #include <spdlog/spdlog.h>
 #include <assimp/Importer.hpp>
@@ -39,8 +40,11 @@ private:
     Scene& m_scene;
 
     std::string m_dir;
+    std::string m_currentModelName;
 
     void importMesh(const std::string& filepath) {
+        m_currentModelName = gFilesystem.getFilename(filepath);
+
         Assimp::Importer importer;
         importer.SetPropertyBool(AI_CONFIG_IMPORT_FBX_PRESERVE_PIVOTS, false);
 
@@ -155,26 +159,34 @@ private:
         }
 
         if (assimpMesh->mMaterialIndex >= 0) {
-            aiMaterial* material = scene->mMaterials[assimpMesh->mMaterialIndex];
+            aiMaterial* aiMaterial = scene->mMaterials[assimpMesh->mMaterialIndex];
+
+            std::string materialName = m_currentModelName + "_Material_" + std::to_string(assimpMesh->mMaterialIndex);
+            std::shared_ptr<Material> material = MaterialManager::getInstance().getMaterial(materialName);
+            if (!material) {
+                material = MaterialManager::getInstance().createMaterial(materialName);
+            }
 
             aiColor3D color(0.0f, 0.0f, 0.0f);
             float shininess;
 
-            material->Get(AI_MATKEY_COLOR_AMBIENT, color);
-            mesh->material->ambient = glm::vec3(color.r, color.g, color.b);
+            aiMaterial->Get(AI_MATKEY_COLOR_AMBIENT, color);
+            material->ambient = glm::vec3(color.r, color.g, color.b);
 
-            material->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-            mesh->material->diffuse = glm::vec3(color.r, color.g, color.b);
+            aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, color);
+            material->diffuse = glm::vec3(color.r, color.g, color.b);
 
-            material->Get(AI_MATKEY_COLOR_SPECULAR, color);
-            mesh->material->specular = glm::vec3(color.r, color.g, color.b);
+            aiMaterial->Get(AI_MATKEY_COLOR_SPECULAR, color);
+            material->specular = glm::vec3(color.r, color.g, color.b);
 
-            material->Get(AI_MATKEY_SHININESS, shininess);
-            mesh->material->shininess = shininess;
+            aiMaterial->Get(AI_MATKEY_SHININESS, shininess);
+            material->shininess = shininess;
 
-            loadMaterialTextures(mesh, material, aiTextureType_DIFFUSE, "texture_diffuse", scene);
-            loadMaterialTextures(mesh, material, aiTextureType_SPECULAR, "texture_specular", scene);
-            loadMaterialTextures(mesh, material, aiTextureType_HEIGHT, "texture_normal", scene);
+            loadMaterialTextures(material, aiMaterial, aiTextureType_DIFFUSE, "texture_diffuse", scene);
+            loadMaterialTextures(material, aiMaterial, aiTextureType_SPECULAR, "texture_specular", scene);
+            loadMaterialTextures(material, aiMaterial, aiTextureType_HEIGHT, "texture_normal", scene);
+
+            mesh->material = material.get();
         }
 
         glGenVertexArrays(1, &mesh->vao);
@@ -208,7 +220,7 @@ private:
         glBindVertexArray(0);
     }
 
-    void loadMaterialTextures(Mesh* mesh, aiMaterial* mat, aiTextureType type, std::string typeName, const aiScene* scene) {
+    void loadMaterialTextures(std::shared_ptr<Material> material, aiMaterial* mat, aiTextureType type, std::string typeName, const aiScene* scene) {
         for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
             aiString str;
             mat->GetTexture(type, i, &str);
@@ -219,7 +231,7 @@ private:
             if (!texture) {
                 const aiTexture* embeddedTexture = scene->GetEmbeddedTexture(str.C_Str());
                 if (embeddedTexture) {
-                    //texture = TextureLoader::loadFromMemory(embeddedTexture);
+                    // texture = TextureLoader::loadFromMemory(embeddedTexture);
                 }
                 else {
                     std::string fullPath = m_dir + '/' + textureKey;
@@ -232,7 +244,7 @@ private:
             }
 
             if (texture) {
-                mesh->material->textures.push_back(texture);
+                material->textures.push_back(texture);
             }
         }
     }

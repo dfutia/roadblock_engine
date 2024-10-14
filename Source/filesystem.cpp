@@ -190,3 +190,21 @@ std::string Filesystem::getParentDirectory(const std::string& filepath) {
     std::filesystem::path path(filepath);
     return path.parent_path().string();
 }
+
+std::string Filesystem::getFilename(const std::string& filepath) {
+    size_t lastSlash = filepath.find_last_of("/\\");
+    size_t lastDot = filepath.find_last_of(".");
+
+    if (lastSlash == std::string::npos) {
+        lastSlash = 0;
+    }
+    else {
+        lastSlash++;
+    }
+
+    if (lastDot == std::string::npos || lastDot < lastSlash) {
+        return filepath.substr(lastSlash);
+    }
+
+    return filepath.substr(lastSlash, lastDot - lastSlash);
+}

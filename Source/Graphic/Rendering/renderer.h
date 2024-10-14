@@ -20,9 +20,11 @@ public:
 	void render(Scene& scene);
 
 	GLuint getRenderedTextureID() const;
+	int getRenderWidth() const { return m_renderWidth; }
+	int getRenderHeight() const { return m_renderHeight; }
 private:
 	GraphicsContext&  m_graphics;
-	int m_width, m_height;
+	int m_renderWidth, m_renderHeight;
 	std::unique_ptr<Framebuffer> m_currentFramebuffer;
 };
 
