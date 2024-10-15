@@ -50,6 +50,18 @@ int main(int argc, char* argv[]) {
 	REGISTER_PROPERTY(Part, Scale, "Transform", getScale, setScale);
 	REGISTER_PROPERTY(Part, Color, "Appearance", getColor, setColor);
 
+	REGISTER_TYPE(Script);
+	REGISTER_PROPERTY(Script, Name, "Data", getName, setName);
+
+	REGISTER_TYPE(Model);
+
+	REGISTER_TYPE(MeshPart);
+	REGISTER_PROPERTY(MeshPart, Name, "Data", getName, setName);
+	REGISTER_PROPERTY(MeshPart, Position, "Transform", getPosition, setPosition);
+	REGISTER_PROPERTY(MeshPart, Rotation, "Transform", getRotation, setRotation);
+	REGISTER_PROPERTY(MeshPart, Scale, "Transform", getScale, setScale);
+	REGISTER_PROPERTY(MeshPart, Color, "Appearance", getColor, setColor);
+
 	//REGISTER_TYPE(Instance);
 	//REGISTER_TYPE(Part);
 	//REGISTER_TYPE(Model);

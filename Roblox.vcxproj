@@ -63,6 +63,7 @@
     <ClInclude Include="Source\Reflection\reflectable.h" />
     <ClInclude Include="Source\Reflection\typedproperty.h" />
     <ClInclude Include="Source\Reflection\typeregistry.h" />
+    <ClInclude Include="Source\Scene\Nodes\basepart.h" />
     <ClInclude Include="Source\Scene\Nodes\meshpart.h" />
     <ClInclude Include="Source\Scene\Nodes\model.h" />
     <ClInclude Include="Source\Scene\Nodes\part.h" />

@@ -46,10 +46,13 @@ Editor::Editor(GraphicsContext& graphics, Renderer& renderer, Scene& scene, Audi
 	m_panels.push_back(std::make_unique<MeshImporter>(m_scene, m_editorContext));
 	m_panels.push_back(std::make_unique<MaterialPanel>());
 
-	if (auto explorer = dynamic_cast<Explorer*>(m_panels[4].get())) {
+	auto it = m_panels.begin();
+	std::advance(it, 4);
+	if (auto explorer = dynamic_cast<Explorer*>(it->get())) {
 		openScriptConnection = explorer->openScriptEvent.Connect([this](Script& script) {
+			std::cout << "received openScript event" << std::endl;
 			onOpenScriptEditor(script);
-		});
+			});
 	}
 }
 
@@ -153,8 +156,9 @@ void Editor::displayPanels() {
 	ImGui::ShowDemoWindow();
 
 	for (auto& panel : m_panels) {
-		if (!panel->isVisible()) { continue; }
-		panel->render();
+		if (panel && panel->isVisible()) {
+			panel->render();
+		}
 	}
 }
 
@@ -188,7 +192,8 @@ std::unique_ptr<Instance> Editor::create(const std::string& typeName) {
 void Editor::onOpenScriptEditor(Script& script) {
 	ScriptEditor* editorExisits = findScriptEditor(script);
 	if (!editorExisits) {
-		m_panels.push_back(std::make_unique<ScriptEditor>(script));
+		auto scriptEditor = std::make_unique<ScriptEditor>(script);
+		m_panels.push_back(std::move(scriptEditor));
 	}
 }
 

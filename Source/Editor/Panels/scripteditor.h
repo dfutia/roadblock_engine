@@ -22,7 +22,7 @@ public:
         m_editor.SetText(m_script.content);
 
         std::stringstream ss;
-        ss << "Script Editor - " << m_script.name << " ##" << reinterpret_cast<uintptr_t>(&m_script);
+        ss << "Script Editor - " << m_script.getName() << " ##" << reinterpret_cast<uintptr_t>(&m_script);
         m_panelName = ss.str();
     }
 
@@ -46,9 +46,9 @@ public:
         ImGui::End();
     }
 
-    Script& getScript() { return m_script; }
+    const Script& getScript() const { return m_script; }
 private:
-   std::string m_panelName;
+    std::string m_panelName;
     Script& m_script;
     TextEditor m_editor;
 };

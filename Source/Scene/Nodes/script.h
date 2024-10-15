@@ -11,11 +11,15 @@
 
 class Script : public Instance {
 public:
-	Script(const std::string& scriptName = "Script") : Instance() {
-		name = scriptName;
-		filename = "Game/" + scriptName + ".lua";
+	Script(const std::string& name = "Script") : Instance(name) {
+		filename = "Game/" + name + ".lua";
 		enabled = true;
 		createFile();
+		std::cout << "script created" << std::endl;
+	}
+
+	~Script() {
+		std::cout << "script destroyed" << std::endl;
 	}
 
 	std::string getTypeName() const override {
@@ -26,7 +30,7 @@ public:
 		std::filesystem::create_directories(std::filesystem::path(filename).parent_path());
 		std::ofstream file(filename);
 		if (file.is_open()) {
-			file << "-- " << name << " script\n\n";
+			file << "-- " << getName() << " script\n\n";
 			file.close();
 		}
 		else {

@@ -45,20 +45,21 @@ void Renderer::render(Scene& scene) {
 	//shader->setVec3("viewPos", camera->getPosition());
 
 	for (auto& instance : scene.getInstances()) {
-		shader->setMat4("model", instance->transform);
+		//shader->setMat4("model", instance->transform);
 
-		Part* part = dynamic_cast<Part*>(instance.get());
-		MeshPart* meshPart = dynamic_cast<MeshPart*>(instance.get());
+		BasePart* basePart = dynamic_cast<BasePart*>(instance.get());
 
-		if (part) {
-			Mesh& mesh = part->getMesh();
+		if (basePart) {
+			Mesh mesh = basePart->getMesh();
 			Material* material = mesh.material;
+
+			shader->setMat4("model", basePart->getTransform());
 
 			if (!material->textures.empty()) {
 				shader->setBool("useTexture", true);
 			}
 
-			shader->setVec3("objectColor", part->getColor());
+			shader->setVec3("objectColor", basePart->getColor());
 
 			shader->setVec3("material.ambient", material->ambient);
 			shader->setVec3("material.diffuse", material->diffuse);
@@ -84,39 +85,39 @@ void Renderer::render(Scene& scene) {
 			shader->setInt("numTextures", 0);
 		}
 
-		if (meshPart) {
-			Mesh& mesh = meshPart->getMesh();
-			Material* material = mesh.material;
+		//if (meshPart) {
+		//	Mesh& mesh = meshPart->getMesh();
+		//	Material* material = mesh.material;
 
-			if (!material->textures.empty()) {
-				shader->setBool("useTexture", true);
-			}
+		//	if (!material->textures.empty()) {
+		//		shader->setBool("useTexture", true);
+		//	}
 
-			shader->setVec3("objectColor", meshPart->getColor());
+		//	shader->setVec3("objectColor", meshPart->getColor());
 
-			shader->setVec3("material.ambient", material->ambient);
-			shader->setVec3("material.diffuse", material->diffuse);
-			shader->setVec3("material.specular", material->specular);
-			shader->setFloat("material.shininess", material->shininess);
+		//	shader->setVec3("material.ambient", material->ambient);
+		//	shader->setVec3("material.diffuse", material->diffuse);
+		//	shader->setVec3("material.specular", material->specular);
+		//	shader->setFloat("material.shininess", material->shininess);
 
-			for (unsigned int i = 0; i < material->textures.size(); i++) {
-				glActiveTexture(GL_TEXTURE0 + i); // activate the texture unit
-				glBindTexture(GL_TEXTURE_2D, material->textures[i]->id); // bind the texture to the active unit
-				std::string uniformName = "textures[" + std::to_string(i) + "]";
-				shader->setInt(uniformName, i); // tell shader which unit the texture is at
-			}
-			shader->setInt("numTextures", material->textures.size());
+		//	for (unsigned int i = 0; i < material->textures.size(); i++) {
+		//		glActiveTexture(GL_TEXTURE0 + i); // activate the texture unit
+		//		glBindTexture(GL_TEXTURE_2D, material->textures[i]->id); // bind the texture to the active unit
+		//		std::string uniformName = "textures[" + std::to_string(i) + "]";
+		//		shader->setInt(uniformName, i); // tell shader which unit the texture is at
+		//	}
+		//	shader->setInt("numTextures", material->textures.size());
 
-			glBindVertexArray(mesh.vao);
-			glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
-			glBindVertexArray(0);
+		//	glBindVertexArray(mesh.vao);
+		//	glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
+		//	glBindVertexArray(0);
 
-			for (unsigned int i = 0; i < material->textures.size(); i++) {
-				glActiveTexture(GL_TEXTURE0 + i);
-				glBindTexture(GL_TEXTURE_2D, 0);
-			}
-			shader->setInt("numTextures", 0);
-		}
+		//	for (unsigned int i = 0; i < material->textures.size(); i++) {
+		//		glActiveTexture(GL_TEXTURE0 + i);
+		//		glBindTexture(GL_TEXTURE_2D, 0);
+		//	}
+		//	shader->setInt("numTextures", 0);
+		//}
 	}
 
 	//static Shader skyboxShader("Asset/Shaders/Skybox/skybox.vert", "Asset/Shaders/Skybox/skybox.frag");

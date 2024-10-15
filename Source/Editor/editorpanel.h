@@ -10,11 +10,11 @@ public:
 	virtual ~EditorPanel() = default;
 	virtual void render() = 0;
 
-	std::string getName() { return m_name; }
+	const std::string& getName() const { return m_name; }
 
 	void open() { m_open = true; }
 	void close() { m_open = false; }
-	bool isVisible() { return m_open; }
+	const bool isVisible() const { return m_open; }
 protected:
 	std::string m_name;
 	bool m_open;

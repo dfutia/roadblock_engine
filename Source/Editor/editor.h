@@ -57,7 +57,7 @@ private:
 	Event<Script&>::ConnectionHandle openScriptConnection;
 	Event<int, int>::ConnectionHandle viewportResizeConnection;
 
-	std::vector<std::unique_ptr<EditorPanel>> m_panels;
+	std::list<std::unique_ptr<EditorPanel>> m_panels;
 };
 
 #endif 

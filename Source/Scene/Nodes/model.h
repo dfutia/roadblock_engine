@@ -13,7 +13,7 @@ public:
 		);
 	}
 
-	Model() { name = "Model"; }
+	Model() : Instance("Model") {}
 
 	std::string getTypeName() const override {
 		return "Model";

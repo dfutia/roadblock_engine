@@ -27,7 +27,7 @@ public:
         m_editorContext(editorContext), 
         root(std::make_unique<Instance>()) 
     {
-        root->name = "Scene";
+        root->setName("Scene");
         m_editorContext.test = root.get();
     }
 
@@ -45,10 +45,10 @@ private:
 
     void renderTree(Instance* instance) {
         ImGuiTreeNodeFlags flags = ImGuiTreeNodeFlags_OpenOnArrow | ImGuiTreeNodeFlags_OpenOnDoubleClick;
-        if (instance->children.empty()) {
+        if (instance->getChildren().empty()) {
             flags |= ImGuiTreeNodeFlags_Leaf;
         }
-        bool opened = ImGui::TreeNodeEx((void*)(intptr_t)instance, flags, "%s", instance->name.c_str());
+        bool opened = ImGui::TreeNodeEx((void*)(intptr_t)instance, flags, "%s", instance->getName().c_str());
 
         if (ImGui::IsItemClicked() && !ImGui::IsItemToggledOpen()) {
             m_editorContext.selected = instance;
@@ -56,6 +56,7 @@ private:
 
         if (ImGui::IsItemClicked() && ImGui::IsMouseDoubleClicked(0)) {
             if (auto* script = dynamic_cast<Script*>(instance)) {
+                std::cout << "dispatching openScript event" << std::endl;
                 openScriptEvent.Fire(*script);
             }
         }
@@ -63,7 +64,7 @@ private:
         // Drag source
         if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
             ImGui::SetDragDropPayload("INSTANCE_DRAG", &instance, sizeof(Instance*));
-            ImGui::Text("Moving %s", instance->name.c_str());
+            ImGui::Text("Moving %s", instance->getName().c_str());
             ImGui::EndDragDropSource();
         }
 
@@ -92,7 +93,7 @@ private:
         }
 
         if (opened) {
-            for (auto child : instance->children) {
+            for (auto child : instance->getChildren()) {
                 renderTree(child);
             }
             ImGui::TreePop();
@@ -100,12 +101,12 @@ private:
     }
 
     bool isAncestor(Instance* potentialAncestor, Instance* instance) {
-        Instance* parent = instance->parent;
+        Instance* parent = instance->getParent();
         while (parent != nullptr) {
             if (parent == potentialAncestor) {
                 return true;
             }
-            parent = parent->parent;
+            parent = parent->getParent();
         }
         return false;
     }

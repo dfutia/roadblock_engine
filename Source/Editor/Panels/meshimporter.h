@@ -253,8 +253,8 @@ private:
         std::string filename = filepath.substr(filepath.find_last_of("/\\") + 1);
         filename = filename.substr(0, filename.find_last_of('.'));
 
-        auto meshPart = std::make_unique<MeshPart>(mesh);
-        meshPart->name = filename;
+        auto meshPart = std::make_unique<MeshPart>(*mesh);
+        meshPart->setName(filename);
         meshPart->setParent(m_editorContext.test);
 
         // Add the part to the scene
