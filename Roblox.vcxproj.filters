@@ -254,20 +254,22 @@
     <ClInclude Include="Source\Asset\materialmanager.h">
       <Filter>Header Files</Filter>
     </ClInclude>
+    <ClInclude Include="Source\Reflection\property.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Source\Reflection\typedproperty.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="Game\main.lua" />
-    <None Include="Asset\Shaders\Old\basic.vert" />
-    <None Include="Asset\Shaders\Old\basic.frag" />
     <None Include="Game\config.lua" />
-    <None Include="Asset\Shaders\Old\texture.vert" />
-    <None Include="Asset\Shaders\Old\texture.frag" />
-    <None Include="Asset\Shaders\Old\skybox.frag" />
-    <None Include="Asset\Shaders\Old\skybox.vert" />
+    <None Include="Asset\Shaders\Skybox\skybox.frag" />
     <None Include="Asset\Shaders\Phong\phong.vert" />
     <None Include="Asset\Shaders\Phong\phong.frag" />
     <None Include="Asset\Shaders\Basic\basic.vert" />
     <None Include="Asset\Shaders\Basic\basic.frag" />
+    <None Include="Asset\Shaders\Skybox\skybox.vert" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="Source\test.txt" />

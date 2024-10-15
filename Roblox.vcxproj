@@ -59,7 +59,9 @@
     <ClInclude Include="Source\filesystem.h" />
     <ClInclude Include="Source\Graphic\Resources\material.h" />
     <ClInclude Include="Source\meshimporter.h" />
+    <ClInclude Include="Source\Reflection\property.h" />
     <ClInclude Include="Source\Reflection\reflectable.h" />
+    <ClInclude Include="Source\Reflection\typedproperty.h" />
     <ClInclude Include="Source\Reflection\typeregistry.h" />
     <ClInclude Include="Source\Scene\Nodes\meshpart.h" />
     <ClInclude Include="Source\Scene\Nodes\model.h" />
@@ -104,14 +106,10 @@
   <ItemGroup>
     <None Include="Asset\Shaders\Basic\basic.frag" />
     <None Include="Asset\Shaders\Basic\basic.vert" />
-    <None Include="Asset\Shaders\Old\basic.frag" />
-    <None Include="Asset\Shaders\Old\basic.vert" />
     <None Include="Asset\Shaders\Phong\phong.frag" />
     <None Include="Asset\Shaders\Phong\phong.vert" />
-    <None Include="Asset\Shaders\Old\skybox.frag" />
-    <None Include="Asset\Shaders\Old\skybox.vert" />
-    <None Include="Asset\Shaders\Old\texture.frag" />
-    <None Include="Asset\Shaders\Old\texture.vert" />
+    <None Include="Asset\Shaders\Skybox\skybox.frag" />
+    <None Include="Asset\Shaders\Skybox\skybox.vert" />
     <None Include="Game\config.lua" />
     <None Include="Game\main.lua" />
   </ItemGroup>

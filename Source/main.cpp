@@ -43,10 +43,17 @@
 //Configuration config(lua);
 
 int main(int argc, char* argv[]) {
-	//REGISTER_TYPE(Instance);
 	REGISTER_TYPE(Part);
-	REGISTER_TYPE(Model);
-	REGISTER_TYPE(Script);
+	REGISTER_PROPERTY(Part, Name, "Data", getName, setName);
+	REGISTER_PROPERTY(Part, Position, "Transform", getPosition, setPosition);
+	REGISTER_PROPERTY(Part, Rotation, "Transform", getRotation, setRotation);
+	REGISTER_PROPERTY(Part, Scale, "Transform", getScale, setScale);
+	REGISTER_PROPERTY(Part, Color, "Appearance", getColor, setColor);
+
+	//REGISTER_TYPE(Instance);
+	//REGISTER_TYPE(Part);
+	//REGISTER_TYPE(Model);
+	//REGISTER_TYPE(Script);
 	//REGISTER_TYPE(MeshPart);
 
 	GraphicsContext graphics;

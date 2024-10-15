@@ -9,11 +9,16 @@
 #include "Scene/Nodes/model.h"
 #include "Scene/Nodes/part.h"
 #include "Scene/Nodes/meshpart.h"
+#include "Reflection/property.h"
 
 #include <imgui.h>
 #include <glm/gtx/matrix_decompose.hpp>
 #include <glm/gtc/type_ptr.hpp>
 #include <glm/gtx/euler_angles.hpp>
+
+#include <string>
+#include <map>
+#include <vector>
 
 class Properties : public EditorPanel {
 public:
@@ -25,125 +30,74 @@ public:
         ImGui::Begin("Properties", &m_open);
 
         Instance* selected = m_editorContext.selected;
+        if (selected) {
+            ImGui::Text("Type: %s", selected->getTypeName().c_str());
 
-        Script* script = dynamic_cast<Script*>(selected);
-        Model* model = dynamic_cast<Model*>(selected);
-        Part* part = dynamic_cast<Part*>(selected);
-        MeshPart* meshPart = dynamic_cast<MeshPart*>(selected);
-
-        if (script) {
-            displayScript(script);
+            displayProperties(selected);
         }
 
-        if (model) {
-            displayModel(model);
-        }
-
-        if (part) {
-            displayPart(part);
-        }
-
-        if (meshPart) {
-            displayMeshPart(meshPart);
-        }
         ImGui::End();
     }
 private:
     EditorContext& m_editorContext;
 
-    void displayScript(Script* script) { 
-        static std::string nameBuffer = script->name;
-        if (ImGui::InputText("Name", &nameBuffer[0], nameBuffer.capacity())) {
-            script->name = nameBuffer;
+    void displayProperties(Instance* instance) {
+        const auto& properties = instance->getProperties();
+
+        std::map<std::string, std::vector<const Property*>> sections;
+
+        // Group properties by section
+        for (const auto& prop : properties) {
+            sections[prop->getSection()].push_back(prop.get());
         }
 
-        ImGui::Checkbox("Enabled", &script->enabled);
-    }
-
-    void displayModel(Model* model) {
-        static std::string nameBuffer = model->name;
-        if (ImGui::InputText("Name", &nameBuffer[0], nameBuffer.capacity())) {
-            model->name = nameBuffer;
-        }
-    }
-
-    void displayPart(Part* part) {
-        static std::string nameBuffer = part->name;
-        if (ImGui::InputText("Name", &nameBuffer[0], nameBuffer.capacity())) {
-            part->name = nameBuffer;
-        }
-
-        glm::vec4 color = part->getColor();
-        if (ImGui::ColorEdit4("Color", glm::value_ptr(color))) {
-            part->setColor(color);
-        }
-
-        displayTransform(part->transform);
-        displayMaterial(part);
-    }
-
-    void displayMeshPart(MeshPart* part) {
-        static std::string nameBuffer = part->name;
-        if (ImGui::InputText("Name", &nameBuffer[0], nameBuffer.capacity())) {
-            part->name = nameBuffer;
-        }
-
-        glm::vec4 color = part->getColor();
-        if (ImGui::ColorEdit4("Color", glm::value_ptr(color))) {
-            part->setColor(color);
-        }
-
-        displayTransform(part->transform);
-        displayMaterial(part);
-    }
-
-    void displayTransform(glm::mat4& transform) {
-        glm::vec3 position, scale, skew;
-        glm::quat rotation;
-        glm::vec4 perspective;
-        glm::decompose(transform, scale, rotation, position, skew, perspective);
-
-        glm::vec3 rotationEuler = glm::degrees(glm::eulerAngles(rotation));
-
-        if (ImGui::DragFloat3("Position", glm::value_ptr(position), 0.1f)) {
-            transform = glm::translate(glm::mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(glm::mat4(1.0f), scale);
-        }
-
-        if (ImGui::DragFloat3("Rotation", glm::value_ptr(rotationEuler), 0.1f)) {
-            rotation = glm::quat(glm::radians(rotationEuler));
-            transform = glm::translate(glm::mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(glm::mat4(1.0f), scale);
-        }
-
-        if (ImGui::DragFloat3("Scale", glm::value_ptr(scale), 0.1f, 0.01f, 100.0f)) {
-            transform = glm::translate(glm::mat4(1.0f), position) * glm::mat4_cast(rotation) * glm::scale(glm::mat4(1.0f), scale);
-        }
-    }
-
-    void displayMaterial(Part* part) {
-        displayMaterialCommon(part->getMaterialName(), [part](const std::string& materialName) {
-            part->setMaterial(materialName);
-            });
-    }
-
-    void displayMaterial(MeshPart* meshPart) {
-        displayMaterialCommon(meshPart->getMaterialName(), [meshPart](const std::string& materialName) {
-            meshPart->setMaterial(materialName);
-            });
-    }
-
-    void displayMaterialCommon(const std::string& currentMaterialName, std::function<void(const std::string&)> setMaterialFunc) {
-        if (ImGui::BeginCombo("Material", currentMaterialName.c_str())) {
-            const auto& materials = MaterialManager::getInstance().getAllMaterials();
-            for (const auto& [name, material] : materials) {
-                bool isSelected = (currentMaterialName == name);
-                if (ImGui::Selectable(name.c_str(), isSelected)) {
-                    setMaterialFunc(name);
-                }
-                if (isSelected) {
-                    ImGui::SetItemDefaultFocus();
+        // Display properties by section
+        for (const auto& [sectionName, props] : sections) {
+            if (ImGui::CollapsingHeader(sectionName.c_str())) {
+                for (const auto& prop : props) {
+                    displayProperty(instance, prop);
                 }
             }
-            ImGui::EndCombo();
+        }
+    }
+
+    void displayProperty(Instance* instance, const Property* prop) {
+        const std::string& propName = prop->getName();
+        const std::string& typeName = prop->getTypeName();
+
+        if (typeName == "std::string") {
+            std::string* value = static_cast<std::string*>(prop->getValue(instance));
+            std::string uniqueLabel = propName + "##" + std::to_string(reinterpret_cast<uintptr_t>(prop));
+            char buffer[256];
+            strncpy_s(buffer, sizeof(buffer), value->c_str(), _TRUNCATE); // Use strncpy_s instead of strncpy
+            if (ImGui::InputText(uniqueLabel.c_str(), buffer, sizeof(buffer))) {
+                *value = buffer;
+                prop->setValue(instance, value);
+            }
+        }
+        else if (typeName == "float") {
+            float* value = static_cast<float*>(prop->getValue(instance));
+            std::string uniqueLabel = propName + "##" + std::to_string(reinterpret_cast<uintptr_t>(prop));
+            if (ImGui::DragFloat(uniqueLabel.c_str(), value, 0.1f)) {
+                prop->setValue(instance, value);
+            }
+        }
+        else if (typeName == "glm::vec3") {
+            glm::vec3* value = static_cast<glm::vec3*>(prop->getValue(instance));
+            std::string uniqueLabel = propName + "##" + std::to_string(reinterpret_cast<uintptr_t>(prop));
+            if (ImGui::DragFloat3(uniqueLabel.c_str(), glm::value_ptr(*value), 0.1f)) {
+                prop->setValue(instance, value);
+            }
+        }
+        else if (typeName == "glm::vec4") {
+            glm::vec4* value = static_cast<glm::vec4*>(prop->getValue(instance));
+            std::string uniqueLabel = propName + "##" + std::to_string(reinterpret_cast<uintptr_t>(prop));
+            if (ImGui::ColorEdit4(uniqueLabel.c_str(), glm::value_ptr(*value))) {
+                prop->setValue(instance, value);
+            }
+        }
+        else {
+            ImGui::Text("%s: Unsupported type %s", propName.c_str(), typeName.c_str());
         }
     }
 };

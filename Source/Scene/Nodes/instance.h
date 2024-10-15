@@ -25,9 +25,9 @@ public:
 	glm::mat4 getTransform();
 
 	std::string name;
+	glm::mat4 transform;
 	Instance* parent;
 	std::vector<Instance*> children;
-	glm::mat4 transform;
 };
 
 #endif 

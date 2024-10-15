@@ -118,14 +118,8 @@ void Renderer::render(Scene& scene) {
 			shader->setInt("numTextures", 0);
 		}
 	}
-}
 
-GLuint Renderer::getRenderedTextureID() const {
-	return m_currentFramebuffer->getTextureID();
-}
-
-// SKYBOX CODE START
-// 	//static Shader skyboxShader("Asset/Shaders/skybox.vert", "Asset/Shaders/skybox.frag");
+	//static Shader skyboxShader("Asset/Shaders/Skybox/skybox.vert", "Asset/Shaders/Skybox/skybox.frag");
 	//static std::array<std::string, 6> texturePaths = {
 	//	"Asset/Textures/skybox/right.jpg",
 	//	"Asset/Textures/skybox/left.jpg",
@@ -134,7 +128,8 @@ GLuint Renderer::getRenderedTextureID() const {
 	//	"Asset/Textures/skybox/front.jpg",
 	//	"Asset/Textures/skybox/back.jpg"
 	//};
-	//static auto texture = loadCubemap("skybox", texturePaths);
+	//static auto texture = TextureLoader::loadCubemap("skybox", texturePaths);
+	//gAssetManager.addTexture("skybox", texture);
 	//static auto cube = createCubeMesh(1.0f);
 
 	//glDepthFunc(GL_LEQUAL);
@@ -147,7 +142,7 @@ GLuint Renderer::getRenderedTextureID() const {
 
 	//// texture
 	//glActiveTexture(GL_TEXTURE0);
-	//glBindTexture(GL_TEXTURE_CUBE_MAP, gTextureStore.textures["skybox"]->id);
+	//glBindTexture(GL_TEXTURE_CUBE_MAP, gAssetManager.getTexture("skybox")->id);
 	//skyboxShader.setInt("skybox", 0);
 
 	//// mesh
@@ -156,7 +151,11 @@ GLuint Renderer::getRenderedTextureID() const {
 	//glBindVertexArray(0);
 
 	//glDepthFunc(GL_LESS);
-// SKYBOX CODE END
+}
+
+GLuint Renderer::getRenderedTextureID() const {
+	return m_currentFramebuffer->getTextureID();
+}
 
 //static auto texture = loadTextureFromFile("brickwall", "Asset/Textures/brickwall.jpg");
 //static Mesh cube = createCubeMesh(1.0f);
