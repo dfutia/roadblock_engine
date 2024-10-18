@@ -55,6 +55,8 @@ int main(int argc, char* argv[]) {
 
 	REGISTER_TYPE(Model);
 
+	REGISTER_TYPE(Skybox);
+
 	REGISTER_TYPE(MeshPart);
 	REGISTER_PROPERTY(MeshPart, Name, "Data", getName, setName);
 	REGISTER_PROPERTY(MeshPart, Position, "Transform", getPosition, setPosition);
@@ -62,14 +64,8 @@ int main(int argc, char* argv[]) {
 	REGISTER_PROPERTY(MeshPart, Scale, "Transform", getScale, setScale);
 	REGISTER_PROPERTY(MeshPart, Color, "Appearance", getColor, setColor);
 
-	//REGISTER_TYPE(Instance);
-	//REGISTER_TYPE(Part);
-	//REGISTER_TYPE(Model);
-	//REGISTER_TYPE(Script);
-	//REGISTER_TYPE(MeshPart);
-
 	GraphicsContext graphics;
-	if (!graphics.initialize("No Name Engine", 1280, 720)) {
+	if (!graphics.initialize("Roadblock Studio", 1280, 720)) {
 		std::cerr << "Failed to iniitalize graphics context" << std::endl;
 		return -1;
 	}

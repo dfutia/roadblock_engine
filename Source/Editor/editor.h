@@ -9,7 +9,7 @@
 #include "Scene/Nodes/model.h"
 #include "Scene/Nodes/part.h"
 #include "Scene/Nodes/meshpart.h"
-
+#include "Scene/Nodes/skybox.h"
 
 #include <SDL2/SDL.h>
 

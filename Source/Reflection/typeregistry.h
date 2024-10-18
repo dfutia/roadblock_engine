@@ -4,6 +4,7 @@
 
 #include "Reflection/typedproperty.h"
 
+#include <iostream>
 #include <string>
 #include <unordered_map>
 #include <memory>
@@ -19,12 +20,14 @@ public:
 	template<typename T>
 	void registerType(const std::string& name) {
 		creators[name] = []() { return std::make_unique<T>(); };
+        //std::cout << "Registering type: '" << name << "'" << std::endl;
         registeredTypeNames.push_back(name);
 	}
 
     template<typename Class, typename T>
     void registerProperty(const std::string& className, const std::string& propName, const std::string& section,
         T(Class::* getter)() const, void (Class::* setter)(const T&)) {
+        //std::cout << "Registering property: '" << propName << "' for class '" << className << "'" << std::endl;
         properties[className].push_back(std::make_unique<TypedProperty<Class, T>>(propName, section, getter, setter));
     }
 

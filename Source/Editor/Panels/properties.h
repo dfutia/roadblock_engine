@@ -65,6 +65,8 @@ private:
         const std::string& propName = prop->getName();
         const std::string& typeName = prop->getTypeName();
 
+        //std::cout << "Property Name: '" << propName << "', Type: '" << typeName << "'" << std::endl;
+
         if (typeName == "std::string") {
             std::string* value = static_cast<std::string*>(prop->getValue(instance));
             std::string uniqueLabel = propName + "##" + std::to_string(reinterpret_cast<uintptr_t>(prop));

@@ -1,15 +1,15 @@
-#include "assetmanager.h"
+#include "Asset/assetmanager.h"
+#include "Asset/textureloader.h"
+#include "Asset/meshloader.h"
+#include "Asset/materialloader.h"
+#include "Graphic/Resources/mesh.h"
+#include "Graphic/Resources/texture.h"
+#include "Graphic/Resources/material.h"
 
-AssetManager gAssetManager;
+AssetManager g_assetManager;
 
-std::shared_ptr<Texture> AssetManager::getTexture(const std::string& key) {
-    auto it = textures.find(key);
-    if (it != textures.end()) {
-        return it->second;
-    }
-    return nullptr;
-}
-
-void AssetManager::addTexture(const std::string& key, std::shared_ptr<Texture> texture) {
-    textures[key] = texture;
+AssetManager::AssetManager() {
+    RegisterLoader<Texture>(std::make_unique<TextureLoader>());
+    RegisterLoader<Mesh>(std::make_unique<MeshLoader>());
+    RegisterLoader<Material>(std::make_unique<MaterialLoader>());
 }

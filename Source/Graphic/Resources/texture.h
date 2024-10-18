@@ -13,17 +13,16 @@
 
 class Texture {
 public:
-	GLuint id;
-	int width, height, channels;
+    Texture(unsigned int id, int width, int height, int channels, bool isCubemap)
+        : id(id), width(width), height(height), channels(channels), isCubemap(isCubemap) {}
+
+    unsigned int getId() { return id; }
+private:
+    unsigned int id;
+    int width;
+    int height;
+    int channels;
     bool isCubemap;
-
-    // load from file
-    Texture(const std::string& path);
-    // load from memory
-    Texture(const unsigned char* buffer, int bufferSize);
-    Texture(const std::array<std::string, 6>& faces);
-
-    void bind(unsigned int unit = 0);
 };
 
 #endif 

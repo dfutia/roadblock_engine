@@ -3,7 +3,6 @@
 #define BASE_PART_H
 
 #include "Scene/Nodes/instance.h"
-#include "Asset/materialmanager.h"
 #include "Graphic/Resources/mesh.h"
 
 #include <glm/glm.hpp>
@@ -51,10 +50,10 @@ public:
 	}
 
 	void setMaterial(const std::string& materialName) {
-		m_mesh.material = MaterialManager::getInstance().getMaterial(materialName).get();
-		if (!m_mesh.material) {
-			m_mesh.material = MaterialManager::getInstance().createMaterial(materialName).get();
-		}
+		//m_mesh.material = MaterialManager::getInstance().getMaterial(materialName).get();
+		//if (!m_mesh.material) {
+		//	m_mesh.material = MaterialManager::getInstance().createMaterial(materialName).get();
+		//}
 	}
 private:
 	glm::vec3 m_position = glm::vec3(0.0f);

@@ -1,5 +1,26 @@
 ﻿C:\Program Files\Microsoft Visual Studio\2022\Community\MSBuild\Microsoft\VC\v170\Microsoft.CppBuild.targets(517,5): warning MSB8004: Output Directory does not end with a trailing slash.  This build instance will add the slash as it is required to allow proper evaluation of the Output Directory.
+  assetmanager.cpp
+D:\Main\Projects\Roblox\Roblox\Source\Graphic\Resources\material.h(14,8): warning C4099: 'Material': type name first seen using 'class' now seen using 'struct'
+  (compiling source file 'Source/Asset/assetmanager.cpp')
+      D:\Main\Projects\Roblox\Roblox\Source\Graphic\Resources\material.h(14,8):
+      see declaration of 'Material'
+  
+D:\Main\Projects\Roblox\Roblox\Source\Graphic\Resources\mesh.h(20,8): warning C4099: 'Mesh': type name first seen using 'class' now seen using 'struct'
+  (compiling source file 'Source/Asset/assetmanager.cpp')
+      D:\Main\Projects\Roblox\Roblox\Source\Graphic\Resources\mesh.h(20,8):
+      see declaration of 'Mesh'
+  
   editor.cpp
+D:\Main\Projects\Roblox\Roblox\Source\Asset\assetmanager.h(20,7): warning C4099: 'Material': type name first seen using 'struct' now seen using 'class'
+  (compiling source file 'Source/Editor/editor.cpp')
+      D:\Main\Projects\Roblox\Roblox\Source\Graphic\Resources\material.h(14,8):
+      see declaration of 'Material'
+  
+D:\Main\Projects\Roblox\Roblox\Source\Asset\assetmanager.h(21,7): warning C4099: 'Mesh': type name first seen using 'struct' now seen using 'class'
+  (compiling source file 'Source/Editor/editor.cpp')
+      D:\Main\Projects\Roblox\Roblox\Source\Graphic\Resources\mesh.h(20,8):
+      see declaration of 'Mesh'
+  
 C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(130,9): warning C4005: 'APIENTRY': macro redefinition
   (compiling source file 'Source/Editor/editor.cpp')
       D:\Main\Projects\Roblox\Roblox\ThirdParty\glad\glad.h(32,9):
@@ -38,4 +59,41 @@ C:\Program Files\Microsoft Visual Studio\2022\Community\VC\Tools\MSVC\14.41.3412
               _SizeTy=unsigned __int64
           ]
   
+  renderer.cpp
+D:\Main\Projects\Roblox\Roblox\Source\Asset\assetmanager.h(20,7): warning C4099: 'Material': type name first seen using 'struct' now seen using 'class'
+  (compiling source file 'Source/Graphic/Rendering/renderer.cpp')
+      D:\Main\Projects\Roblox\Roblox\Source\Graphic\Resources\material.h(14,8):
+      see declaration of 'Material'
+  
+D:\Main\Projects\Roblox\Roblox\Source\Asset\assetmanager.h(21,7): warning C4099: 'Mesh': type name first seen using 'struct' now seen using 'class'
+  (compiling source file 'Source/Graphic/Rendering/renderer.cpp')
+      D:\Main\Projects\Roblox\Roblox\Source\Graphic\Resources\mesh.h(20,8):
+      see declaration of 'Mesh'
+  
+D:\Main\Projects\Roblox\Roblox\Source\Graphic\Rendering\renderer.cpp(57,50): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+D:\Main\Projects\Roblox\Roblox\Source\Graphic\Rendering\renderer.cpp(91,57): warning C4267: 'argument': conversion from 'size_t' to 'int', possible loss of data
+D:\Main\Projects\Roblox\Roblox\Source\Graphic\Rendering\renderer.cpp(93,50): warning C4267: 'argument': conversion from 'size_t' to 'GLsizei', possible loss of data
+  main.cpp
+D:\Main\Projects\Roblox\Roblox\Source\main.cpp(1,9): warning C4005: '_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING': macro redefinition
+      D:\Main\Projects\Roblox\Roblox\Source\main.cpp(1,9):
+      '_SILENCE_STDEXT_ARR_ITERS_DEPRECATION_WARNING' previously declared on the command line
+  
+D:\Main\Projects\Roblox\Roblox\Source\Asset\assetmanager.h(20,7): warning C4099: 'Material': type name first seen using 'struct' now seen using 'class'
+  (compiling source file 'Source/main.cpp')
+      D:\Main\Projects\Roblox\Roblox\Source\Graphic\Resources\material.h(14,8):
+      see declaration of 'Material'
+  
+D:\Main\Projects\Roblox\Roblox\Source\Asset\assetmanager.h(21,7): warning C4099: 'Mesh': type name first seen using 'struct' now seen using 'class'
+  (compiling source file 'Source/main.cpp')
+      D:\Main\Projects\Roblox\Roblox\Source\Graphic\Resources\mesh.h(20,8):
+      see declaration of 'Mesh'
+  
+C:\Program Files (x86)\Windows Kits\10\Include\10.0.22621.0\shared\minwindef.h(130,9): warning C4005: 'APIENTRY': macro redefinition
+  (compiling source file 'Source/main.cpp')
+      D:\Main\Projects\Roblox\Roblox\ThirdParty\glad\glad.h(32,9):
+      see previous definition of 'APIENTRY'
+  
+  TextEditor.cpp
+  imgui_draw.cpp
+  Generating Code...
   Roblox.vcxproj -> D:\Main\Projects\Roblox\Roblox\Bin\Roblox.exe

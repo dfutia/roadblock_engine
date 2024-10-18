@@ -4,7 +4,6 @@
 
 #include "Scene/Nodes/basepart.h"
 #include "Graphic/Resources/mesh.h"
-#include "Asset/materialmanager.h"
 
 #include <gtc/quaternion.hpp>
 #include <gtx/euler_angles.hpp>

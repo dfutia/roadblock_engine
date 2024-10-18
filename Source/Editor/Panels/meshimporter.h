@@ -8,7 +8,7 @@
 #include "Scene/Nodes/meshpart.h"
 #include "Asset/assetmanager.h"
 #include "Asset/textureloader.h"
-#include "Asset/materialmanager.h"
+#include "Asset/materialloader.h"
 
 #include <spdlog/spdlog.h>
 #include <assimp/Importer.hpp>
@@ -160,33 +160,13 @@ private:
 
         if (assimpMesh->mMaterialIndex >= 0) {
             aiMaterial* aiMaterial = scene->mMaterials[assimpMesh->mMaterialIndex];
-
             std::string materialName = m_currentModelName + "_Material_" + std::to_string(assimpMesh->mMaterialIndex);
-            std::shared_ptr<Material> material = MaterialManager::getInstance().getMaterial(materialName);
-            if (!material) {
-                material = MaterialManager::getInstance().createMaterial(materialName);
-            }
 
-            aiColor3D color(0.0f, 0.0f, 0.0f);
-            float shininess;
-
-            aiMaterial->Get(AI_MATKEY_COLOR_AMBIENT, color);
-            material->ambient = glm::vec3(color.r, color.g, color.b);
-
-            aiMaterial->Get(AI_MATKEY_COLOR_DIFFUSE, color);
-            material->diffuse = glm::vec3(color.r, color.g, color.b);
-
-            aiMaterial->Get(AI_MATKEY_COLOR_SPECULAR, color);
-            material->specular = glm::vec3(color.r, color.g, color.b);
-
-            aiMaterial->Get(AI_MATKEY_SHININESS, shininess);
-            material->shininess = shininess;
-
-            loadMaterialTextures(material, aiMaterial, aiTextureType_DIFFUSE, "texture_diffuse", scene);
-            loadMaterialTextures(material, aiMaterial, aiTextureType_SPECULAR, "texture_specular", scene);
-            loadMaterialTextures(material, aiMaterial, aiTextureType_HEIGHT, "texture_normal", scene);
-
-            mesh->material = material.get();
+            mesh->material = g_assetManager.GetAsset<Material>(AiMaterialSource{
+                aiMaterial, 
+                scene,
+                m_dir
+            })->Get();
         }
 
         glGenVertexArrays(1, &mesh->vao);
@@ -218,35 +198,6 @@ private:
         glVertexAttribPointer(3, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, texCoords));
 
         glBindVertexArray(0);
-    }
-
-    void loadMaterialTextures(std::shared_ptr<Material> material, aiMaterial* mat, aiTextureType type, std::string typeName, const aiScene* scene) {
-        for (unsigned int i = 0; i < mat->GetTextureCount(type); i++) {
-            aiString str;
-            mat->GetTexture(type, i, &str);
-
-            std::string textureKey = std::string(str.C_Str());
-            std::shared_ptr<Texture> texture = gAssetManager.getTexture(textureKey);
-
-            if (!texture) {
-                const aiTexture* embeddedTexture = scene->GetEmbeddedTexture(str.C_Str());
-                if (embeddedTexture) {
-                    // texture = TextureLoader::loadFromMemory(embeddedTexture);
-                }
-                else {
-                    std::string fullPath = m_dir + '/' + textureKey;
-                    texture = TextureLoader::loadFromFile(fullPath);
-                }
-
-                if (texture) {
-                    gAssetManager.addTexture(textureKey, texture);
-                }
-            }
-
-            if (texture) {
-                material->textures.push_back(texture);
-            }
-        }
     }
 
     void addMeshToScene(Mesh* mesh, const std::string& filepath) {

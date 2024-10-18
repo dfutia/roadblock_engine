@@ -2,6 +2,8 @@
 
 #include <iostream>
 
+#include <SDL_image.h>
+
 GraphicsContext::GraphicsContext() : m_window(nullptr), m_glContext(nullptr) {}
 
 GraphicsContext::~GraphicsContext() {
@@ -10,6 +12,13 @@ GraphicsContext::~GraphicsContext() {
 
 bool GraphicsContext::initialize(const std::string& windowTitle, int width, int height) {
     if (!initializeSDL()) return false;
+
+    int imgFlags = IMG_INIT_PNG;
+    if (!(IMG_Init(imgFlags) & imgFlags)) {
+        std::cerr << "SDL_image initialization failed: " << IMG_GetError() << std::endl;
+        return false;
+    }
+
     if (!createWindow(windowTitle, width, height)) return false;
     if (!createGLContext()) return false;
     if (!initializeGLAD()) return false;
@@ -29,6 +38,7 @@ void GraphicsContext::cleanup() {
         SDL_DestroyWindow(m_window);
         m_window = nullptr;
     }
+    IMG_Quit();
     SDL_Quit();
 }
 
@@ -50,6 +60,17 @@ bool GraphicsContext::createWindow(const std::string& windowTitle, int width, in
         std::cerr << "Window creation failed: " << SDL_GetError() << std::endl;
         return false;
     }
+
+    SDL_Surface* iconSurface = IMG_Load("Asset/Textures/roadblockstudio.png");
+    if (iconSurface) {
+        SDL_SetWindowIcon(m_window, iconSurface);
+        SDL_FreeSurface(iconSurface);
+    }
+    else {
+        std::cerr << "Failed to load icon: " << IMG_GetError() << std::endl;
+    }
+
+
     return true;
 }
 
