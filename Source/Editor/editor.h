@@ -12,6 +12,9 @@
 #include "Scene/Nodes/skybox.h"
 
 #include <SDL2/SDL.h>
+#include <imgui/imgui.h>
+#include <imgui/imgui_impl_sdl2.h>
+#include <imgui/imgui_impl_opengl3.h>
 
 #include <vector>
 #include <memory>
@@ -58,6 +61,8 @@ private:
 	Event<int, int>::ConnectionHandle viewportResizeConnection;
 
 	std::list<std::unique_ptr<EditorPanel>> m_panels;
+
+	ImFont* m_largeFont;
 };
 
 #endif 

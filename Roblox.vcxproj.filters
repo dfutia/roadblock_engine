@@ -78,9 +78,6 @@
     <ClCompile Include="Source\Scene\scene.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
-    <ClCompile Include="Source\Graphic\Resources\texture.cpp">
-      <Filter>Source Files</Filter>
-    </ClCompile>
     <ClCompile Include="Source\filesystem.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -291,5 +288,8 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Source\test.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Asset\Fonts\CascadiaCodeBold.ttf" />
   </ItemGroup>
 </Project>

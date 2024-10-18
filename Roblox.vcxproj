@@ -28,7 +28,6 @@
     <ClCompile Include="Source\Graphic\Rendering\camera.cpp" />
     <ClCompile Include="Source\Graphic\Rendering\framebuffer.cpp" />
     <ClCompile Include="Source\Graphic\graphicscontext.cpp" />
-    <ClCompile Include="Source\Graphic\Resources\texture.cpp" />
     <ClCompile Include="Source\Reflection\typeregistry.cpp" />
     <ClCompile Include="Source\Scene\Nodes\instance.cpp" />
     <ClCompile Include="Source\Graphic\Resources\mesh.cpp" />
@@ -121,6 +120,9 @@
   </ItemGroup>
   <ItemGroup>
     <Text Include="Source\test.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Font Include="Asset\Fonts\CascadiaCodeBold.ttf" />
   </ItemGroup>
   <PropertyGroup Label="Globals">
     <VCProjectVersion>17.0</VCProjectVersion>

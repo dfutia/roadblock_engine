@@ -16,9 +16,9 @@
 #include "Scene/Nodes/script.h"
 #include "filesystem.h"
 
-#include <imgui/imgui.h>
-#include <imgui/imgui_impl_sdl2.h>
-#include <imgui/imgui_impl_opengl3.h>
+//#include <imgui/imgui.h>
+//#include <imgui/imgui_impl_sdl2.h>
+//#include <imgui/imgui_impl_opengl3.h>
 
 Editor::Editor(GraphicsContext& graphics, Renderer& renderer, Scene& scene, Audio& audio) : m_graphics(graphics), m_scene(scene) {
 	IMGUI_CHECKVERSION();
@@ -32,6 +32,7 @@ Editor::Editor(GraphicsContext& graphics, Renderer& renderer, Scene& scene, Audi
 	ImGui_ImplSDL2_InitForOpenGL(graphics.getWindow(), graphics.getGLContext());
 	ImGui_ImplOpenGL3_Init();
 
+	m_largeFont = io.Fonts->AddFontFromFileTTF("D:/Main/Projects/Roblox/Roblox/Asset/Fonts/CascadiaCodeBold.ttf", 20.0f);
 	//io.Fonts->Clear();
 	//io.Fonts->AddFontDefault(new ImFontConfig())->Scale = 1.5f;
 	//ImGui_ImplOpenGL3_CreateFontsTexture();
@@ -192,7 +193,7 @@ std::unique_ptr<Instance> Editor::create(const std::string& typeName) {
 void Editor::onOpenScriptEditor(Script& script) {
 	ScriptEditor* editorExisits = findScriptEditor(script);
 	if (!editorExisits) {
-		auto scriptEditor = std::make_unique<ScriptEditor>(script);
+		auto scriptEditor = std::make_unique<ScriptEditor>(script, m_largeFont);
 		m_panels.push_back(std::move(scriptEditor));
 	}
 }

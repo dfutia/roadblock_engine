@@ -2,15 +2,6 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <stb_image.h>
-#include <glad/glad.h>
-
-#include <iostream>
-#include <string>
-#include <memory>
-#include <unordered_map>
-#include <array>
-
 class Texture {
 public:
     Texture(unsigned int id, int width, int height, int channels, bool isCubemap)
