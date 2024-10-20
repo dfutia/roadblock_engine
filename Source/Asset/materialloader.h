@@ -21,6 +21,17 @@ public:
             const auto& aiMaterialSource = std::get<AiMaterialSource>(source);
             return LoadFromAiMaterial(aiMaterialSource.aiMaterial, aiMaterialSource.scene, aiMaterialSource.directory);
         }
+        else if (std::holds_alternative<MemorySource>(source)) {
+            const auto& memorySource = std::get<MemorySource>(source);
+            if (memorySource.data == nullptr && memorySource.size == 0) {
+                auto defaultMaterial = std::make_shared<Material>();
+                defaultMaterial->ambient = glm::vec3(0.1f, 0.1f, 0.1f);
+                defaultMaterial->diffuse = glm::vec3(0.8f, 0.8f, 0.8f);
+                defaultMaterial->specular = glm::vec3(0.5f, 0.5f, 0.5f);
+                defaultMaterial->shininess = 32.0f;
+                return std::make_shared<MaterialHandle>(std::move(defaultMaterial));
+            }
+        }
         return nullptr;
     }
 private:
@@ -51,7 +62,7 @@ private:
         loadMaterialTextures(material, mat, aiTextureType_SPECULAR, "texture_specular", scene, directory);
         loadMaterialTextures(material, mat, aiTextureType_HEIGHT, "texture_normal", scene, directory);
 
-        return std::make_shared<TypedAssetHandle<Material>>(std::move(material));
+        return std::make_shared<MaterialHandle>(std::move(material), gFilesystem.getFilename(directory));
     }
 
     void loadMaterialTextures(std::shared_ptr<Material> material, aiMaterial* mat, aiTextureType type,

@@ -28,6 +28,8 @@ class AssetManager {
 public:
     AssetManager();
 
+    void init();
+
     template<typename T>
     void RegisterLoader(std::unique_ptr<AssetLoader<T>> loader) {
         std::cout << "Registering asset loader" << std::endl;
@@ -40,7 +42,7 @@ public:
         std::string key = CreateKey(source);
         auto it = m_assets.find(key);
         if (it != m_assets.end()) {
-            std::cout << "Asset already exists" << std::endl;
+            std::cout << "Asset already exists: " << it->second->getName() << std::endl;
             return std::static_pointer_cast<TypedAssetHandle<T>>(it->second);
         }
 
@@ -69,10 +71,6 @@ public:
             else {
                 //std::cout << key << " not user asset" << std::endl;
             }
-        }
-        if (userAssets.size() > 1000000) {  // Arbitrary large number
-            std::cerr << "Error: Asset count exceeds reasonable limit. Clearing assets." << std::endl;
-            userAssets.clear();
         }
         return userAssets;
     }

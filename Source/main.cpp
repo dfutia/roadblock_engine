@@ -79,6 +79,8 @@ int main(int argc, char* argv[]) {
 	Editor editor(graphics, renderer, scene, audio);
 	LuaEnvironment luaEnvironment(keyboard, mouse);
 
+	g_assetManager.init();
+
 	bool running = true;
 
 	const int FPS = 60;

@@ -26,7 +26,12 @@ public:
         if (std::holds_alternative<FileSource>(source)) {
             return LoadFromFile(std::get<FileSource>(source).filepath);
         }
-
+        else if (std::holds_alternative<MemorySource>(source)) {
+            //const auto& memorySource = std::get<MemorySource>(source);
+            //if (memorySource.data == nullptr && memorySource.size == 0) {
+            //    return std::make_shared<MeshHandle>(new Mesh(createCubeMesh(1.0f)));
+            //}
+        }
         return nullptr;
     }
 
@@ -51,7 +56,7 @@ private:
         }
 
         std::shared_ptr<Mesh> mesh = processNode(scene->mRootNode, scene);
-        return std::make_shared<MeshHandle>(mesh);
+        return std::make_shared<MeshHandle>(mesh, gFilesystem.getFilename(filepath));
     }
 
     std::shared_ptr<Mesh> processNode(aiNode* node, const aiScene* scene) {

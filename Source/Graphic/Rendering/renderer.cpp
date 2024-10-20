@@ -94,7 +94,6 @@ void Renderer::renderScene(Scene& scene, const glm::mat4& view, const glm::mat4&
 			shader->setFloat("material.shininess", material->shininess);
 
 			for (unsigned int i = 0; i < material->textureHandles.size(); i++) {
-				std::cout << "binding texture" << std::endl;
 				glActiveTexture(GL_TEXTURE0 + i);
 				glBindTexture(GL_TEXTURE_2D, material->textureHandles[i]->Get()->getId());
 				std::string uniformName = "textures[" + std::to_string(i) + "]";

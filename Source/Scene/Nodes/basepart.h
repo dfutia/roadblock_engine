@@ -11,8 +11,24 @@
 
 class BasePart : public Instance {
 public:
-	BasePart(const std::string& name, Mesh mesh) : Instance(name), m_mesh(mesh) {}
-	BasePart(const std::string& name) : Instance(name) {}
+	BasePart(const std::string& name, Mesh mesh) : Instance(name), m_mesh(mesh) {
+		//auto meshHandle = g_assetManager.GetAsset<Mesh>(MemorySource{ nullptr, 0 });
+		auto materialHandle = g_assetManager.GetAsset<Material>(MemorySource{ nullptr, 0 });
+
+		if (materialHandle) {
+			//m_mesh = *meshHandle->Get();
+			m_mesh.materialHandle = materialHandle;
+		}
+	}
+	BasePart(const std::string& name) : Instance(name) {
+		//auto meshHandle = g_assetManager.GetAsset<Mesh>(MemorySource{ nullptr, 0 });
+		auto materialHandle = g_assetManager.GetAsset<Material>(MemorySource{ nullptr, 0 });
+
+		if (materialHandle) {
+			//m_mesh = *meshHandle->Get();
+			m_mesh.materialHandle = materialHandle;
+		}
+	}
 
 	virtual ~BasePart() = default;
 

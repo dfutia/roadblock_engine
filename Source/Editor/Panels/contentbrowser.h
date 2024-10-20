@@ -41,8 +41,7 @@ public:
                 else if (dynamic_cast<TextureHandle*>(asset.get())) icon = m_icons["texture"]->Get();
 
                 ImGui::PushStyleColor(ImGuiCol_Button, ImVec4(0, 0, 0, 0));
-                ImGui::ImageButton(reinterpret_cast<ImTextureID>(static_cast<intptr_t>(icon->getId())),
-                    ImVec2(thumbnailSize, thumbnailSize), ImVec2(0, 0), ImVec2(1, 1), 0);
+                ImGui::ImageButton(reinterpret_cast<ImTextureID>(static_cast<intptr_t>(icon->getId())), ImVec2(thumbnailSize, thumbnailSize), ImVec2(0, 0), ImVec2(1, 1), 0);
                 ImGui::PopStyleColor();
 
                 if (ImGui::BeginDragDropSource(ImGuiDragDropFlags_None)) {
@@ -52,7 +51,7 @@ public:
                     ImGui::EndDragDropSource();
                 }
 
-                ImGui::TextWrapped(gFilesystem.getFilename(key).c_str());
+                ImGui::TextWrapped(asset->getName().c_str());
                 ImGui::NextColumn();
                 ImGui::PopID();
             }

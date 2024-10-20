@@ -7,16 +7,20 @@
 
 class AssetHandle {
 public:
+    AssetHandle(const std::string& name) : m_name(name) {}
     virtual ~AssetHandle() = default;
 
-    const std::string& GetName() const { return m_name; }
     //std::chrono::system_clock::time_point GetLastLoadTime() const { return m_lastLoadTime; }
     bool IsLoaded() const { return m_isLoaded; }
+
     void setUserAsset(bool isUserAsset) { m_isUserAsset = isUserAsset; }
     bool isUserAsset() const { return m_isUserAsset; }
+
+    const std::string& getName() const { return m_name; }
+    void setName(const std::string& name) { m_name = name; }
 protected:
-    std::string m_name;
     //std::chrono::system_clock::time_point m_lastLoadTime;
+    std::string m_name;
     bool m_isLoaded = false;
     bool m_isUserAsset = true;
 };
@@ -24,7 +28,7 @@ protected:
 template<typename T>
 class TypedAssetHandle : public AssetHandle {
 public:
-    TypedAssetHandle(std::shared_ptr<T> resource) : m_resource(std::move(resource)) {
+    TypedAssetHandle(std::shared_ptr<T> resource, const std::string& name = "Unnamed Asset") : AssetHandle(name), m_resource(std::move(resource)) {
         m_isLoaded = true;
         //m_lastLoadTime = std::chrono::system_clock::now();
     }

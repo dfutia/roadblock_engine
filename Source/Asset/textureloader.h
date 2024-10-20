@@ -6,6 +6,7 @@
 #include "Asset/assetmanager.h"
 #include "Asset/sources.h"
 #include "Graphic/Resources/texture.h"
+#include "filesystem.h"
 
 #include <stb_image.h>
 #include <glad/glad.h>
@@ -44,7 +45,7 @@ private:
         if (data) {
             unsigned int id = CreateGLTexture(data, width, height, channels, false);
             stbi_image_free(data);
-            return std::make_shared<TextureHandle>(std::make_shared<Texture>(id, width, height, channels, false));
+            return std::make_shared<TextureHandle>(std::make_shared<Texture>(id, width, height, channels, false), gFilesystem.getFilename(filepath));
         }
         std::cout << "Failed to load texture from path: " << filepath << std::endl;
         return nullptr;

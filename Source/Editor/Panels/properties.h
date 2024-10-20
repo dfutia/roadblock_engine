@@ -102,7 +102,7 @@ private:
             auto value = static_cast<std::shared_ptr<MeshHandle>*>(prop->getValue(instance));
             std::string uniqueLabel = propName + "##" + std::to_string(reinterpret_cast<uintptr_t>(prop));
 
-            std::string displayName = value && *value ? (*value)->GetName() : "No Mesh";
+            std::string displayName = value && *value ? (*value)->getName() : "No Mesh";
             ImGui::InputText(uniqueLabel.c_str(), &displayName[0], displayName.size() + 1, ImGuiInputTextFlags_ReadOnly);
 
             if (ImGui::BeginDragDropTarget()) {
