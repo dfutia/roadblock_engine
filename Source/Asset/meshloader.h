@@ -22,7 +22,7 @@ class AssetManager;
 
 class MeshLoader : public AssetLoader<Mesh> {
 public:
-    std::unique_ptr<MeshHandle> Load(const AssetSource& source, AssetManager& assetManager) override {
+    std::shared_ptr<MeshHandle> Load(const AssetSource& source, AssetManager& assetManager) override {
         if (std::holds_alternative<FileSource>(source)) {
             return LoadFromFile(std::get<FileSource>(source).filepath);
         }
@@ -34,7 +34,7 @@ private:
     std::string m_dir;
     std::string m_currentModelName;
 
-    std::unique_ptr<MeshHandle> LoadFromFile(const std::string& filepath) {
+    std::shared_ptr<MeshHandle> LoadFromFile(const std::string& filepath) {
         std::cout << "loading mesh from file" << std::endl;
         m_dir = gFilesystem.getParentDirectory(filepath);
 
@@ -50,20 +50,22 @@ private:
             return nullptr;
         }
 
-        Mesh* mesh = processNode(scene->mRootNode, scene);
-        return std::make_unique<MeshHandle>(mesh);
+        std::shared_ptr<Mesh> mesh = processNode(scene->mRootNode, scene);
+        return std::make_shared<MeshHandle>(mesh);
     }
 
-    Mesh* processNode(aiNode* node, const aiScene* scene) {
-        Mesh* combinedMesh = new Mesh();
+    std::shared_ptr<Mesh> processNode(aiNode* node, const aiScene* scene) {
+        std::shared_ptr<Mesh> combinedMesh = std::make_shared<Mesh>();
 
+        // Process meshes associated with the current node
         for (unsigned int i = 0; i < node->mNumMeshes; i++) {
             aiMesh* mesh = scene->mMeshes[node->mMeshes[i]];
             processMesh(mesh, scene, combinedMesh);
         }
 
+        // Process child nodes
         for (unsigned int i = 0; i < node->mNumChildren; i++) {
-            Mesh* childMesh = processNode(node->mChildren[i], scene);
+            std::shared_ptr<Mesh> childMesh = processNode(node->mChildren[i], scene);
             if (childMesh) {
                 // Combine child mesh with current mesh
                 combinedMesh->vertices.insert(combinedMesh->vertices.end(),
@@ -71,16 +73,21 @@ private:
                 combinedMesh->indices.insert(combinedMesh->indices.end(),
                     childMesh->indices.begin(), childMesh->indices.end());
 
-                // Merge materials
-                if (!childMesh->material->textures.empty()) {
-                    combinedMesh->material->textures.insert(
-                        combinedMesh->material->textures.end(),
-                        childMesh->material->textures.begin(),
-                        childMesh->material->textures.end()
-                    );
+                // Merge materials if both meshes have valid materials
+                if (childMesh->materialHandle && combinedMesh->materialHandle) {
+                    auto childTextures = childMesh->materialHandle->Get()->textureHandles;
+                    if (!childTextures.empty()) {
+                        combinedMesh->materialHandle->Get()->textureHandles.insert(
+                            combinedMesh->materialHandle->Get()->textureHandles.end(),
+                            childTextures.begin(),
+                            childTextures.end()
+                        );
+                    }
                 }
-
-                delete childMesh;
+                else if (childMesh->materialHandle) {
+                    // If combined mesh doesn't have a material but child does, use child's material
+                    combinedMesh->materialHandle = childMesh->materialHandle;
+                }
             }
         }
 
@@ -117,7 +124,7 @@ private:
         return combinedMesh;
     }
 
-    void processMesh(aiMesh* assimpMesh, const aiScene* scene, Mesh* mesh) {
+    void processMesh(aiMesh* assimpMesh, const aiScene* scene, std::shared_ptr<Mesh> mesh) {
         for (unsigned int i = 0; i < assimpMesh->mNumVertices; i++) {
             Vertex vertex;
 
@@ -153,11 +160,11 @@ private:
             aiMaterial* aiMaterial = scene->mMaterials[assimpMesh->mMaterialIndex];
             std::string materialName = m_currentModelName + "_Material_" + std::to_string(assimpMesh->mMaterialIndex);
 
-            mesh->material = g_assetManager.GetAsset<Material>(AiMaterialSource{
+            mesh->materialHandle = g_assetManager.GetAsset<Material>(AiMaterialSource{
                 aiMaterial,
                 scene,
                 m_dir
-                })->Get();
+                });
         }
 
         glGenVertexArrays(1, &mesh->vao);

@@ -3,6 +3,9 @@
 #define MESH_PART_H
 
 #include "Scene/Nodes/basepart.h"
+#include "Asset/assetmanager.h"
+
+#include <memory>
 
 class MeshPart : public BasePart {
 public:
@@ -18,6 +21,20 @@ public:
 
 	std::string getTypeName() const override {
 		return "MeshPart";
+	}
+
+	std::shared_ptr<MeshHandle> getMeshHandle() const { return m_meshHandle; }
+	void setMeshHandle(const std::shared_ptr<MeshHandle>& handle) {
+		m_meshHandle = handle;
+		updateMesh();
+	}
+private:
+	std::shared_ptr<MeshHandle> m_meshHandle;
+
+	void updateMesh() {
+		if (m_meshHandle) {
+			setMesh(*m_meshHandle->Get());
+		}
 	}
 };
 

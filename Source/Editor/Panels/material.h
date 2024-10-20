@@ -49,11 +49,11 @@ private:
         ImGui::SliderFloat("Shininess", &material->shininess, 0.0f, 256.0f);
 
         if (ImGui::TreeNode("Textures")) {
-            for (size_t i = 0; i < material->textures.size(); ++i) {
-                auto& texture = material->textures[i];
+            for (size_t i = 0; i < material->textureHandles.size(); ++i) {
+                auto& texture = material->textureHandles[i];
                 //ImGui::Text("Texture %zu: %s", i, texture->name.c_str());
                 ImGui::SameLine();
-                ImGui::Image((void*)(intptr_t)texture->getId(), ImVec2(64, 64));
+                ImGui::Image((void*)(intptr_t)texture->Get()->getId(), ImVec2(64, 64));
             }
             ImGui::TreePop();
         }

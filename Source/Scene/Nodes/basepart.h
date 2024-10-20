@@ -41,12 +41,12 @@ public:
 	glm::vec3 getScale() const { return m_scale; }
 	void setScale(const glm::vec3& scale) { m_scale = scale; }
 
-	std::string getMaterialName() const {
-		return m_mesh.material ? m_mesh.material->name : "";
-	}
+	//std::string getMaterialName() const {
+	//	return m_mesh.material->Get() ? m_mesh.material->Get()->name : "";
+	//}
 
 	Material* getMaterial() const {
-		return m_mesh.material;
+		return m_mesh.materialHandle->Get().get();
 	}
 
 	void setMaterial(const std::string& materialName) {

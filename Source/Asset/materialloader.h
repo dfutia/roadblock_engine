@@ -16,17 +16,15 @@ class AssetManager;
 
 class MaterialLoader : public AssetLoader<Material> {
 public:
-    std::unique_ptr<MaterialHandle> Load(const AssetSource& source, AssetManager& assetManager) override {
+    std::shared_ptr<TypedAssetHandle<Material>> Load(const AssetSource& source, AssetManager& assetManager) override {
         if (std::holds_alternative<AiMaterialSource>(source)) {
             const auto& aiMaterialSource = std::get<AiMaterialSource>(source);
             return LoadFromAiMaterial(aiMaterialSource.aiMaterial, aiMaterialSource.scene, aiMaterialSource.directory);
         }
-
         return nullptr;
     }
-
 private:
-    std::unique_ptr<MaterialHandle>  LoadFromAiMaterial(aiMaterial* mat, const aiScene* scene, const std::string& directory) {
+    std::shared_ptr<MaterialHandle>  LoadFromAiMaterial(aiMaterial* mat, const aiScene* scene, const std::string& directory) {
         std::cout << "loading material from aiMaterial" << std::endl;
         if (!mat || !scene) {
             return nullptr;
@@ -53,7 +51,7 @@ private:
         loadMaterialTextures(material, mat, aiTextureType_SPECULAR, "texture_specular", scene, directory);
         loadMaterialTextures(material, mat, aiTextureType_HEIGHT, "texture_normal", scene, directory);
 
-        return std::make_unique<MaterialHandle>(material.get());
+        return std::make_shared<TypedAssetHandle<Material>>(std::move(material));
     }
 
     void loadMaterialTextures(std::shared_ptr<Material> material, aiMaterial* mat, aiTextureType type,
@@ -76,7 +74,7 @@ private:
             }
 
             if (textureHandle) {
-                //material->textures.push_back(std::make_shared<Texture>(textureHandle->Get()));
+                material->textureHandles.push_back(textureHandle);
             }
         }
     }

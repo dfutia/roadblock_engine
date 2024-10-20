@@ -2,6 +2,8 @@
 #ifndef MATERIAL_H
 #define MATERIAL_H
 
+#include "Asset/assetmanager.h"
+
 #include <glm/vec3.hpp>
 
 #include <iostream>
@@ -17,7 +19,7 @@ struct Material {
 	glm::vec3 diffuse;
 	glm::vec3 specular;
 	float shininess;
-	std::vector<std::shared_ptr<Texture>> textures;
+	std::vector<std::shared_ptr<TextureHandle>> textureHandles;
 };
 
 #endif 

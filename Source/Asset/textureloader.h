@@ -19,7 +19,7 @@ class AssetManager;
 
 class TextureLoader : public AssetLoader<Texture> {
 public:
-    std::unique_ptr<TextureHandle> Load(const AssetSource& source, AssetManager& assetManager) override {
+    std::shared_ptr<TextureHandle> Load(const AssetSource& source, AssetManager& assetManager) override {
         if (std::holds_alternative<FileSource>(source)) {
             return LoadFromFile(std::get<FileSource>(source).filepath);
         }
@@ -36,7 +36,7 @@ public:
     }
 
 private:
-    std::unique_ptr<TextureHandle> LoadFromFile(const std::string& filepath) {
+    std::shared_ptr<TextureHandle> LoadFromFile(const std::string& filepath) {
         std::cout << "Loading texture from file: " << filepath << std::endl;
         stbi_set_flip_vertically_on_load(true);
         int width, height, channels;
@@ -44,7 +44,7 @@ private:
         if (data) {
             unsigned int id = CreateGLTexture(data, width, height, channels, false);
             stbi_image_free(data);
-            return std::make_unique<TextureHandle>(new Texture(id, width, height, channels, false));
+            return std::make_shared<TextureHandle>(std::make_shared<Texture>(id, width, height, channels, false));
         }
         std::cout << "Failed to load texture from path: " << filepath << std::endl;
         return nullptr;
@@ -63,7 +63,7 @@ private:
     //    return nullptr;
     //}
 
-    std::unique_ptr<TextureHandle> LoadCubemap(std::vector<std::string> filepaths) {
+    std::shared_ptr<TextureHandle> LoadCubemap(std::vector<std::string> filepaths) {
         std::cout << "Loading cubemap" << std::endl;
         if (filepaths.size() != 6) {
             std::cout << "Cubemap requires exactly 6 filepaths" << std::endl;
@@ -75,6 +75,7 @@ private:
         glBindTexture(GL_TEXTURE_CUBE_MAP, id);
 
         int width, height, channels;
+        stbi_set_flip_vertically_on_load(true);
         for (unsigned int i = 0; i < filepaths.size(); i++) {
             unsigned char* data = stbi_load(filepaths[i].c_str(), &width, &height, &channels, 0);
             if (data) {
@@ -96,7 +97,7 @@ private:
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_T, GL_CLAMP_TO_EDGE);
         glTexParameteri(GL_TEXTURE_CUBE_MAP, GL_TEXTURE_WRAP_R, GL_CLAMP_TO_EDGE);
 
-        return std::make_unique<TextureHandle>(new Texture(id, width, height, channels, true));
+        return std::make_shared<TextureHandle>(std::make_shared<Texture>(id, width, height, channels, false));
     }
 
     unsigned int CreateGLTexture(unsigned char* data, int width, int height, int channels, bool isCubemap) {

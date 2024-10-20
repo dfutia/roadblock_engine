@@ -171,10 +171,9 @@ void Editor::onFileDrop(SDL_Event& event) {
 	std::string extension = filePath.substr(filePath.find_last_of(".") + 1);
 
 	if (extension == "png" || extension == "jpg" || extension == "jpeg") {
-		std::cout << "Creating texture object..." << std::endl;
 	}
-	else if (extension == "obj") {
-		std::cout << "Creating mesh object..." << std::endl;
+	else if (extension == "dae") {
+		g_assetManager.GetAsset<Mesh>(FileSource{ filepath });
 	}
 	else {
 		std::cout << "Unsupported file type: " << extension << std::endl;

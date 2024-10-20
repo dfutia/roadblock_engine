@@ -97,6 +97,30 @@ private:
             if (ImGui::ColorEdit4(uniqueLabel.c_str(), glm::value_ptr(*value))) {
                 prop->setValue(instance, value);
             }
+        } 
+        else if (typeName == "std::shared_ptr<MeshHandle>") {
+            auto value = static_cast<std::shared_ptr<MeshHandle>*>(prop->getValue(instance));
+            std::string uniqueLabel = propName + "##" + std::to_string(reinterpret_cast<uintptr_t>(prop));
+
+            std::string displayName = value && *value ? (*value)->GetName() : "No Mesh";
+            ImGui::InputText(uniqueLabel.c_str(), &displayName[0], displayName.size() + 1, ImGuiInputTextFlags_ReadOnly);
+
+            if (ImGui::BeginDragDropTarget()) {
+                if (const ImGuiPayload* payload = ImGui::AcceptDragDropPayload("ASSET_DRAG")) {
+                    if (payload->DataSize == sizeof(AssetHandle*)) {
+                        AssetHandle* droppedAssetPtr = *(AssetHandle**)payload->Data;
+                        if (droppedAssetPtr) {
+                            // Convert back to shared_ptr
+                            std::shared_ptr<AssetHandle> droppedAsset(droppedAssetPtr, [](AssetHandle*) {});
+                            if (auto meshHandle = std::dynamic_pointer_cast<MeshHandle>(droppedAsset)) {
+                                *value = meshHandle;
+                                prop->setValue(instance, value);
+                            }
+                        }
+                    }
+                }
+                ImGui::EndDragDropTarget();
+            }
         }
         else {
             ImGui::Text("%s: Unsupported type %s", propName.c_str(), typeName.c_str());

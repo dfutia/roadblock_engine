@@ -63,6 +63,7 @@ int main(int argc, char* argv[]) {
 	REGISTER_PROPERTY(MeshPart, Rotation, "Transform", getRotation, setRotation);
 	REGISTER_PROPERTY(MeshPart, Scale, "Transform", getScale, setScale);
 	REGISTER_PROPERTY(MeshPart, Color, "Appearance", getColor, setColor);
+	REGISTER_PROPERTY(MeshPart, MeshHandle, "Appearance", getMeshHandle, setMeshHandle);
 
 	GraphicsContext graphics;
 	if (!graphics.initialize("Roadblock Studio", 1280, 720)) {

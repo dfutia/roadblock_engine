@@ -35,7 +35,7 @@ public:
     }
 
     template<typename T>
-    std::shared_ptr<TypedAssetHandle<T>> GetAsset(const AssetSource& source) {
+    std::shared_ptr<TypedAssetHandle<T>> GetAsset(const AssetSource& source, bool isUserAsset = true) {
         std::cout << "Getting asset" << std::endl;
         std::string key = CreateKey(source);
         auto it = m_assets.find(key);
@@ -47,16 +47,34 @@ public:
         auto loader = GetLoader<T>();
         if (!loader) {
             std::cout << "Getting asset failed. Loader does not exist for this asset type" << std::endl;
-            // Handle error: no loader found for this asset type
             return nullptr;
         }
 
         std::cout << "Asset does not already exist. Loading asset" << std::endl;
 
         auto assetHandle = loader->Load(source, *this);
-        auto sharedAssetHandle = std::shared_ptr<TypedAssetHandle<T>>(assetHandle.release());
-        m_assets[key] = sharedAssetHandle;
-        return sharedAssetHandle;
+        assetHandle->setUserAsset(isUserAsset);
+        m_assets[key] = assetHandle;
+        return std::static_pointer_cast<TypedAssetHandle<T>>(assetHandle);
+    }
+
+    const std::unordered_map<std::string, std::shared_ptr<AssetHandle>>& getAllAssets() {
+        static std::unordered_map<std::string, std::shared_ptr<AssetHandle>> userAssets;
+        for (const auto& [key, asset] : m_assets) {
+            //std::cout << key << std::endl;
+            if (asset->isUserAsset()) {
+                //std::cout << key << " is user asset" << std::endl;
+                userAssets[key] = asset;
+            }
+            else {
+                //std::cout << key << " not user asset" << std::endl;
+            }
+        }
+        if (userAssets.size() > 1000000) {  // Arbitrary large number
+            std::cerr << "Error: Asset count exceeds reasonable limit. Clearing assets." << std::endl;
+            userAssets.clear();
+        }
+        return userAssets;
     }
 private:
     std::string CreateKey(const AssetSource& source) {

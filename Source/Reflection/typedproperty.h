@@ -3,6 +3,7 @@
 #define TYPED_PROPERTY_H
 
 #include "Reflection/property.h"
+#include "Asset/assetmanager.h"
 
 #include <glm/glm.hpp>
 #include <glm/gtc/type_ptr.hpp>
@@ -55,6 +56,7 @@ private:
         if (std::is_same<T, float>::value) return "float";
         if (std::is_same<T, glm::vec3>::value) return "glm::vec3";
         if (std::is_same<T, glm::vec4>::value) return "glm::vec4";
+        if (std::is_same<T, std::shared_ptr<MeshHandle>>::value) return "std::shared_ptr<MeshHandle>";
         return "unknown";
     }
 

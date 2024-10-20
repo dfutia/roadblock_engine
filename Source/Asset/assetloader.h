@@ -17,7 +17,7 @@ template<typename T>
 class AssetLoader : public BaseAssetLoader {
 public:
     virtual ~AssetLoader() = default;
-    virtual std::unique_ptr<TypedAssetHandle<T>> Load(const AssetSource& source, AssetManager& assetManager) = 0;
+    virtual std::shared_ptr<TypedAssetHandle<T>> Load(const AssetSource& source, AssetManager& assetManager) = 0;
 };
 
 #endif 

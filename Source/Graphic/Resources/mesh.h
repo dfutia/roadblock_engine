@@ -21,7 +21,7 @@ struct Mesh {
 	unsigned int vao, vbo, ebo;
 	std::vector<Vertex> vertices;
 	std::vector<unsigned int> indices;
-	Material* material = new Material;
+	std::shared_ptr<MaterialHandle> materialHandle;
 };
 
 Mesh createCubeMesh(float size = 1.0f);

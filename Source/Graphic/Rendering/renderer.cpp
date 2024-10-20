@@ -43,15 +43,18 @@ void Renderer::renderSkybox(Scene& scene, const glm::mat4& view, const glm::mat4
 	for (auto& instance : scene.getInstances()) {
 		Skybox* skybox = dynamic_cast<Skybox*>(instance.get());
 		if (skybox) {
-			glDepthFunc(GL_LEQUAL);
 			Mesh& mesh = skybox->getMesh();
 			Shader* shader = skybox->getShader();
+			auto textureHandle = skybox->getTexture();
+			auto texture = textureHandle->Get();
+
+			glDepthFunc(GL_LEQUAL);
 			shader->use();
 			glm::mat4 skyboxView = glm::mat4(glm::mat3(view)); // Remove translation from the view matrix
 			shader->setMat4("view", skyboxView);
 			shader->setMat4("projection", projection);
 			glActiveTexture(GL_TEXTURE0);
-			glBindTexture(GL_TEXTURE_CUBE_MAP, skybox->getTexture()->getId());
+			glBindTexture(GL_TEXTURE_CUBE_MAP, texture->getId());
 			shader->setInt("skybox", 0);
 			glBindVertexArray(mesh.vao);
 			glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
@@ -72,27 +75,36 @@ void Renderer::renderScene(Scene& scene, const glm::mat4& view, const glm::mat4&
 		BasePart* basePart = dynamic_cast<BasePart*>(instance.get());
 		if (basePart) {
 			Mesh mesh = basePart->getMesh();
-			Material* material = mesh.material;
-			shader->setMat4("model", basePart->getTransform());
-			if (!material->textures.empty()) {
-				shader->setBool("useTexture", true);
+			if (!mesh.materialHandle) {
+				//std::cerr << "Error: Material handle is null for " << basePart->getName() << std::endl;
+				continue;
 			}
+			auto material = mesh.materialHandle->Get();
+			if (!material) {
+				//std::cerr << "Error: Material is null for " << basePart->getName() << std::endl;
+				continue;
+			}
+
+			shader->setMat4("model", basePart->getTransform());
+			shader->setBool("useTexture", !material->textureHandles.empty());
 			shader->setVec3("objectColor", basePart->getColor());
 			shader->setVec3("material.ambient", material->ambient);
 			shader->setVec3("material.diffuse", material->diffuse);
 			shader->setVec3("material.specular", material->specular);
 			shader->setFloat("material.shininess", material->shininess);
-			for (unsigned int i = 0; i < material->textures.size(); i++) {
+
+			for (unsigned int i = 0; i < material->textureHandles.size(); i++) {
+				std::cout << "binding texture" << std::endl;
 				glActiveTexture(GL_TEXTURE0 + i);
-				glBindTexture(GL_TEXTURE_2D, material->textures[i]->getId());
+				glBindTexture(GL_TEXTURE_2D, material->textureHandles[i]->Get()->getId());
 				std::string uniformName = "textures[" + std::to_string(i) + "]";
 				shader->setInt(uniformName, i);
 			}
-			shader->setInt("numTextures", material->textures.size());
+			shader->setInt("numTextures", material->textureHandles.size());
 			glBindVertexArray(mesh.vao);
 			glDrawElements(GL_TRIANGLES, mesh.indices.size(), GL_UNSIGNED_INT, 0);
 			glBindVertexArray(0);
-			for (unsigned int i = 0; i < material->textures.size(); i++) {
+			for (unsigned int i = 0; i < material->textureHandles.size(); i++) {
 				glActiveTexture(GL_TEXTURE0 + i);
 				glBindTexture(GL_TEXTURE_2D, 0);
 			}
